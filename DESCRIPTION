@@ -1,0 +1,11 @@
+Package: ICPIutilities
+Title: Utility functions for working with or creating ICPI products
+Version: 0.0.0.9000
+Authors@R: Aaron Chafetz
+Description: What the package does (one paragraph).
+Depends: R (>= 3.4.2)
+License: What license is it under?
+Imports: readxl, dplyr, readr, readxl, magrittr
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
