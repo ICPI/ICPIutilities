@@ -12,8 +12,8 @@ import_pairs <- function(folderpath, filename, type){
   require(magrittr)
   df <- readxl::read_xlsx(file.path(folderpath, filename),
                           sheet = "Allocation by SNUxIM", skip = 3)
-  df <- dplyr::filter(df, !Dsnulist %in% c("Total", "Filter Row", "Dsnulist")) %>% 
-    dplyr::select(Dsnulist, D_priority,	D_mech,	D_type) %>% 
+  df <- dplyr::filter(df, !Dsnulist %in% c("Total", "Filter Row", "Dsnulist")) %>%
+    dplyr::select(Dsnulist, D_priority,	D_mech,	D_type) %>%
     dplyr::mutate_all(as.character)
   dplyr::mutate(df, !!type := 1)
 }

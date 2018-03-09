@@ -1,4 +1,4 @@
-## ICPIutiltities
+## ICPI Utiltities
 
 functions for creating and/or working with ICPI products
 
