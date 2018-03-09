@@ -28,7 +28,7 @@ import_pairs <- function(folderpath, filename, type){
 #'
 #' @return PSNU, IM and Type columns comparison to use in Disagg Tools
 
-compare_pairs <- function(new_file, orig_file, folderpath){
+compair <- function(new_file, orig_file, folderpath){
   require(dplyr)
   df_orig <- import_pairs(folderpath, orig_file, "orig")
   df_new <- import_pairs(folderpath, new_file, "new")
