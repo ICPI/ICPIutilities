@@ -6,8 +6,9 @@
 #' @param filepath where is the folder that contains the Data Pack or Disagg Tool
 #' @param file what is the file name of the DP/DT
 #'
-#' @return import datafram
+#' @importFrom dplyr %>%
 #'
+#' @return import datafram
 
 
 import <- function(filepath, file) {
@@ -27,6 +28,8 @@ import <- function(filepath, file) {
 #' @param file what is the file name of the DP/DT
 #'
 #' @return duplicates count (PSNU-MechanismID-Type combos should be unique)
+#'
+#' @importFrom dplyr %>%
 #'
 identify_dups <- function(filepath, file) {
 
@@ -55,6 +58,7 @@ identify_dups <- function(filepath, file) {
 #' @param file what is the file name of the DP/DT
 #'
 #' @return lines where there is a numerator/disagg discrepency
+#' @importFrom dplyr %>%
 #'
 flag_error <- function(filepath, file) {
 

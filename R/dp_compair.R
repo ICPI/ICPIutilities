@@ -4,12 +4,11 @@
 #' @param filename file name of the data pack including .xlsx
 #' @param type either orig or new
 #'
+#' @importFrom dplyr %>%
+#'
 #' @return PSNU, IM and Type columns from the DP
 
 import_pairs <- function(folderpath, filename, type){
-  require(dplyr)
-  require(readxl)
-  require(magrittr)
   df <- readxl::read_xlsx(file.path(folderpath, filename),
                           sheet = "Allocation by SNUxIM", skip = 3)
   df <- dplyr::filter(df, !Dsnulist %in% c("Total", "Filter Row", "Dsnulist")) %>%
@@ -29,7 +28,6 @@ import_pairs <- function(folderpath, filename, type){
 #' @return PSNU, IM and Type columns comparison to use in Disagg Tools
 
 compair <- function(new_file, orig_file, folderpath){
-  require(dplyr)
   df_orig <- import_pairs(folderpath, orig_file, "orig")
   df_new <- import_pairs(folderpath, new_file, "new")
   df_full <- dplyr::full_join(df_orig, df_new)

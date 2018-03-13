@@ -13,6 +13,8 @@
 #'
 #' @return aggregated data table
 #'
+#' @importFrom dplyr %>%
+#'
 #' @examples
 #' #inspect TX_CURR disaggs
 #' df_mer %>%

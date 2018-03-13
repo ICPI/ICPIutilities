@@ -8,6 +8,7 @@
 #' @param save_rds save the Fact View as an Rds file, default = TRUE
 #' @param remove_txt should the txt file be removed, default = FALSE
 #'
+#' @importFrom dplyr %>%
 #' @examples
 #'
 #'#convert Q4 clean OUxIM file from txt to Rds

@@ -9,6 +9,8 @@
 #' @param report_folder_path file path to the parent folder?
 #' @param report_start_year what is the start year of the COP Matrix Report, default's to 2014
 #'
+#' @importFrom dplyr %>%
+#'
 #' @examples
 #' clean up names
 #' df_psnu_im <- rename_official(df_psnu_im, "~/Documents/")
