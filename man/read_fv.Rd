@@ -4,7 +4,7 @@
 \alias{read_fv}
 \title{Import Fact View Dataset .txt into R and covert to .rds}
 \usage{
-read_fv(file, path = "~/ICPI/Data/", tolower = TRUE, save_rds = TRUE,
+read_fv(file, path = "~/ICPI/Data/", to_lower = TRUE, save_rds = TRUE,
   remove_txt = FALSE)
 }
 \arguments{
@@ -12,7 +12,7 @@ read_fv(file, path = "~/ICPI/Data/", tolower = TRUE, save_rds = TRUE,
 
 \item{path}{file path to the parent folder, default = "~/ICPI/Data/"}
 
-\item{tolower}{do you want to convert all names to lower case, default = TRUE}
+\item{to_lower}{do you want to convert all names to lower case, default = TRUE}
 
 \item{save_rds}{save the Fact View as an Rds file, default = TRUE}
 

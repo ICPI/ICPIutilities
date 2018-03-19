@@ -31,7 +31,7 @@ compair <- function(new_file, orig_file, folderpath){
   df_orig <- import_pairs(folderpath, orig_file, "orig")
   df_new <- import_pairs(folderpath, new_file, "new")
   df_full <- dplyr::full_join(df_orig, df_new)
-  df_full <- dplyr::mutate(df_full, to_add = if_else(is.na(orig), "ADD", ""))
+  df_full <- dplyr::mutate(df_full, to_add = ifelse(is.na(orig), "ADD", ""))
   readr::write_csv(df_full, file.path(folderpath,"pairstoadd.csv"), na= "")
 }
 
