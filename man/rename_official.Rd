@@ -20,6 +20,6 @@ Some mechanisms and partners are recorded in FACTSInfo with multiple names over 
 In order to run this function, you *MUST* have already downloaded a Standard COP Matrix Report from FACTSInfo. Instructures here - https://gist.github.com/achafetz/2657385467425a3aa1433716edfd322a
 }
 \examples{
-clean up names
-df_psnu_im <- rename_official(df_psnu_im, "~/Documents/")
+\dontrun{
+df_psnu_im <- rename_official(df_psnu_im, "~/Documents/") }
 }

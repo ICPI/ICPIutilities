@@ -27,7 +27,8 @@ inspect(df, ind, group_var = c("standardizeddisaggregate"), disagg = NULL,
 
 \item{order_on}{what variable to sort on (descending)}
 
-\item{clean}{knitr table (TRUE) or tibble (FALSE) - set clean = FALSE if creating a data frame}
+\item{clean}{knitr table (TRUE) or tibble (FALSE) -
+set clean = FALSE if creating a data frame}
 }
 \value{
 aggregated data table
@@ -36,11 +37,15 @@ aggregated data table
 Investigate MER disaggs
 }
 \examples{
-#inspect TX_CURR disaggs
-df_mer \%>\%
-  inspect("TX_CURR")
+\dontrun{#inspect TX_CURR disaggs
+df_mer \%>\% inspect("TX_CURR")
+
 #inspect TX_CURR by funding agency in Kenya
 df_mer \%>\%
-inspect("TX_CURR", group_var = c("fundingagency"), disagg = "MostCompleteAgeDisagg", pd = c(fy2016apr, fy2017apr), order_on = fy2017apr, ou = "Kenya")
+inspect("TX_CURR", group_var = c("fundingagency"),
+disagg = "MostCompleteAgeDisagg",
+pd = c(fy2016apr, fy2017apr),
+order_on = fy2017apr,
+ou = "Kenya")}
 
 }
