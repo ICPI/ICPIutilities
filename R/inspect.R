@@ -9,19 +9,24 @@
 #' @param nd numerator (N) or denominator (D) (filter)
 #' @param order_on what variable to sort on (descending)
 #' @param disagg standardized disaggregate to filter on
-#' @param clean knitr table (TRUE) or tibble (FALSE) - set clean = FALSE if creating a data frame
+#' @param clean knitr table (TRUE) or tibble (FALSE) -
+#'  set clean = FALSE if creating a data frame
 #'
 #' @return aggregated data table
 #'
 #' @importFrom dplyr %>%
 #'
-#' @examples
-#' #inspect TX_CURR disaggs
-#' df_mer %>%
-#'   inspect("TX_CURR")
-#' #inspect TX_CURR by funding agency in Kenya
-#' df_mer %>%
-#' inspect("TX_CURR", group_var = c("fundingagency"), disagg = "MostCompleteAgeDisagg", pd = c(fy2016apr, fy2017apr), order_on = fy2017apr, ou = "Kenya")
+##' @examples
+##' \dontrun{#inspect TX_CURR disaggs
+##' df_mer %>% inspect("TX_CURR")
+##'
+##' #inspect TX_CURR by funding agency in Kenya
+##' df_mer %>%
+##' inspect("TX_CURR", group_var = c("fundingagency"),
+##' disagg = "MostCompleteAgeDisagg",
+##' pd = c(fy2016apr, fy2017apr),
+##' order_on = fy2017apr,
+##' ou = "Kenya")}
 #'
 
 inspect <- function(df, ind, group_var = c("standardizeddisaggregate"), disagg = NULL, pd = fy2017apr, ou = NULL, agency = NULL, nd = NULL, order_on = NULL, clean = TRUE){

@@ -23,9 +23,11 @@ This funciton imports a stored ICPI Fact View Dataset and coverts it from a .txt
 }
 \examples{
 
-#convert Q4 clean OUxIM file from txt to Rds
- df_fv_psnu <- read_fv("ICPI_FactView_PSNU_20171222_v2_1.txt", path = "~/Downloads/")
+\dontrun{#convert Q4 clean OUxIM file from txt to Rds
+ df_fv_psnu <- read_fv("ICPI_FactView_PSNU_20171222_v2_1.txt",
+ path = "~/Downloads/")
 #import Q1 PSNU
- df_pnsu <-  read_fv("ICPI_FactView_PSNU_20180215_v1_3.txt", path = "~/Downloads/", save_rds = FALSE)
+ df_pnsu <-  read_fv("ICPI_FactView_PSNU_20180215_v1_3.txt",
+ path = "~/Downloads/", save_rds = FALSE)}
 
 }

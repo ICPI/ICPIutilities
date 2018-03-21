@@ -12,8 +12,8 @@
 #' @importFrom dplyr %>%
 #'
 #' @examples
-#' clean up names
-#' df_psnu_im <- rename_official(df_psnu_im, "~/Documents/")
+#' \dontrun{
+#' df_psnu_im <- rename_official(df_psnu_im, "~/Documents/") }
 
 rename_official <- function(df, report_folder_path, report_start_year = 2014) {
   #check that mechanism exists in Fact View before starting (OUxIM or PSNUxIM, not PSNU)
