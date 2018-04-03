@@ -1,26 +1,26 @@
 
 
-#' Import Fact View Dataset .txt into R and covert to .rds
+#' Import ICPI MER Structured Datasets .txt into R and covert to .rds
 #'
-#' This funciton imports a stored ICPI Fact View Dataset and coverts it from a .txt to an .Rds to significantly limit file size
+#' This funciton imports a stored ICPI MER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
 #' @export
-#' @param file What is the file name, eg ICPI_FactView_PSNU_20171222_v2_1.txt?
+#' @param file What is the file name, eg ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt?
 #' @param path file path to the parent folder, default = "~/ICPI/Data/"
 #' @param to_lower do you want to convert all names to lower case, default = TRUE
-#' @param save_rds save the Fact View as an Rds file, default = TRUE
+#' @param save_rds save the Structured Dataset as an Rds file, default = TRUE
 #' @param remove_txt should the txt file be removed, default = FALSE
 #'
 #' @importFrom dplyr %>%
 #' @examples
 #'
 #'\dontrun{#convert Q4 clean OUxIM file from txt to Rds
-#'  df_fv_psnu <- read_fv("ICPI_FactView_PSNU_20171222_v2_1.txt",
+#'  df_psnu <- read_msd("ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt",
 #'  path = "~/Downloads/")
 #'#import Q1 PSNU
-#'  df_pnsu <-  read_fv("ICPI_FactView_PSNU_20180215_v1_3.txt",
+#'  df_pnsu <-  read_msd("ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt",
 #'  path = "~/Downloads/", save_rds = FALSE)}
 #'
-read_fv <-
+read_msd <-
   function(file,
            path = "~/ICPI/Data/",
            to_lower = TRUE,
