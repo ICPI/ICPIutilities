@@ -7,7 +7,7 @@
 #'
 #' @param df identify the FactView data frame to clean
 #' @param report_folder_path file path to the parent folder?
-#' @param report_start_year what is the start year of the COP Matrix Report, default's to 2014
+#' @param report_start_year what is the start year of the COP Matrix Report, default's to 2016
 #'
 #' @importFrom dplyr %>%
 #'
@@ -15,7 +15,7 @@
 #' \dontrun{
 #' df_psnu_im <- rename_official(df_psnu_im, "~/Documents/") }
 
-rename_official <- function(df, report_folder_path, report_start_year = 2014) {
+rename_official <- function(df, report_folder_path, report_start_year = 2016) {
   #check that mechanism exists in Fact View before starting (OUxIM or PSNUxIM, not PSNU)
   if("mechanismid" %in% names(df) == FALSE) {
     stop('This dataset does not have mechanisms. Make sure it is OUxIM or PSNUxIM')

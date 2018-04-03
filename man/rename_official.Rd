@@ -4,14 +4,14 @@
 \alias{rename_official}
 \title{Cleanup Mechanism and Partner Names to their Official Names}
 \usage{
-rename_official(df, report_folder_path, report_start_year = 2014)
+rename_official(df, report_folder_path, report_start_year = 2016)
 }
 \arguments{
 \item{df}{identify the FactView data frame to clean}
 
 \item{report_folder_path}{file path to the parent folder?}
 
-\item{report_start_year}{what is the start year of the COP Matrix Report, default's to 2014}
+\item{report_start_year}{what is the start year of the COP Matrix Report, default's to 2016}
 }
 \description{
 Some mechanisms and partners are recorded in FACTSInfo with multiple names over different time period. This function replaces all partner and mechanism names the most recent name for each mechanism ID from a FACTSInfo COP Matrix Report.
