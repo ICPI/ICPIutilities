@@ -11,6 +11,8 @@
 #'
 #' @importFrom dplyr %>%
 #'
+#' @export
+#'
 #' @examples
 #' \dontrun{
 #' df_psnu_im <- rename_official(df_psnu_im, "~/Documents/") }

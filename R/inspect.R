@@ -14,6 +14,8 @@
 #'
 #' @return aggregated data table
 #'
+#' @export
+#'
 #' @importFrom dplyr %>%
 #'
 ##' @examples

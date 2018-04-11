@@ -14,6 +14,7 @@
 #' @param palette which color palette to pull in (lower case, last word), Default = "woods"
 #'
 #' @importFrom dplyr %>%
+#' @export
 #'
 #' @examples
 #' \dontrun{
