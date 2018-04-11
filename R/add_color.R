@@ -1,4 +1,4 @@
-#' Add vector of ICPI colors
+#' Add ICPI colors as Vector
 #'
 #' @description The ICPI color palettes can be imported as hex vectors into R. To do so, you can use the `add_colors()` function to extract from Github.
 #'

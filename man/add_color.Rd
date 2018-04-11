@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_color.R
 \name{add_color}
 \alias{add_color}
-\title{Add vector of ICPI colors}
+\title{Add ICPI colors as Vector}
 \usage{
 add_color(palette = "woods")
 }
