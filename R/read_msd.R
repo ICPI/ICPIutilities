@@ -4,8 +4,7 @@
 #'
 #' This funciton imports a stored ICPI MER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
 #' @export
-#' @param file What is the file name, eg ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt?
-#' @param path file path to the parent folder, default = "~/ICPI/Data/"
+#' @param file enter the full path to the MSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"
 #' @param to_lower do you want to convert all names to lower case, default = TRUE
 #' @param save_rds save the Structured Dataset as an Rds file, default = TRUE
 #' @param remove_txt should the txt file be removed, default = FALSE
@@ -13,16 +12,14 @@
 #' @importFrom dplyr %>%
 #' @examples
 #'
-#'\dontrun{#convert Q4 clean OUxIM file from txt to Rds
-#'  df_psnu <- read_msd("ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt",
-#'  path = "~/Downloads/")
-#'#import Q1 PSNU
-#'  df_pnsu <-  read_msd("ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt",
-#'  path = "~/Downloads/", save_rds = FALSE)}
+#'\dontrun{#convert Q1 clean PSNU file from txt to Rds
+#'#read in file for use (without saving as an RDS)
+#'    df_psnu <- read_msd("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt", save_rds = FALSE)
+#'#convert to RDS and delete the original txt file
+#'  read_msd("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt", remove_txt = TRUE)}
 #'
 read_msd <-
   function(file,
-           path = "~/ICPI/Data/",
            to_lower = TRUE,
            save_rds = TRUE,
            remove_txt = FALSE) {
@@ -31,8 +28,8 @@ read_msd <-
       file <- paste0(file, ".txt")
 
     #import
-    df <- readr::read_tsv(file.path(path, file),
-                          guess_max = 500000)
+    df <- readr::read_tsv(file.path(file),
+                          col_types = cols(.default = "c"))
 
     #change mechid to character for ease of use
     if ("MechanismID" %in% names(df))
@@ -45,11 +42,11 @@ read_msd <-
     #save as Rds
     newfile <- stringr::str_replace(file, "txt", "Rds")
     if (save_rds == TRUE)
-      saveRDS(df, file.path(path, newfile))
+      saveRDS(df, newfile)
 
     #remove txt file
     if (remove_txt == TRUE)
-      file.remove(file.path(path, file))
+      file.remove(file)
 
     return(df)
   }
