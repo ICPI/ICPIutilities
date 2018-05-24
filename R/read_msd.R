@@ -31,9 +31,17 @@ read_msd <-
     df <- readr::read_tsv(file.path(file),
                           col_types = cols(.default = "c"))
 
-    #change mechid to character for ease of use
-    if ("MechanismID" %in% names(df))
-      df <- dplyr::mutate(df, MechanismID = as.character(MechanismID))
+    #identify all the value columns (starts with FY)
+    fy_col <- df %>%
+      select(starts_with("FY")) %>%
+      names()
+    #covert any FY to double
+    df <- df %>%
+      dplyr::mutate_at(vars(fy_col), ~ as.double(.))
+
+    #remove N/As now present in the file as of FY18Q2
+    df <- df %>%
+      dplyr::mutate_at(vars(Sex, resultStatus), ~ ifelse(. == "N/A", NA, .))
 
     #rename to lower for ease of use
     if (to_lower == TRUE)
