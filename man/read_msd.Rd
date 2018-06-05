@@ -4,13 +4,10 @@
 \alias{read_msd}
 \title{Import ICPI MER Structured Datasets .txt into R and covert to .rds}
 \usage{
-read_msd(file, path = "~/ICPI/Data/", to_lower = TRUE, save_rds = TRUE,
-  remove_txt = FALSE)
+read_msd(file, to_lower = TRUE, save_rds = TRUE, remove_txt = FALSE)
 }
 \arguments{
-\item{file}{What is the file name, eg ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt?}
-
-\item{path}{file path to the parent folder, default = "~/ICPI/Data/"}
+\item{file}{enter the full path to the MSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"}
 
 \item{to_lower}{do you want to convert all names to lower case, default = TRUE}
 
@@ -23,11 +20,10 @@ This funciton imports a stored ICPI MER Structured Datasets and coverts it from 
 }
 \examples{
 
-\dontrun{#convert Q4 clean OUxIM file from txt to Rds
- df_psnu <- read_msd("ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt",
- path = "~/Downloads/")
-#import Q1 PSNU
- df_pnsu <-  read_msd("ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt",
- path = "~/Downloads/", save_rds = FALSE)}
+\dontrun{#convert Q1 clean PSNU file from txt to Rds
+#read in file for use (without saving as an RDS)
+   df_psnu <- read_msd("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt", save_rds = FALSE)
+#convert to RDS and delete the original txt file
+ read_msd("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt", remove_txt = TRUE)}
 
 }
