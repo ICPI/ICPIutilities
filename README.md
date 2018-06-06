@@ -3,11 +3,11 @@
 This package contains a number of useful functions for creating and/or working with ICPI datasets and products.
 
 Contents
-- Installation
-- Usage
-  - read_msd()
-  - rename_official()
-  - add_color()
+- [Installation](https://github.com/ICPI/ICPIutilities#installation)
+- [Usage](https://github.com/ICPI/ICPIutilities#usage)
+  - [read_msd()](https://github.com/ICPI/ICPIutilities#read_msd)
+  - [rename_official()](https://github.com/ICPI/ICPIutilities#rename_official)
+  - [add_color()](https://github.com/ICPI/ICPIutilities#add_colord)
 
 ### Installation
 While many packages you use daily are on CRAN, additional packages can also be hosted on and installed from GitHub. You'll need to have a package called `devtools` which will then allow you to install the ICPI package.
