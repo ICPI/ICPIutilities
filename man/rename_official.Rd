@@ -4,22 +4,15 @@
 \alias{rename_official}
 \title{Cleanup Mechanism and Partner Names to their Official Names}
 \usage{
-rename_official(df, report_folder_path, report_start_year = 2016)
+rename_official(df)
 }
 \arguments{
-\item{df}{identify the FactView data frame to clean}
-
-\item{report_folder_path}{file path to the parent folder?}
-
-\item{report_start_year}{what is the start year of the COP Matrix Report, default's to 2016}
+\item{df}{identify the MER Structured DataSet to clean}
 }
 \description{
-Some mechanisms and partners are recorded in FACTSInfo with multiple names over different time period. This function replaces all partner and mechanism names the most recent name for each mechanism ID from a FACTSInfo COP Matrix Report.
-}
-\details{
-In order to run this function, you *MUST* have already downloaded a Standard COP Matrix Report from FACTSInfo. Instructures here - https://gist.github.com/achafetz/2657385467425a3aa1433716edfd322a
+Some mechanisms and partners are recorded in FACTSInfo with multiple names over different time period. This function replaces all partner and mechanism names the most recent name for each mechanism ID pulling from a DATIM SQL View.
 }
 \examples{
 \dontrun{
-df_psnu_im <- rename_official(df_psnu_im, "~/Documents/") }
+df_psnu_im <- rename_official(df_psnu_im) }
 }
