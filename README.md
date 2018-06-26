@@ -9,8 +9,8 @@ Contents
 - [Usage](https://github.com/ICPI/ICPIutilities#usage)
   - [read_msd()](https://github.com/ICPI/ICPIutilities#read_msd)
   - [rename_official()](https://github.com/ICPI/ICPIutilities#rename_official)
-  - add_cumulative()
-  - identifypd()
+  - [add_cumulative()](https://github.com/ICPI/ICPIutilities#add_cumulative)
+  - [identifypd()](https://github.com/ICPI/ICPIutilities#identifypd)
   - [add_color()](https://github.com/ICPI/ICPIutilities#add_colord)
 
 ### Installation
