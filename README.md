@@ -9,6 +9,8 @@ Contents
 - [Usage](https://github.com/ICPI/ICPIutilities#usage)
   - [read_msd()](https://github.com/ICPI/ICPIutilities#read_msd)
   - [rename_official()](https://github.com/ICPI/ICPIutilities#rename_official)
+  - add_cumulative()
+  - identifypd()
   - [add_color()](https://github.com/ICPI/ICPIutilities#add_colord)
 
 ### Installation
@@ -54,6 +56,26 @@ Some mechanisms and partners are recorded in FACTSInfo with multiple names as th
 ```
 #replace partner and mechanism names with offical name
   df_ou_im <- rename_official(df_ou_im)
+```
+
+#### add_cumulative()
+
+The MER Structured Datasets contain end of year totals for previous fiscal years, but do not include cumulative/snapshot values prior to Q4. This function identifies the current fiscal year using `identifypd()` and then works to create either a cumulative or snapshot value for each indicator (snapshot indicators include OVC_SERV, TB_PREV,TX_CURR, and TX_TB).
+
+```
+#add cumulative column to dataset
+  df_ou_im <- ICPIutilities::add_cumulative(df_ou_im)
+```
+#### identifypd()
+
+The `identifypd()` function is used within the `add_cumulative()` but can be used outside of it as well. It identifies the current period by pulling the last quarter's column. It has a few options to allow you pull the FY or quarter only, or full variable name. You need to specify the `pd_type` to be returned.
+
+```
+#find current quarter & fy
+  	curr_q  <- currentpd(df_ou_im, "quarter")
+  	curr_fy <- currentpd(df_ou_im, "year")
+  	fy_full <- currentpd(df_ou_im, "full") %>%
+  	           toupper()
 ```
 
 #### add_color()
