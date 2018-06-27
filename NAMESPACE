@@ -2,6 +2,7 @@
 
 export(add_color)
 export(add_cumulative)
+export(combine_netnew)
 export(identifypd)
 export(inspect)
 export(read_msd)
