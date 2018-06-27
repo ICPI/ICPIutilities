@@ -11,6 +11,7 @@ Contents
   - [rename_official()](https://github.com/ICPI/ICPIutilities#rename_official)
   - [add_cumulative()](https://github.com/ICPI/ICPIutilities#add_cumulative)
   - [identifypd()](https://github.com/ICPI/ICPIutilities#identifypd)
+  - [combine_netnew()](https://github.com/ICPI/ICPIutilities#combine_netnew)
   - [add_color()](https://github.com/ICPI/ICPIutilities#add_colord)
 
 ### Installation
@@ -77,6 +78,30 @@ The `identifypd()` function is used within the `add_cumulative()` but can be use
   	fy_full <- currentpd(df_ou_im, "full") %>%
   	           toupper()
 ```
+
+#### combine_netnew()
+
+This function calculates TX_NET_NEW as it is not included in the MER Structured datasets. TX_NET_NEW is calculated by subtracting the current period's TX_CURR from the last period and for targets, it's created off the gap between the target for the current FY and the APR value for the prior year. Note that the current MSD starts in FY17; TX_NET_NEW for Q1 and APR for FY17 will be incorrect/incomplete due to the fact that the function does not have FY16 data to base this off (the solution here would be to merge in FY16 TX_CURR data)
+
+```
+library(tidyverse)
+
+#open current MSD
+  df_psnu_im <- read_rds("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_IM_FY17-18_20180515_v1_1")
+#open archived MSD for FY17Q4 TX_CURR data  
+  df_tx_fy16q4 <- read_rds("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_IM_FY15-16_20180515_v1_1.Rds") %>% 
+    filter(indicator == "TX_CURR") %>% 
+    select(region:implementingmechanismname, indicator:ismcad, fy2016q4) #remove dataelementuid
+
+#join archive data onto current dataset
+  df_psnu_im <- left_join(df_psnu_im, df_tx_fy16q4)
+
+#reorder so FY16Q4 comes before FY17
+  df_psnu_im <- select(df_psnu_imregion:ismcad, fy2016q4, everything())
+#create new new  
+  df_psnu_im <- combine_netnew(df_psnu_im)
+```
+
 
 #### add_color()
 
