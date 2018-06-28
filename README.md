@@ -87,17 +87,27 @@ This function calculates TX_NET_NEW as it is not included in the MER Structured 
 library(tidyverse)
 
 #open current MSD
-  df_psnu_im <- read_rds("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_IM_FY17-18_20180515_v1_1")
+  df_psnu_im <- read_rds("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_IM_FY17-18_20180515_v1_1.Rds")
+  
 #open archived MSD for FY17Q4 TX_CURR data  
-  df_tx_fy16q4 <- read_rds("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_IM_FY15-16_20180515_v1_1.Rds") %>% 
-    filter(indicator == "TX_CURR") %>% 
-    select(region:implementingmechanismname, indicator:ismcad, fy2016q4) #remove dataelementuid
+  df_tx_old <- read_rds("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_IM_FY15-16_20180515_v1_1.Rds") %>% 
+    filter(indicator == "TX_CURR")
+#limit just to just meta data (string vars), excluding partner/mech and dataelementuid info that may lead to misalignment in merge
+  lst_meta <- df_tx_old %>% 
+    select(-c(dataelementuid, primepartner, implementingmechanismname)) %>% 
+    select_if(is.character) %>% 
+    names()
+  df_tx_old <- select(df_tx_old, lst_meta, fy2016q4)
 
 #join archive data onto current dataset
-  df_psnu_im <- left_join(df_psnu_im, df_tx_fy16q4)
+  df_psnu_im <- full_join(df_psnu_im, df_tx_old)
 
 #reorder so FY16Q4 comes before FY17
-  df_psnu_im <- select(df_psnu_imregion:ismcad, fy2016q4, everything())
+  lst_meta <- df_psnu_im %>% 
+    select_if(is.character) %>% 
+    names()
+  df_psnu_im <- select(df_psnu_im, lst_meta, fy2016q4, everything())
+  
 #create new new  
   df_psnu_im <- combine_netnew(df_psnu_im)
 ```
