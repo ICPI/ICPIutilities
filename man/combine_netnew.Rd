@@ -2,7 +2,7 @@
 % Please edit documentation in R/combine_netnew.R
 \name{combine_netnew}
 \alias{combine_netnew}
-\title{Add NET_NEW to dataset}
+\title{Add NET_NEW to dataset (orginally in achafetz/PartnerProgress)}
 \usage{
 combine_netnew(df)
 }
@@ -10,7 +10,7 @@ combine_netnew(df)
 \item{df}{dataframe to create net new based off of and append onto}
 }
 \description{
-Add NET_NEW to dataset
+Add NET_NEW to dataset (orginally in achafetz/PartnerProgress)
 }
 \examples{
 \dontrun{
