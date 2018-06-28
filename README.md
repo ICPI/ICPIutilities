@@ -92,9 +92,9 @@ library(tidyverse)
 #open archived MSD for FY17Q4 TX_CURR data  
   df_tx_old <- read_rds("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_IM_FY15-16_20180515_v1_1.Rds") %>% 
     filter(indicator == "TX_CURR")
-#limit just to just meta data (string vars), excluding partner/mech and dataelementuid info that may lead to misalignment in merge
+#limit just to just meta data (string vars), excluding partner/mech info that may lead to misalignment in merge
   lst_meta <- df_tx_old %>% 
-    select(-c(dataelementuid, categoryoptionuid, primepartner, implementingmechanismname)) %>% 
+    select(-c(primepartner, implementingmechanismname)) %>% 
     select_if(is.character) %>% 
     names()
   df_tx_old <- select(df_tx_old, lst_meta, fy2016q4)
