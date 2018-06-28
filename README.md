@@ -94,7 +94,7 @@ library(tidyverse)
     filter(indicator == "TX_CURR")
 #limit just to just meta data (string vars), excluding partner/mech and dataelementuid info that may lead to misalignment in merge
   lst_meta <- df_tx_old %>% 
-    select(-c(dataelementuid, primepartner, implementingmechanismname)) %>% 
+    select(-c(dataelementuid, categoryoptionuid, primepartner, implementingmechanismname)) %>% 
     select_if(is.character) %>% 
     names()
   df_tx_old <- select(df_tx_old, lst_meta, fy2016q4)
