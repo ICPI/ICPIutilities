@@ -46,4 +46,5 @@ rename_official <- function(df) {
   #reapply original variable casing type
     names(df) <- headers_orig
 
+  return(df)
 }
