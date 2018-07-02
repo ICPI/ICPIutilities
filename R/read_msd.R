@@ -28,8 +28,7 @@ read_msd <-
       file <- paste0(file, ".txt")
 
     #import
-    df <- readr::read_tsv(file.path(file),
-                          col_types = readr::cols(.default = "c"))
+    df <- data.table::fread(file, sep = "\t", colClasses = "character")
 
     #identify all the value columns (starts with FY)
     fy_col <- df %>%
