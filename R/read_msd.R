@@ -29,6 +29,7 @@ read_msd <-
 
     #import
     df <- data.table::fread(file, sep = "\t", colClasses = "character")
+    df <- tibble::as_tibble(df)
 
     #identify all the value columns (starts with FY)
     fy_col <- df %>%
@@ -40,7 +41,7 @@ read_msd <-
 
     #remove N/As now present in the file as of FY18Q2
     df <- df %>%
-      dplyr::mutate_at(dplyr::vars(Sex, resultStatus), ~ ifelse(. == "N/A", NA, .))
+      dplyr::mutate_all(~ ifelse(. == "", NA, .))
 
     #rename to lower for ease of use
     if (to_lower == TRUE)
