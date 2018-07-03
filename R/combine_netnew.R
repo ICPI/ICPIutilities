@@ -51,15 +51,13 @@ combine_netnew <- function(df){
 
   #join all net new pds/targets/apr together
     join_vars <- df %>%
-      dplyr::select(-dataelementuid, -categoryoptioncombouid, -dplyr::starts_with("fy")) %>%
+      dplyr::select(-dplyr::starts_with("fy")) %>%
       names()
     df_combo <- dplyr::full_join(df_nn_result, df_nn_target, by = join_vars)
     df_combo <- dplyr::full_join(df_combo, df_nn_apr, by = join_vars)
 
   #add dropped values back in and reoder to append onto original dataframe
     df_combo <- df_combo %>%
-      dplyr::mutate(dataelementuid = NA,
-                    categoryoptioncombouid = NA) %>%
       dplyr::select(msd_order)
 
   #append TX_NET_NEW onto main dataframe
@@ -100,7 +98,7 @@ gen_netnew <- function(df, type = "result"){
   #aggregate so only one line per mech/geo/disagg
     df_nn <- df_nn %>%
       #remove uids that different between targets/results and no need for apr value
-      dplyr::select(-dataelementuid, -categoryoptioncombouid, -dplyr::ends_with("apr")) %>%
+      dplyr::select(-dplyr::ends_with("apr")) %>%
       #aggregate all quartertly data
       dplyr::group_by_if(is.character) %>%
       dplyr::summarize_at(dplyr::vars(dplyr::starts_with("fy2")), ~ sum(., na.rm = TRUE)) %>%
