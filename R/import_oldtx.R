@@ -56,7 +56,7 @@ import_oldtx <- function(df, archived_msd_folderpath){
     df_tx_old <- dplyr::select(df_tx_old, lst_meta, fy2016q4)
     
   #rename offical
-    #df_tx_old <- ICPIutilities::rename_official(df_tx_old)
+    df_tx_old <- ICPIutilities::rename_official(df_tx_old)
     
   #aggregate 
     df_tx_old <- df_tx_old %>% 
