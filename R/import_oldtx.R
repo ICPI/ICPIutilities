@@ -3,26 +3,27 @@
 #'
 #' @param df dataframe to add archived data onto
 #' @param archived_msd_folderpath folder path where archived file with FY15-16 data sits
-#'
+#' 
+#' 
 #' @importFrom dplyr %>%
 
 import_oldtx <- function(df, archived_msd_filepath){
   
   #determine MSD type - OU_IM, PSNU, or PSNU_IM
     #a. collect header names
-    headers <- df_ouxim %>% 
+    headers <- df %>% 
       dplyr::rename_all(~ tolower(.)) %>% 
       names()
     #b. classify
     msd_type <- dplyr::case_when(
-      !("mechanismid" %in% test) ~ "PSNU",
-      !("psnu" %in% test)        ~ "OU_IM",
+      !("mechanismid" %in% headers) ~ "PSNU",
+      !("psnu" %in% headers)        ~ "OU_IM",
       TRUE                       ~ "PSNU_IM"
     )
   
   #check if archive rds/txt file exists
-    msdfile_rds <- Sys.glob(file.path(folderpath, paste0("*MER_Structured_Dataset_", msd_type, "_FY15-16*.Rds")))
-    msdfile_txt <- Sys.glob(file.path(folderpath, paste0("*MER_Structured_Dataset_", msd_type, "_FY15-16*.txt")))
+    msdfile_rds <- Sys.glob(file.path(archived_msd_filepath, paste0("*MER_Structured_Dataset_", msd_type, "_FY15-16*.Rds")))
+    msdfile_txt <- Sys.glob(file.path(archived_msd_filepath, paste0("*MER_Structured_Dataset_", msd_type, "_FY15-16*.txt")))
     if(length(msdfile_rds) == 0 && length(msdfile_txt) == 0){
       stop("No archived file exists in specified folder to append onto current dataframe")
     }
@@ -55,7 +56,7 @@ import_oldtx <- function(df, archived_msd_filepath){
     df_tx_old <- dplyr::select(df_tx_old, lst_meta, fy2016q4)
     
   #rename offical
-    df_tx_old <- ICPIutilities::rename_official(df_tx_old)
+    #df_tx_old <- ICPIutilities::rename_official(df_tx_old)
     
   #aggregate 
     df_tx_old <- df_tx_old %>% 
@@ -77,7 +78,7 @@ import_oldtx <- function(df, archived_msd_filepath){
     names(df_merge) <- c(headers_meta, "fy2016q4", header_vals)
     
   #change old q4 to upper case if necessary
-    if("FY2017Q4" %in% names(df_merge)){
+    if("FY2017Q4" %in% names(df)){
       df_merge <- dplyr::rename(df_merge, FY2017Q4 = fy2016q4)
     }
     
