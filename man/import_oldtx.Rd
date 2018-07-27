@@ -4,7 +4,7 @@
 \alias{import_oldtx}
 \title{Import FY16Q4 data for TX_NET_NEW Calculation}
 \usage{
-import_oldtx(df, archived_msd_filepath)
+import_oldtx(df, archived_msd_folderpath)
 }
 \arguments{
 \item{df}{dataframe to add archived data onto}
