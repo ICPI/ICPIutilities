@@ -25,7 +25,8 @@ rename_official <- function(df) {
     df <- dplyr::rename_all(df, ~ tolower(.))
 
   #access current mechanism list posted publically to DATIM
-    mech_official <- readr::read_csv("https://www.datim.org/api/sqlViews/fgUtV6e9YIX/data.csv")
+    mech_official <- readr::read_csv("https://www.datim.org/api/sqlViews/fgUtV6e9YIX/data.csv",
+                                     col_types = readr::cols(.default = "c"))
 
   #rename variables to match MSD and remove mechid from mech name
     mech_official <- mech_official %>%
