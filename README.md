@@ -81,37 +81,20 @@ The `identifypd()` function is used within the `add_cumulative()` but can be use
 
 #### combine_netnew()
 
-This function calculates TX_NET_NEW as it is not included in the MER Structured datasets. TX_NET_NEW is calculated by subtracting the current period's TX_CURR from the last period and for targets, it's created off the gap between the target for the current FY and the APR value for the prior year. Note that the current MSD starts in FY17; TX_NET_NEW for Q1 and APR for FY17 will be incorrect/incomplete due to the fact that the function does not have FY16 data to base this off (the solution here would be to merge in FY16 TX_CURR data)
+This function calculates TX_NET_NEW as it is not included in the MER Structured datasets. TX_NET_NEW is calculated by subtracting the current period's TX_CURR from the last period and for targets, it's created off the gap between the target for the current FY and the APR value for the prior year. Note that the current MSD starts in FY17; TX_NET_NEW for Q1 and APR for FY17 will be incorrect/incomplete due to the fact that the function does not have FY16 data to base this off. To solve this issue, you will need to download the FY15-16 Archived MSD file and then specify its location as an argument in the `combine_netnew()` function.
 
 ```
 library(tidyverse)
 
 #open current MSD
   df_psnu_im <- read_rds("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_IM_FY17-18_20180515_v1_1.Rds")
-  
-#open archived MSD for FY17Q4 TX_CURR data  
-  df_tx_old <- read_rds("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_IM_FY15-16_20180515_v1_1.Rds") %>% 
-    filter(indicator == "TX_CURR")
-#limit just to just meta data (string vars), excluding partner/mech info that may lead to misalignment in merge
-  lst_meta <- df_tx_old %>% 
-    select(-c(primepartner, implementingmechanismname)) %>% 
-    select_if(is.character) %>% 
-    names()
-  df_tx_old <- select(df_tx_old, lst_meta, fy2016q4)
 
-#join archive data onto current dataset
-  df_psnu_im <- full_join(df_psnu_im, df_tx_old)
-
-#reorder so FY16Q4 comes before FY17
-  lst_meta <- df_psnu_im %>% 
-    select_if(is.character) %>% 
-    names()
-  df_psnu_im <- select(df_psnu_im, lst_meta, fy2016q4, everything())
-  
-#create new new  
+#create net new (not including FY16Q4, making net new for FY17Q1 = 0 and throwing off the cumulative net new)
   df_psnu_im <- combine_netnew(df_psnu_im)
-```
 
+#create net new with FY15-16 archived MSD file
+  df_psnu_im <- combine_netnew(df_psnu_im, archived_msd_filepath = "~/ICPI/Data")
+```
 
 #### add_color()
 
