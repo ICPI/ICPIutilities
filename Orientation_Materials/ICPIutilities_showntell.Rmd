@@ -1,0 +1,70 @@
+---
+title: "DIV Show and Tell: ICPIutilities"
+author: "AHC"
+date: "July 27, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#load dependencies
+library(tidyverse)
+library(fs)
+```
+
+## What is a function?
+
+blah blah
+
+```{r b_fcn}
+#basic function
+  b_fcn <- function(x){
+    x + 1
+  }
+
+#test function
+  b_fcn(10)
+
+```
+
+
+## read_msd()
+
+- regular import (look at columns)
+- file size saving
+
+```{r normal read in}
+
+#Import the dataset as you regularly would
+  
+  fileurl <- "https://raw.githubusercontent.com/ICPI/TrainingDataset/master/Output/MER_Structured_TRAINING_Dataset_PSNU_IM_FY17-18_20180622_v2_1.txt"
+  df_training <- read_tsv(fileurl)
+
+#take a look at the variable types
+glimpse(df_training)
+
+
+#create a temporary directory to work in
+  tmp <- dir_create(file_temp())
+  
+#save
+  localfile <- file.path(tmp, "FY18trainingdataset.txt")
+  write_tsv(df_training, localfile, na = "")
+
+#size (GB)
+  (f1_size <- paste(round(file.size(localfile) / 1000000, 2), "GB"))
+
+
+df_training2 <- ICPIutilities::read_msd(localfile)
+
+#size (GB)
+  localfile2 <- str_replace(localfile, "txt", "Rds")
+  (f2_size <- paste(round(file.size(localfile2) / 1000000, 2), "GB"))
+
+  file_delete(localfile)
+
+  dir_delete(tmp)
+```
+
+
