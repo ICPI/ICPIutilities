@@ -26,10 +26,11 @@
 add_color <- function(palette = "woods"){
 
   #identify github link where color palette is stored
-    url <- "https://raw.githubusercontent.com/ICPI/DIV/master/Documents/Color/ICPI_Color_Palette.csv"
+    url <- "https://raw.githubusercontent.com/ICPI/DIV/master/Color_Palettes/ICPI_Color_Palette.csv"
 
   #import color palette from github
-    df_import <- readr::read_csv(url)
+    df_import <- readr::read_csv(url,
+                                 col_types = readr::cols(.default = "c"))
 
   #reshape so each column has the palette and its ordered hex colors
     df_limited <- df_import %>%

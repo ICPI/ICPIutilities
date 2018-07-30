@@ -1,0 +1,304 @@
+---
+title: "DIV Show and Tell: ICPIutilities"
+author: "A.Chafetz"
+date: "August 2, 2018"
+output: github_document
+---
+
+## Setup
+
+Before getting started, you'll want to load up the dependences that this script relies upon. If you don't have any of the functions installed, take a minute to install them using the `install.packages()` function.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#install any missing packages
+#  install.packages(c("tidyverse", "fs", "devtools"))
+
+#load dependencies
+  library(tidyverse)
+  library(fs)
+  library(devtools)
+```
+
+## What is a function?
+
+If you've been working in R at all, you've encountered lots and lots of functions. Functions are segements of code in which the user provides inputs or arguments, such as providing a dataframe, and  typically have one purpose, i.e. perform a single operation.. For instance, a function you likely have performed in the past is to read in a dataset, using the function `read.csv()`. 
+
+In addition to using functions that already exist, users can create their own. Below is an example of a user created function. The function name is `b_fcn()`, which is defined like any other object in R. The user then specifies this is going to be function by writing out `function()` and identifying the arguments which the user is going to have to enter. The meat of the function is contained between the two curly bracket and defines what the function is doing.
+
+Let's start out by running the function so it's stored in the environment and can be used later.
+
+```{r basic fcn}
+#basic function
+  b_fcn <- function(x){
+    x + 1
+  }
+
+#test function
+  b_fcn(10)
+  
+```
+
+```{r clean up}
+#remove function 
+  rm(b_fcn)
+```
+
+## ICPIutilities
+
+A package in R is simply just a collection of functions. Unlike programs like Excel or Stata that have most of the functionality of the platform built in, R is open sources and relies heavily on user created functions and packages. RStudio curates a set of packages that are extremely useful, especially if you're getting started with R, called the `tidyverse`, which includes packages such as `dplyr()`, `lubridate()`, and `ggplot()`. 
+
+In my work with R, I've found that contantly return back to the same bits of code depesite work on different projects when I'm working with the MER Structured Datasets. To help my future self and others in the PEPFAR space who are working with this dataset, I have created a package that contains a number of useful function. 
+
+Let's start by installing the package and then we get dive into how to use it. Since this package is hosted on GitHub, you'll have to install it using the `devtools::install_github()` function rather than the normal `install.packages()` like you would do if it were installed on CRAN.
+
+```{r githubinstall}
+#install/check for updates  
+  install_github("ICPI/ICPIutilities") 
+  library(ICPIutilities)
+```
+
+If you naviage to your packages window and click on `ICPIutilities`, you will see all the functions contained within the package.
+
+## read_msd()
+
+The first function that is most useful to getting you going with using the MER Structured Dataset (MSD) in R is by reading it in. Today we'll be working with the ICPI training dataset that is stored on GitHub. Let's start by importing this via `readr::read_tsv()` and take a look at the columns.
+
+- regular import (look at columns)
+- file size saving
+- lower case or not
+
+```{r normal import}
+
+#file location on GitHub
+  fileurl <- "https://raw.githubusercontent.com/ICPI/TrainingDataset/master/Output/MER_Structured_TRAINING_Dataset_PSNU_IM_FY17-18_20180622_v2_1.txt"
+#save
+  df_training_orig <- read_tsv(fileurl)
+
+#take a look at the variable types
+  glimpse(df_training_orig)
+```
+
+What are some things that you noticed by importing the dataset normally through `readr::read_tsv()`?
+
+Let's save the training dataset locally and then open that using the `ICPIutilities::read_msd()`.
+
+```{r save locally}
+#create a temporary directory to work in
+  tmp <- dir_create(file_temp())
+  
+#save
+  localfile_txt <- file.path(tmp, "FY18trainingdataset.txt")
+  write_tsv(df_training_orig, localfile_txt, na = "")
+```
+
+Let's try importing the dataset using the ICPIulitities function.
+
+```{r read_msd}
+#import with read_rds
+  df_training <- read_msd(localfile_txt)
+#take a look at the variable types
+  glimpse(df_training)
+```
+
+In addition to reading in all of the columns correctly, the function also saves the dataset in a .Rds format. This format is proprietary to R, but it provides the advantage of significantlly compressing the file size of the dasasets we're working with locally.
+
+```{r file size}
+#size (GB)
+  (txt_size <- paste("txt file =", round(file.size(localfile_txt) / 1000000, 1), "GB"))
+
+#size (GB)
+  localfile_rds <- str_replace(localfile_txt, "txt", "Rds")
+  (rds_size <- paste("rds file =", round(file.size(localfile_rds) / 1000000, 1), "GB"))
+  
+  dir_delete(tmp)
+  
+  rm(df_training_orig, txt_size, rds_size, fileurl, localfile_txt, localfile_rds, tmp)
+```
+
+
+## rename_official()
+
+Usually after importing the dataset, my next task is cleaning up the mechanism and partner names. Have a look at the current set of mechanisms. There are differences possible between partner names and mechanism names over time, but the mechanism id is unique.
+
+```{r gen dataset, eval=FALSE, include=FALSE}
+
+# #import OUxIM file
+#   folderpath <- "~/ICPI/Data/"
+#   read_rds(Sys.glob(paste0(folderpath, "MER_Structured_Dataset_OU_IM_FY*.Rds"))) %>% 
+#   #remove dedup mechanisms
+#   filter(!mechanismid %in% c("00000", "00001")) %>% 
+#   #keep unique list of mechanism and their meta data
+#   distinct(operatingunit, primepartner, mechanismid, implementingmechanismname) %>% 
+#   #reorder columns
+#   select(operatingunit, mechanismid, primepartner, implementingmechanismname)
+
+```
+
+```{r distinct mechanisms}
+#import
+  fileurl <- "https://raw.githubusercontent.com/ICPI/ICPIutilities/training/Orientation_Materials/FY18Q2_mechanism_list.csv"
+  df_mechs <- read_csv(fileurl, col_types = cols(.default = "c"))
+
+#how many distinct mechanism & partner names are there?
+  (n <- nrow(df_mechs))
+#how many distinct mechanism ids are there?
+  (n_mechs <- df_mechs %>% 
+    distinct(mechanismid) %>% 
+    nrow())
+```
+
+So it appears that there are `r toString(n)` combinations, but only `r toString(n_mechs)` distinct mechanims. Let's look at what's going on.
+
+```{r inspect duplicates}
+
+#how many & which mechanism are duplicates?
+  df_mechs %>% 
+    count(mechanismid, sort = TRUE) %>% 
+    filter(n > 1) 
+
+#a quick look at some examples
+  (dups <- df_mechs %>% 
+    group_by(mechanismid) %>% 
+    mutate(obs = n()) %>% 
+    ungroup() %>% 
+    arrange(obs, mechanismid) %>% 
+    filter(obs > 1))
+    
+```
+
+To solve this issue of different names associated with each mechanism id, we can use an API pull from DATIM's public data to determine which set of names is currently in use, i.e. the latest in FACTSInfo, and replace all the names in the dataset with theses.
+
+Inspec the help file of `rename_official()` and then use it to fix the dataset
+
+```{r rename_official}
+#read help file
+  ?rename_official
+
+#replace the outdated names
+  dups %>% 
+    rename_official()
+  
+  rm(fileurl, n, n_mechs, df_mechs, dups)
+```
+
+
+## add_cumulative()
+
+Another useful function that I use in most projects is a cumulative or year to date indicator. This process can be done manually but then requires updating every quarter when you add new variables onto the dataset, i.e. a new quarter.
+
+Take a minute or two to write out how you would calculate a cumulative variable.
+- write out a formula that creates a YTD variable
+- difficult because some are quarterly others are snapshot
+
+```{r add_cumulative}
+
+# create a cumulative/YTD indicator
+  df_training <- add_cumulative(df_training)
+```
+
+Let'see how this looks with a couple indicators.
+
+```{r inspect cumulative}
+#function to summarize FY18 results
+  tab_mer <- function(df, ind, ou = "Westeros"){
+    df %>% 
+      filter(operatingunit == ou, indicator == ind,
+             standardizeddisaggregate == "Total Numerator") %>% 
+      group_by(indicator, psnu) %>% 
+      summarise_at(vars(starts_with("fy2018q"), fy2018cum), ~ sum(., na.rm = TRUE)) %>% 
+      ungroup()
+  }
+
+#look at PSNUs in Westeros for a quarterly and snapshot indicator
+  tab_mer(df_training, "TX_NEW")
+  tab_mer(df_training, "TX_CURR")
+```
+
+The great part about this function is that it is time agnostic. If we add in another period, we can see that the calculation is performed without any issue.
+
+```{r time agnostic}
+#function agnostic to time period
+  df_training %>% 
+    select(-fy2018cum) %>% 
+    mutate(fy2018q3 = round(fy2018q2 * 1.25, 0)) %>% 
+    add_cumulative() %>% 
+    tab_mer("TX_NEW")
+```
+## combine_netnew
+
+The calculation for TX_NET_NEW should be relatively straight forward, but it's made cumbersome due to the fact that each period is its own indicator and the calculations are not uniform (i.e. results/apr/targets require different calculations). Let's add NET NEW to the datasets.
+
+```{r netnew attempt, eval=FALSE, include=FALSE}
+
+  df_training <- combine_netnew(df_training)
+
+```
+
+The functions spits back an error here since it doesn't know how to handle the cumulative value we added with the last function. This issue is likely a bug I can work out in the future but I wanted to demonstrate the error message. If you think about it though, the logical flow should be to add net new on before you create a cumulative value. 
+
+What is going on behind the scenes to make this funciton work is that it's breaking the dataframe into multiple long dataframes (where all the periods and their values share two columns, period and value) and each dataframe is then broken out by results vs targets vs APR values to deal with each seperately.
+
+```{r netnew add}
+#reattempt by removing the cumulative indicator before adding it back on
+ df_training <- df_training %>% 
+    select(-fy2018cum) %>% 
+    combine_netnew() %>% 
+    add_cumulative()
+```
+
+Let's test it to see if the function works. Anything we should note here?
+
+```{r net new test}
+
+#check to see if TX_NET_NEW calculated correctly
+    df_training %>% 
+      filter(operatingunit == "Westeros", indicator %in% c("TX_CURR", "TX_NET_NEW"),
+             standardizeddisaggregate == "Total Numerator") %>% 
+      group_by(operatingunit, indicator) %>% 
+      summarise_if(is.numeric, ~ sum(., na.rm = TRUE)) %>% 
+      ungroup() %>% 
+      gather(pd, val, -operatingunit, -indicator, factor_key = TRUE) %>% 
+      spread(indicator, val)
+
+```
+
+## Other functions
+
+The `ICPIutilities` package has a couple other useful functions. One of them is used to identify the current period and is especially useful in the `add_cumulative` function. 
+
+```{r other}
+
+identifypd(df_training)
+?identifypd
+identifypd(df_training, "year")
+identifypd(df_training, "quarter")
+```
+
+This function can have broader application in other functions, allowing the function to be more automated.
+
+```{r identifypd in fcn}
+  track <- function(df, ind, ou = "Westeros"){
+    prior_apr <- paste0("fy",identifypd(df_training, "year") - 1, "apr")
+    curr_cum <- paste0("fy",identifypd(df_training, "year"), "cum")
+    curr_targets <- paste0("fy",identifypd(df_training, "year"), "_targets")
+  
+    df %>% 
+      filter(operatingunit == "Westeros", indicator == ind,
+             standardizeddisaggregate == "Total Numerator") %>% 
+      group_by(indicator, psnu) %>% 
+      summarise_at(vars(prior_apr, curr_targets, curr_cum), ~ sum(., na.rm = TRUE)) %>% 
+      ungroup()
+  }
+  
+  track(df_training, "TX_NEW")
+```
+
+The last function included in the package pulls the hex colors from the ICPI color palette into R to use when graphing.
+
+```{r color}
+
+  #tidepools <- add_color("tidepools")
+```
+
