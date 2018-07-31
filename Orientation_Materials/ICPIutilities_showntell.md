@@ -8,10 +8,34 @@ Setup
 
 Before getting started, you'll want to load up the dependences that this script relies upon. If you don't have any of the functions installed, take a minute to install them using the `install.packages()` function.
 
+``` r
+#install any missing packages
+#  install.packages(c("tidyverse", "fs", "devtools"))
+
+#load dependencies
+  library(tidyverse)
+```
+
+    ## -- Attaching packages ------------------------------------------------------------------------------------------------------- tidyverse 1.2.1 --
+
+    ## v ggplot2 2.2.1     v purrr   0.2.5
+    ## v tibble  1.4.2     v dplyr   0.7.5
+    ## v tidyr   0.8.1     v stringr 1.3.1
+    ## v readr   1.1.1     v forcats 0.3.0
+
+    ## -- Conflicts ---------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
+  library(fs)
+  library(devtools)
+```
+
 What is a function?
 -------------------
 
-If you've been working in R at all, you've encountered lots and lots of functions. Functions are segements of code in which the user provides inputs or arguments, such as providing a dataframe, and typically have one purpose, i.e. perform a single operation.. For instance, a function you likely have performed in the past is to read in a dataset, using the function `read.csv()`.
+If you've been working in R at all, you've encountered lots and lots of functions. Functions are segements of code in which the user provides inputs or arguments, such as providing a dataframe, and typically have one purpose, i.e. perform a single operation. For instance, a function you likely have performed in the past is to read in a dataset, using the function `read.csv()`.
 
 In addition to using functions that already exist, users can create their own. Below is an example of a user created function. The function name is `b_fcn()`, which is defined like any other object in R. The user then specifies this is going to be function by writing out `function()` and identifying the arguments which the user is going to have to enter. The meat of the function is contained between the two curly bracket and defines what the function is doing.
 
@@ -29,11 +53,6 @@ Let's start out by running the function so it's stored in the environment and ca
 
     ## [1] 11
 
-``` r
-#remove function 
-  rm(b_fcn)
-```
-
 ICPIutilities
 -------------
 
@@ -44,31 +63,9 @@ In my work with R, I've found that contantly return back to the same bits of cod
 Let's start by installing the package and then we get dive into how to use it. Since this package is hosted on GitHub, you'll have to install it using the `devtools::install_github()` function rather than the normal `install.packages()` like you would do if it were installed on CRAN.
 
 ``` r
-#install/check for updates  
-  install_github("ICPI/ICPIutilities") 
-```
+#install/check for updates
+##   install_github("ICPI/ICPIutilities")
 
-    ## Downloading GitHub repo ICPI/ICPIutilities@master
-    ## from URL https://api.github.com/repos/ICPI/ICPIutilities/zipball/master
-
-    ## Installing ICPIutilities
-
-    ## Installing 1 package: dplyr
-
-    ## Installing package into 'C:/Users/achafetz/Documents/R/win-library/3.5'
-    ## (as 'lib' is unspecified)
-
-    ## Warning: package 'dplyr' is in use and will not be installed
-
-    ## "C:/PROGRA~1/R/R-3.5.0/bin/x64/R" --no-site-file --no-environ --no-save  \
-    ##   --no-restore --quiet CMD INSTALL  \
-    ##   "C:/Users/achafetz/AppData/Local/Temp/1/Rtmpwhau0S/devtools1ce829da16/ICPI-ICPIutilities-e3851c6"  \
-    ##   --library="C:/Users/achafetz/Documents/R/win-library/3.5"  \
-    ##   --install-tests
-
-    ## 
-
-``` r
   library(ICPIutilities)
 ```
 
@@ -79,14 +76,10 @@ read\_msd()
 
 The first function that is most useful to getting you going with using the MER Structured Dataset (MSD) in R is by reading it in. Today we'll be working with the ICPI training dataset that is stored on GitHub. Let's start by importing this via `readr::read_tsv()` and take a look at the columns.
 
--   regular import (look at columns)
--   file size saving
--   lower case or not
-
 ``` r
 #file location on GitHub
   fileurl <- "https://raw.githubusercontent.com/ICPI/TrainingDataset/master/Output/MER_Structured_TRAINING_Dataset_PSNU_IM_FY17-18_20180622_v2_1.txt"
-#save
+#import
   df_training_orig <- read_tsv(fileurl)
 ```
 
@@ -201,8 +194,8 @@ Let's try importing the dataset using the ICPIulitities function.
     ## $ psnu                      <chr> "The North", "The North", "The North...
     ## $ psnuuid                   <chr> "Nwedavx1iKP", "Nwedavx1iKP", "Nweda...
     ## $ snuprioritization         <chr> "1 - Scale-Up: Saturation", "1 - Sca...
-    ## $ typemilitary              <lgl> NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
-    ## $ mechanismuid              <lgl> NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+    ## $ typemilitary              <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+    ## $ mechanismuid              <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
     ## $ primepartner              <chr> "Grayscale", "Grayscale", "Grayscale...
     ## $ fundingagency             <chr> "HHS/CDC", "HHS/CDC", "HHS/CDC", "HH...
     ## $ mechanismid               <chr> "80001", "80001", "80001", "80001", ...
@@ -237,25 +230,18 @@ Let's try importing the dataset using the ICPIulitities function.
 In addition to reading in all of the columns correctly, the function also saves the dataset in a .Rds format. This format is proprietary to R, but it provides the advantage of significantlly compressing the file size of the dasasets we're working with locally.
 
 ``` r
-#size (GB)
-  (txt_size <- paste("txt file =", round(file.size(localfile_txt) / 1000000, 1), "GB"))
+#print file sizes (GB)
+  paste("txt file =", round(file.size(localfile_txt) / 1000000, 1), "GB")
 ```
 
     ## [1] "txt file = 8.3 GB"
 
 ``` r
-#size (GB)
   localfile_rds <- str_replace(localfile_txt, "txt", "Rds")
-  (rds_size <- paste("rds file =", round(file.size(localfile_rds) / 1000000, 1), "GB"))
+  paste("rds file =", round(file.size(localfile_rds) / 1000000, 1), "GB")
 ```
 
     ## [1] "rds file = 0.4 GB"
-
-``` r
-  dir_delete(tmp)
-  
-  rm(df_training_orig, txt_size, rds_size, fileurl, localfile_txt, localfile_rds, tmp)
-```
 
 rename\_official()
 ------------------
@@ -264,9 +250,11 @@ Usually after importing the dataset, my next task is cleaning up the mechanism a
 
 ``` r
 #import
-  fileurl <- "https://raw.githubusercontent.com/ICPI/ICPIutilities/training/Orientation_Materials/FY18Q2_mechanism_list.csv"
+  fileurl <- "https://raw.githubusercontent.com/ICPI/ICPIutilities/master/Orientation_Materials/FY18Q2_mechanism_list.csv"
   df_mechs <- read_csv(fileurl, col_types = cols(.default = "c"))
+```
 
+``` r
 #how many distinct mechanism & partner names are there?
   (n <- nrow(df_mechs))
 ```
@@ -285,26 +273,22 @@ Usually after importing the dataset, my next task is cleaning up the mechanism a
 So it appears that there are 958 combinations, but only 862 distinct mechanims. Let's look at what's going on.
 
 ``` r
-#how many & which mechanism are duplicates?
+#how many mechanism are duplicates?
   df_mechs %>% 
     count(mechanismid, sort = TRUE) %>% 
-    filter(n > 1) 
+    filter(n > 1) %>% 
+    group_by(n) %>% 
+    count(n) %>% 
+    rename(occurances = n, obs = nn) %>% 
+    mutate(obs = obs/2)
 ```
 
-    ## # A tibble: 94 x 2
-    ##    mechanismid     n
-    ##    <chr>       <int>
-    ##  1 16804           3
-    ##  2 17497           3
-    ##  3 10227           2
-    ##  4 10236           2
-    ##  5 10238           2
-    ##  6 12168           2
-    ##  7 13546           2
-    ##  8 13580           2
-    ##  9 13752           2
-    ## 10 13868           2
-    ## # ... with 84 more rows
+    ## # A tibble: 2 x 2
+    ## # Groups:   occurances [2]
+    ##   occurances   obs
+    ##        <int> <dbl>
+    ## 1          2    46
+    ## 2          3     1
 
 ``` r
 #a quick look at some examples
@@ -336,13 +320,6 @@ To solve this issue of different names associated with each mechanism id, we can
 Inspec the help file of `rename_official()` and then use it to fix the dataset
 
 ``` r
-#read help file
-  ?rename_official
-```
-
-    ## starting httpd help server ... done
-
-``` r
 #replace the outdated names
   dups %>% 
     rename_official()
@@ -363,23 +340,19 @@ Inspec the help file of `rename_official()` and then use it to fix the dataset
     ## 10 Kenya         13546       Henry Jackson Fou~ Kisumu West (Placeh~     2
     ## # ... with 180 more rows
 
-``` r
-  rm(fileurl, n, n_mechs, df_mechs, dups)
-```
-
 add\_cumulative()
 -----------------
 
 Another useful function that I use in most projects is a cumulative or year to date indicator. This process can be done manually but then requires updating every quarter when you add new variables onto the dataset, i.e. a new quarter.
 
-Take a minute or two to write out how you would calculate a cumulative variable. - write out a formula that creates a YTD variable - difficult because some are quarterly others are snapshot
+Take a minute or two to write out how you would calculate a cumulative variable.
 
 ``` r
 # create a cumulative/YTD indicator
   df_training <- add_cumulative(df_training)
 ```
 
-Let'see how this looks with a couple indicators.
+Let's see how this looks with a couple indicators.
 
 ``` r
 #function to summarize FY18 results
@@ -446,17 +419,27 @@ combine\_netnew
 
 The calculation for TX\_NET\_NEW should be relatively straight forward, but it's made cumbersome due to the fact that each period is its own indicator and the calculations are not uniform (i.e. results/apr/targets require different calculations). Let's add NET NEW to the datasets.
 
+``` r
+  df_training <- combine_netnew(df_training)
+```
+
 The functions spits back an error here since it doesn't know how to handle the cumulative value we added with the last function. This issue is likely a bug I can work out in the future but I wanted to demonstrate the error message. If you think about it though, the logical flow should be to add net new on before you create a cumulative value.
 
 What is going on behind the scenes to make this funciton work is that it's breaking the dataframe into multiple long dataframes (where all the periods and their values share two columns, period and value) and each dataframe is then broken out by results vs targets vs APR values to deal with each seperately.
 
 ``` r
 #reattempt by removing the cumulative indicator before adding it back on
- df_training <- df_training %>% 
+  df_training <- df_training %>% 
     select(-fy2018cum) %>% 
     combine_netnew() %>% 
     add_cumulative()
+  
+  df_training %>% 
+    select(starts_with("fy2018")) %>% 
+    names()
 ```
+
+    ## [1] "fy2018_targets" "fy2018q1"       "fy2018q2"       "fy2018cum"
 
 Let's test it to see if the function works. Anything we should note here?
 
@@ -499,7 +482,8 @@ identifypd(df_training)
     ## [1] "fy2018q2"
 
 ``` r
-?identifypd
+## ?identifypd
+
 identifypd(df_training, "year")
 ```
 
@@ -543,5 +527,7 @@ This function can have broader application in other functions, allowing the func
 The last function included in the package pulls the hex colors from the ICPI color palette into R to use when graphing.
 
 ``` r
-  #tidepools <- add_color("tidepools")
+  (tidepools <- add_color("tidepools"))
 ```
+
+    ## [1] "#ceb966" "#9cb084" "#6bb1c9" "#6585cf" "#7e6bc9" "#a379bb"
