@@ -1,11 +1,11 @@
 Package: ICPIutilities
 Title: Utility functions for working with or creating ICPI products
-Version: 1.0.10
+Version: 1.0.11
 Authors@R: person("Aaron", "Chafetz", email = "achafetz@usaid.gov", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
 Depends: R (>= 3.4.2)
 License: CC-BY-SA-4.0
-Imports: readxl, dplyr, tidyr, readr, magrittr, stringr, knitr
+Imports: readxl, dplyr, tidyr, readr, magrittr, stringr, knitr, data.table
 Suggests: testthat
 Encoding: UTF-8
 LazyData: true
