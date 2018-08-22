@@ -4,10 +4,14 @@
 \alias{match_msd}
 \title{Transmute DATIM Genie output to match MER Structured Dataset}
 \usage{
-match_msd(genie_filepath)
+match_msd(genie_filepath, to_lower = TRUE, save_rds = TRUE)
 }
 \arguments{
-\item{genie_filepath}{file path to the zipped DATIM Genie file}
+\item{genie_filepath}{enter the full file path to the zipped DATIM Genie file}
+
+\item{to_lower}{do you want to convert all names to lower case, default = TRUE}
+
+\item{save_rds}{save the Structured Dataset as an Rds file, default = TRUE}
 }
 \description{
 Transmute DATIM Genie output to match MER Structured Dataset
