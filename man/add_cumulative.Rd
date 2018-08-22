@@ -4,15 +4,18 @@
 \alias{add_cumulative}
 \title{Add cumulative value for current FY}
 \usage{
-add_cumulative(df)
+add_cumulative(df, priorpd = NULL)
 }
 \arguments{
 \item{df}{data frame to add cumulative column onto}
+
+\item{priorpd}{add APR value is missing from a prior year}
 }
 \description{
 This function is adapted from the achafetz/PartnerProgress repo
 }
 \examples{
 \dontrun{
-df_mer <- add_cumulative(df_mer)}
+df_mer <- add_cumulative(df_mer)
+df_genieextract <- add_cumulative(df_genieextract, "2017")}
 }
