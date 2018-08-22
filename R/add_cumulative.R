@@ -93,7 +93,7 @@ add_cumulative <- function(df, priorpd = NULL){
         varname_apr <- paste0("fy", fy, "apr")
         q4 <- paste0("fy", fy, "q4")
 
-        if(!varname_apr %in% names(df_genie)){
+        if(!varname_apr %in% names(df)){
           varname_apr <- toupper(varname_apr)
           q4 <- toupper(q4)
         }
