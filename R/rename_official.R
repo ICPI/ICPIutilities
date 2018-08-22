@@ -16,7 +16,7 @@
 rename_official <- function(df) {
 
   #check that mechanism exists in MSD before starting (OUxIM or PSNUxIM, not PSNU)
-  if("mechanismid" %in% names(df) == FALSE) {
+  if(("mechanismid" %in% names(df) == FALSE && "MechanismID" %in% names(df) == FALSE)) {
     stop('This dataset does not have mechanisms. Make sure it is OUxIM or PSNUxIM')
   }
 
