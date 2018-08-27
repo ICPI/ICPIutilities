@@ -18,7 +18,7 @@ import_oldtx <- function(df, archived_msd_folderpath){
     msd_type <- dplyr::case_when(
       !("mechanismid" %in% headers) ~ "PSNU",
       !("psnu" %in% headers)        ~ "OU_IM",
-      TRUE                       ~ "PSNU_IM"
+      TRUE                          ~ "PSNU_IM"
     )
 
   #check if archive rds/txt file exists
@@ -31,12 +31,12 @@ import_oldtx <- function(df, archived_msd_folderpath){
   #open rds/txt file
     if(length(msdfile_rds) == 1){
       df_tx_old <- readr::read_rds(msdfile_rds) %>%
-        dplyr::filter(indicator == "TX_CURR")
+        dplyr::filter(indicator == "TX_CURR", standardizeddisaggregate %in% c("Total Numerator", "MostCompleteAgeDisagg"))
     }
 
     if(length(msdfile_rds) == 0 && length(msdfile_txt) == 1){
       df_tx_old <- ICPIutilities::read_msd(msdfile_txt, save_rds = FALSE) %>%
-        dplyr::filter(indicator == "TX_CURR")
+        dplyr::filter(indicator == "TX_CURR", standardizeddisaggregate %in% c("Total Numerator", "MostCompleteAgeDisagg"))
     }
 
   #store column names (to work for both lower case and camel case) & then covert to lowercase
@@ -78,7 +78,7 @@ import_oldtx <- function(df, archived_msd_folderpath){
 
   #change old q4 to upper case if necessary
     if("FY2017Q4" %in% names(df)){
-      df_merge <- dplyr::rename(df_merge, FY2017Q4 = fy2016q4)
+      df_merge <- dplyr::rename(df_merge, FY2016Q4 = fy2016q4)
     }
 
   return(df_merge)
