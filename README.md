@@ -14,6 +14,7 @@ Contents
   - [add_cumulative()](https://github.com/ICPI/ICPIutilities#add_cumulative)
   - [identifypd()](https://github.com/ICPI/ICPIutilities#identifypd)
   - [combine_netnew()](https://github.com/ICPI/ICPIutilities#combine_netnew)
+  - [match_msd()](https://github.com/ICPI/ICPIutilities#match_msd)
   - [add_color()](https://github.com/ICPI/ICPIutilities#add_colord)
 
 ### Installation
@@ -97,6 +98,10 @@ library(tidyverse)
 #create net new with FY15-16 archived MSD file
   df_psnu_im <- combine_netnew(df_psnu_im, archived_msd_filepath = "~/ICPI/Data")
 ```
+
+#### match_msd
+
+Most of the analysis at ICPI relies on use of the MER Structured Dataset which is a frozen instance of the PEFPAR dataset produced twice a quarter. Sometimes it's important to work with inprocess data prior to the release of the MSD, which means accessing the data through the PEPFAR Data Genie on DATIM. The output of the Genie is very similar, but not exactly the same. To make working with the dataset easier, the `match_msd()` function
 
 #### add_color()
 
