@@ -10,7 +10,8 @@ Imports: data.table,
          knitr,
          magrittr,
          readr,
-         readxl, 
+         readxl,
+         rlang,
          stringr, 
          tidyr
 Suggests: testthat
