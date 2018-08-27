@@ -64,11 +64,14 @@ Some mechanisms and partners are recorded in FACTSInfo with multiple names as th
 
 #### add_cumulative()
 
-The MER Structured Datasets contain end of year totals for previous fiscal years, but do not include cumulative/snapshot values prior to Q4. This function identifies the current fiscal year using `identifypd()` and then works to create either a cumulative or snapshot value for each indicator (snapshot indicators include OVC_SERV, TB_PREV,TX_CURR, and TX_TB).
+The MER Structured Datasets contain end of year totals for previous fiscal years, but do not include cumulative/snapshot values prior to Q4. This function identifies the current fiscal year using `identifypd()` and then works to create either a cumulative or snapshot value for each indicator (snapshot indicators include OVC_SERV, TB_PREV,TX_CURR, and TX_TB). The `add_cumulative()` function now takes an argument of prior_pd allowing a user to add in an cumulative/APR value for a prior year (eg DATIM genie output is missing APR values). By specifying the period, an APR value will be created.
 
 ```
 #add cumulative column to dataset
-  df_ou_im <- ICPIutilities::add_cumulative(df_ou_im)
+  df_ou_im <- add_cumulative(df_ou_im)
+
+#add an APR value to a prior period when the value is missing from the dataset
+  df_genieextract <- add_cumulative(df_genieextract, priorpd = "2017")
 ```
 #### identifypd()
 
@@ -101,7 +104,20 @@ library(tidyverse)
 
 #### match_msd
 
-Most of the analysis at ICPI relies on use of the MER Structured Dataset which is a frozen instance of the PEFPAR dataset produced twice a quarter. Sometimes it's important to work with inprocess data prior to the release of the MSD, which means accessing the data through the PEPFAR Data Genie on DATIM. The output of the Genie is very similar, but not exactly the same. To make working with the dataset easier, the `match_msd()` function
+Most of the analysis at ICPI relies on use of the MER Structured Dataset which is a frozen instance of the PEFPAR dataset produced twice a quarter. Sometimes it's important to work with inprocess data prior to the release of the MSD, which means accessing the data through the PEPFAR Data Genie on DATIM. The output of the Genie is very similar, but not exactly the same. To make working with the dataset easier, the `match_msd()` function. The function removes columns not present in the MSD (`dataElementUID`, `categoryOptionComboUID`, `ApprovalLevel`, and `ApprovalLevelDescription`) and adds in an APR column for prior fiscal year (eg `FY2017APR`). The function extracts the zipped file and outputs an RDS file.
+
+```
+#unzip Genie file and convert to match MSD, exports a RDS file
+  match_msd("~/Downloads/PEPFAR-Data-Genie-PSNUByIMs-2018-08-15.zip")
+
+#unzip, keeping camel casing, exports a RDS file
+  match_msd("~/Downloads/PEPFAR-Data-Genie-PSNUByIMs-2018-08-15.zip", to_lower = FALSE)
+
+#create a dataframe but does not export
+  df_genie <- match_msd("~/Downloads/PEPFAR-Data-Genie-PSNUByIMs-2018-08-15.zip", save_rds = FALSE)
+```
+
+The default output is to change the columns to lower case, similar to `read_msd()`, but this can be turned off.  
 
 #### add_color()
 
