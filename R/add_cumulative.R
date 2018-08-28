@@ -73,7 +73,7 @@ add_cumulative <- function(df, priorpd = NULL){
       df <- dplyr::full_join(df, df_cum, by = lst_meta)
 
       #adjust semi annual indicators
-      semi_ann <- c("KP_PREV", "OVC_HIVSTAT", "PP_PREV", "SC_STOCK", "TB_ART", "TB_STAT")
+      semi_ann <- c("KP_PREV", "OVC_SERV", "OVC_HIVSTAT", "PP_PREV", "SC_STOCK", "TB_ART", "TB_PREV", "TB_STAT", "TX_TB")
       if(qtr %in% c(2, 3)) {
         df <- dplyr::mutate(df, !!varname := ifelse(indicator %in% semi_ann, get(paste0(fy_str, "2")), get(!!varname)))
       }
@@ -82,7 +82,7 @@ add_cumulative <- function(df, priorpd = NULL){
       }
 
       #adjust snapshot indicators to equal current quarter
-      snapshot <- c("OVC_SERV", "TB_PREV","TX_CURR", "TX_TB")
+      snapshot <- c("TX_CURR")
       df <- dplyr::mutate(df, !!varname := ifelse(indicator %in% snapshot, get(paste0(fy_str, qtr)), get(!!varname)))
 
       #reapply original variable casing type plus cumulative
