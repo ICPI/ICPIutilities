@@ -17,7 +17,7 @@ import_oldtx <- function(df, archived_msd_folderpath){
     #b. classify
     msd_type <- dplyr::case_when(
       !("mechanismid" %in% headers) ~ "PSNU",
-      !("psnu" %in% headers)        ~ "OU_IM",
+      !("psnu" %in% headers)        ~ "OU", #"OU_IM"
       TRUE                          ~ "PSNU_IM"
     )
 
