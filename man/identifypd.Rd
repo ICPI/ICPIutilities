@@ -4,19 +4,26 @@
 \alias{identifypd}
 \title{Extract lastest period of dataset}
 \usage{
-identifypd(df, pd_type = "full")
+identifypd(df, pd_type = "full", pd_prior = FALSE)
 }
 \arguments{
 \item{df}{dataset to use to find latest period}
 
 \item{pd_type}{what is returned? (a) full, eg fy2018q1; (b)year, eg 2018; (c) or quarter, eg 1}
+
+\item{pd_prior}{do you want the last period returned (instead of the current); default = FALSE}
 }
 \description{
 This function is pulled from the achafetz/PartnerProgress repo
 }
 \examples{
 \dontrun{
+#return full, current period, eg "fy2018q3"
 identifypd(df_mer)
-identifypd(df_mer, "quarter") }
+#return the current quarter, eg 3
+identifypd(df_mer, "quarter")
+#return the prior quarter, eg "fy2018q2"
+identifypd(df_mer, pd_prior = TRUE)
+  }
 
 }
