@@ -75,14 +75,16 @@ The MER Structured Datasets contain end of year totals for previous fiscal years
 ```
 #### identifypd()
 
-The `identifypd()` function is used within the `add_cumulative()` but can be used outside of it as well. It identifies the current period by pulling the last quarter's column. It has a few options to allow you pull the FY or quarter only, or full variable name. You need to specify the `pd_type` to be returned.
+The `identifypd()` function is used within the `add_cumulative()` but can be used outside of it as well. It identifies the current period by pulling the last quarter's column. It has a few options to allow you pull the FY or quarter only, or full variable name. You need to specify the `pd_type` to be returned. Updated to now identifies the prior period as well as the current/prior target.
 
 ```
 #find current quarter & fy
-  	curr_q  <- currentpd(df_ou_im, "quarter")
-  	curr_fy <- currentpd(df_ou_im, "year")
-  	fy_full <- currentpd(df_ou_im, "full") %>%
-  	           toupper()
+  curr_pd       <- identifypd(df_ou_im)
+  prior_pd      <- identifypd(df_ou_im, pd_prior = TRUE)
+  curr_qtr      <- identifypd(df_ou_im, pd_type = "quarter")
+  curr_yr       <- identifypd(df_ou_im, pd_type = "year")
+  curr_targets  <- identifypd(df_ou_im, pd_type = "target")
+  prior_targets <- identifypd(df_ou_im, pd_prior = TRUE, pd_type = "target")
 ```
 
 #### combine_netnew()
