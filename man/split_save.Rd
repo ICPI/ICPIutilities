@@ -4,20 +4,28 @@
 \alias{split_save}
 \title{Export a single dataset into multiple files by group}
 \usage{
-split_save(df, folderpath, filename_stub)
+split_save(df, group_var, folderpath, filename_stub, include_date = FALSE)
 }
 \arguments{
 \item{df}{dataframe to split}
 
+\item{group_var}{grouping variable to split the dataset by, eg operatingunit, fundingagency}
+
 \item{folderpath}{directory where you want to store the files}
 
 \item{filename_stub}{generic stub for naming all the files}
+
+\item{include_date}{include date after filenamestub? default = FALSE, eg "20180913"}
 }
 \description{
 Export a single dataset into multiple files by group
 }
 \examples{
 \dontrun{
-  split_save(df, "~/CountryFiles", "FY18Q3_TX")
+#create country specific files for TX_NEW
+ df_mer \%>\%
+  filter(indicator == "TX_NEW",
+         standardizeddisaggregate == "Total Numerator") \%>\%
+  split_save(operatingunit, "~/CountryFiles", "FY18Q3_TX")
 }
 }
