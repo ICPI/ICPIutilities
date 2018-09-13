@@ -2,6 +2,7 @@
 #' @description This function is pulled from the achafetz/PartnerProgress repo
 #' @param df dataset to use to find latest period
 #' @param pd_type what is returned? (a) full, eg fy2018q1; (b)year, eg 2018; (c) or quarter, eg 1
+#' @param pd_prior do you want the last period returned (instead of the current); default = FALSE
 #'
 #' @export
 #'
@@ -12,13 +13,19 @@
 #' identifypd(df_mer)
 #' identifypd(df_mer, "quarter") }
 #'
-identifypd <- function(df, pd_type = "full") {
+identifypd <- function(df, pd_type = "full", pd_prior = FALSE) {
   #get list of header
   headers <- names(df)
+  #pull current (last column) or prior (2nd to last column)
+  if(pd_prior == FALSE) {
+    pos = -1
+  } else {
+    pos = -2
+  }
   #figure out column, keeping only variables that are a quarter
   pd <- headers[stringr::str_detect(headers, "[q|Q](?=[:digit:])")] %>%
-    tail(., n =1)
-  #extract different poritions of the the last column based on pd_type
+    dplyr::nth(pos)
+  #extract different portions of the the last column based on pd_type
   if(pd_type == "year") {
     start_pt <- 3
     end_pt <- -3
