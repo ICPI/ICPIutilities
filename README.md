@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ICPI/ICPIutilities.svg?branch=master)](https://travis-ci.org/ICPI/ICPIutilities)
 
-![icpiutilities](https://user-images.githubusercontent.com/8933069/45517922-bfb67180-b77d-11e8-8ee0-3a466a5a64ea.png)
+![icpiutilities](https://user-images.githubusercontent.com/8933069/45518039-36ec0580-b77e-11e8-8acf-f67f893c7ae8.png)
 
 This package contains a number of useful functions for creating and/or working with ICPI datasets and products.
 
