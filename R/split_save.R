@@ -30,7 +30,7 @@ split_save <- function(df, group_var, folderpath, filename_stub, include_date = 
       dplyr::pull()
 
   #include date in file name if specified
-    if(include_date == TRUE) paste(filename_stub, format(Sys.Date(), "%Y%m%d"), sep ="_")
+    if(include_date == TRUE) filename_stub <- paste(filename_stub, format(Sys.Date(), "%Y%m%d"), sep ="_")
 
   #export one file for each group member
     purrr::walk(.x = grp_members,
