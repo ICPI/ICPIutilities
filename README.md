@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ICPI/ICPIutilities.svg?branch=master)](https://travis-ci.org/ICPI/ICPIutilities)
 
-![image](https://user-images.githubusercontent.com/8933069/43399475-2a7a052c-93d9-11e8-9fab-03d05153fd05.png)
+![icpiutilities](https://user-images.githubusercontent.com/8933069/45517443-25096300-b77c-11e8-881d-70e80a86a7e7.png)
 
 This package contains a number of useful functions for creating and/or working with ICPI datasets and products.
 
@@ -15,6 +15,7 @@ Contents
   - [identifypd()](https://github.com/ICPI/ICPIutilities#identifypd)
   - [combine_netnew()](https://github.com/ICPI/ICPIutilities#combine_netnew)
   - [match_msd()](https://github.com/ICPI/ICPIutilities#match_msd)
+  - [split_save()](https://github.com/ICPI/ICPIutilities#split_save)
   - [add_color()](https://github.com/ICPI/ICPIutilities#add_colord)
 
 ### Installation
@@ -120,6 +121,24 @@ Most of the analysis at ICPI relies on use of the MER Structured Dataset which i
 ```
 
 The default output is to change the columns to lower case, similar to `read_msd()`, but this can be turned off.  
+
+#### split_save()
+
+It's often useful to export a dataset into smaller pieces particularly when you need the data to populate tools. The `split_save()` function allows you to define how to break up your dataset and then it exports each grouped dataframe as a csv. You can choose how to group your output (eg by `operatingunit`, `fundingagency`, etc.). You will need to specify the filenaming convention (eg "FY18Q3_CascadeInds") and the folder you want to save these in (eg "~/Data/FY18Q3"). Lastly, you can also include todays date at the end of the filename by specifying `include_date = TRUE`
+
+```
+#export one csv for each OU for TX_NEW
+  df_ou_im %>%
+    filter(indicator == "TX_NEW",
+           standardizeddisaggregate == "Total Numerator") %>%
+    split_save(operatingunit, "~/Data/FY18Q3", "FY18Q3_TX")
+
+#export one csv for each funding agency with today's date
+  df_ou_im %>%
+    filter(indicator %in% c("HTS_TST", "HTS_TST_POS", "TX_NEW"),
+           standardizeddisaggregate == "Total Numerator") %>%
+    split_save(fundingagency, "~/CountryFiles", "FY18Q3_Cascade")
+```
 
 #### add_color()
 
