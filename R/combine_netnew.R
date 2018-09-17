@@ -55,6 +55,16 @@ combine_netnew <- function(df, archived_msd_filepath = NULL){
       #reshape wide to match MSD
       tidyr::spread(pd, val)
 
+  #change to fy20XXcum if current pd is not APR (Q4)
+    curr_qtr <- ICPIutilities::identifypd(df, pd_type = "quarter")
+    if(curr_qtr < 4){
+      curr_yr <- ICPIutilities::identifypd(df, pd_type = "year")
+      curr_cum <- paste0("fy", curr_yr , "cum")
+      curr_apr <- paste0("fy", curr_yr, "apr")
+      df_nn_apr <- df_nn_apr %>%
+        dplyr::rename(!!curr_cum := !!curr_apr)
+    }
+
   #join all net new pds/targets/apr together
     join_vars <- df %>%
       dplyr::select(-dplyr::starts_with("fy")) %>%
