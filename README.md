@@ -105,7 +105,7 @@ library(tidyverse)
   df_psnu_im <- combine_netnew(df_psnu_im, archived_msd_filepath = "~/ICPI/Data")
 ```
 
-#### match_msd
+#### match_msd()
 
 Most of the analysis at ICPI relies on use of the MER Structured Dataset which is a frozen instance of the PEFPAR dataset produced twice a quarter. Sometimes it's important to work with inprocess data prior to the release of the MSD, which means accessing the data through the PEPFAR Data Genie on DATIM. The output of the Genie is very similar, but not exactly the same. To make working with the dataset easier, the `match_msd()` function. The function removes columns not present in the MSD (`dataElementUID`, `categoryOptionComboUID`, `ApprovalLevel`, and `ApprovalLevelDescription`) and adds in an APR column for prior fiscal year (eg `FY2017APR`). The function extracts the zipped file and outputs an RDS file.
 
