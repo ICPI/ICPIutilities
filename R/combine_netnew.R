@@ -55,6 +55,16 @@ combine_netnew <- function(df, archived_msd_filepath = NULL){
       #reshape wide to match MSD
       tidyr::spread(pd, val)
 
+  #change to fy20XXcum if current pd is not APR (Q4)
+    curr_qtr <- ICPIutilities::identifypd(df, pd_type = "quarter")
+    if(curr_qtr < 4){
+      curr_yr <- ICPIutilities::identifypd(df, pd_type = "year")
+      curr_cum <- paste0("fy", curr_yr , "cum")
+      curr_apr <- paste0("fy", curr_yr, "apr")
+      df_nn_apr <- df_nn_apr %>%
+        dplyr::rename(!!curr_cum := !!curr_apr)
+    }
+
   #join all net new pds/targets/apr together
     join_vars <- df %>%
       dplyr::select(-dplyr::starts_with("fy")) %>%
@@ -104,7 +114,7 @@ gen_netnew <- function(df, type = "result"){
   #aggregate so only one line per mech/geo/disagg
     df_nn <- df_nn %>%
       #remove uids that different between targets/results and no need for apr value
-      dplyr::select(-dplyr::ends_with("apr")) %>%
+      dplyr::select(-dplyr::ends_with("apr"), -dplyr::ends_with("cum")) %>%
       #aggregate all quartertly data
       dplyr::group_by_if(is.character) %>%
       dplyr::summarize_at(dplyr::vars(dplyr::starts_with("fy2")), ~ sum(., na.rm = TRUE)) %>%
