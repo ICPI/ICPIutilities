@@ -104,7 +104,7 @@ gen_netnew <- function(df, type = "result"){
   #aggregate so only one line per mech/geo/disagg
     df_nn <- df_nn %>%
       #remove uids that different between targets/results and no need for apr value
-      dplyr::select(-dplyr::ends_with("apr")) %>%
+      dplyr::select(-dplyr::ends_with("apr"), -dplyr::ends_with("cum")) %>%
       #aggregate all quartertly data
       dplyr::group_by_if(is.character) %>%
       dplyr::summarize_at(dplyr::vars(dplyr::starts_with("fy2")), ~ sum(., na.rm = TRUE)) %>%
