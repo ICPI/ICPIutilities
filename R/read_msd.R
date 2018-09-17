@@ -28,7 +28,7 @@ read_msd <-
       file <- paste0(file, ".txt")
 
     #import
-    df <- data.table::fread(file, sep = "\t", colClasses = "character")
+    df <- data.table::fread(file, sep = "\t", colClasses = "character", showProgress = FALSE)
     df <- tibble::as_tibble(df)
 
     #identify all the value columns (starts with FY)
