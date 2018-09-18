@@ -14,17 +14,18 @@
 #'
 combine_netnew <- function(df, archived_msd_filepath = NULL){
 
-  #if merging in FY16Q4 data to ensure FY17cum TX_NET_NEW correctness
-    if(!is.null(archived_msd_filepath)){
-      df <- import_oldtx(df, archived_msd_filepath)
-    }
-
   #store column names (to work for both lower case and camel case) & then covert to lowercase
     headers_orig <- names(df)
     df <- dplyr::rename_all(df, ~ tolower(.))
 
   #save column names/order for binding at end
     msd_order <- names(df)
+
+  #if merging in FY16Q4 data to ensure FY17cum TX_NET_NEW correctness
+    if(!is.null(archived_msd_filepath)){
+      df <- import_oldtx(df, archived_msd_filepath) %>%
+        dplyr::rename_all(~ tolower(.))
+    }
 
   #keep TX_CURR to create net_new off of
     df_tx <- df %>%
@@ -77,7 +78,8 @@ combine_netnew <- function(df, archived_msd_filepath = NULL){
       dplyr::select(msd_order)
 
   #append TX_NET_NEW onto main dataframe
-    df <- dplyr::bind_rows(df, df_combo)
+    df <- dplyr::bind_rows(df, df_combo) %>%
+      dplyr::select(msd_order) #remove FY16Q4
 
   #reapply original variable casing type
     names(df) <- headers_orig
