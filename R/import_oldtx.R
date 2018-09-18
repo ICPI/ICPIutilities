@@ -48,6 +48,10 @@ import_oldtx <- function(df, archived_msd_folderpath, prior_fy = "2016"){
       names()
     df <- dplyr::rename_all(df, ~ tolower(.))
 
+  #filter to operatingunit(s) in original dataframe
+    ous <- unique(df$operatingunit)
+    df_tx_old <- dplyr::filter(df_tx_old, operatingunit %in% ous)
+
   #setup period to extract
     old_pd <- paste0("fy", prior_fy, "q4")
 
