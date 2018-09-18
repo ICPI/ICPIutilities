@@ -4,12 +4,14 @@
 \alias{import_oldtx}
 \title{Import FY16Q4 data for TX_NET_NEW Calculation}
 \usage{
-import_oldtx(df, archived_msd_folderpath)
+import_oldtx(df, archived_msd_folderpath, prior_fy = "2016")
 }
 \arguments{
 \item{df}{dataframe to add archived data onto}
 
 \item{archived_msd_folderpath}{folder path where archived file with FY15-16 data sits}
+
+\item{prior_fy}{what year do you want to extract Q4 from in the archived dataset}
 }
 \description{
 Import FY16Q4 data for TX_NET_NEW Calculation
