@@ -3,11 +3,11 @@
 #'
 #' @param df dataframe to add archived data onto
 #' @param archived_msd_folderpath folder path where archived file with FY15-16 data sits
-#'
+#' @param prior_fy what year do you want to extract Q4 from in the archived dataset
 #'
 #' @importFrom dplyr %>%
 
-import_oldtx <- function(df, archived_msd_folderpath){
+import_oldtx <- function(df, archived_msd_folderpath, prior_fy = "2016"){
 
   #determine MSD type - OU_IM, PSNU, or PSNU_IM
     #a. collect header names
@@ -48,11 +48,18 @@ import_oldtx <- function(df, archived_msd_folderpath){
       names()
     df <- dplyr::rename_all(df, ~ tolower(.))
 
+  #filter to operatingunit(s) in original dataframe
+    ous <- unique(df$operatingunit)
+    df_tx_old <- dplyr::filter(df_tx_old, operatingunit %in% ous)
+
+  #setup period to extract
+    old_pd <- paste0("fy", prior_fy, "q4")
+
   #limit just to just meta data (string vars), excluding partner/mech and other UIDs that may lead to misalignment in merge
     lst_meta <- df_tx_old %>%
       dplyr::select_if(is.character) %>%
       names()
-    df_tx_old <- dplyr::select(df_tx_old, lst_meta, fy2016q4)
+    df_tx_old <- dplyr::select(df_tx_old, lst_meta, old_pd)
 
   #rename offical
     df_tx_old <- ICPIutilities::rename_official(df_tx_old)
@@ -60,9 +67,9 @@ import_oldtx <- function(df, archived_msd_folderpath){
   #aggregate
     df_tx_old <- df_tx_old %>%
       dplyr::group_by_if(is.character) %>%
-      dplyr::summarise(fy2016q4 = sum(fy2016q4, na.rm = TRUE)) %>%
+      dplyr::summarise_at(dplyr::vars(old_pd), ~ sum(., na.rm = TRUE)) %>%
       dplyr::ungroup() %>%
-      dplyr::filter(fy2016q4 != 0)
+      dplyr::filter_at(dplyr::vars(old_pd), dplyr::any_vars(.!= 0))
 
   #join archive data onto current dataset
     df_merge <- dplyr::full_join(df, df_tx_old, by = lst_meta)
@@ -71,14 +78,16 @@ import_oldtx <- function(df, archived_msd_folderpath){
     lst_meta <- df_merge %>%
       dplyr::select_if(is.character) %>%
       names()
-    df_merge <- dplyr::select(df_merge, lst_meta, fy2016q4, dplyr::everything())
+    df_merge <- dplyr::select(df_merge, lst_meta, old_pd, dplyr::everything())
 
   #reapply original variable casing
-    names(df_merge) <- c(headers_meta, "fy2016q4", header_vals)
+    names(df_merge) <- c(headers_meta, old_pd, header_vals)
 
   #change old q4 to upper case if necessary
-    if("FY2017Q4" %in% names(df)){
-      df_merge <- dplyr::rename(df_merge, FY2016Q4 = fy2016q4)
+    test_upper <- paste0("FY",ICPIutilities::identifypd(df, "year"),"Q1")
+    if(test_upper %in% names(df)){
+      old_pd_upper <- toupper(old_pd)
+      df_merge <- dplyr::rename(df_merge, !!old_pd_upper := !!old_pd)
     }
 
   return(df_merge)
