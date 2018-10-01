@@ -41,7 +41,7 @@ The ICPI MER Structured Datasets are posted to [PEPFAR Sharepoint](https://www.p
 
 While there is no correct or incorrect way to name variables, [a best practice](http://r-pkgs.had.co.nz/style.html) is to write them as all lower case (or snake casing with underscores to separate words) as opposed to camel casing (eg `coarseDisaggregate`) as found in the MSD files. The `read_msd()` function has an option to convert the variables to all lower.
 
-An additional feature is the `read_msd()` function allows the user to save the .txt file as a .Rds file. This formatting compresses the file, allowing the MSD to take up one-tenth of the space as the normal .txt file. To reopen an .Rds, you can use the base R function `readRDS()`.
+An additional feature is the `read_msd()` function allows the user to save the .txt file as a .rds file. This formatting compresses the file, allowing the MSD to take up one-tenth of the space as the normal .txt file. To reopen an .rds, you can use the base R function `readRDS()`.
 
 ```
 #open MSD in R
@@ -96,7 +96,7 @@ This function calculates TX_NET_NEW as it is not included in the MER Structured 
 library(tidyverse)
 
 #open current MSD
-  df_psnu_im <- read_rds("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_IM_FY17-18_20180515_v1_1.Rds")
+  df_psnu_im <- read_rds("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_IM_FY17-18_20180515_v1_1.rds")
 
 #create net new (not including FY16Q4, making net new for FY17Q1 = 0 and throwing off the cumulative net new)
   df_psnu_im <- combine_netnew(df_psnu_im)

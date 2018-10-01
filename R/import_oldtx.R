@@ -17,12 +17,12 @@ import_oldtx <- function(df, archived_msd_folderpath, prior_fy = "2016"){
     #b. classify
     msd_type <- dplyr::case_when(
       !("mechanismid" %in% headers) ~ "PSNU",
-      !("psnu" %in% headers)        ~ "OU", #"OU_IM"
+      !("psnu" %in% headers)        ~ "OU_IM",
       TRUE                          ~ "PSNU_IM"
     )
 
   #check if archive rds/txt file exists
-    msdfile_rds <- Sys.glob(file.path(archived_msd_folderpath, paste0("*MER_Structured_Dataset_", msd_type, "_FY15-16*.Rds")))
+    msdfile_rds <- Sys.glob(file.path(archived_msd_folderpath, paste0("*MER_Structured_Dataset_", msd_type, "_FY15-16*.rds")))
     msdfile_txt <- Sys.glob(file.path(archived_msd_folderpath, paste0("*MER_Structured_Dataset_", msd_type, "_FY15-16*.txt")))
     if(length(msdfile_rds) == 0 && length(msdfile_txt) == 0){
       stop("No archived file exists in specified folder to append onto current dataframe")

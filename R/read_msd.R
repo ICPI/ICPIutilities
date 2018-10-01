@@ -6,7 +6,7 @@
 #' @export
 #' @param file enter the full path to the MSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"
 #' @param to_lower do you want to convert all names to lower case, default = TRUE
-#' @param save_rds save the Structured Dataset as an Rds file, default = TRUE
+#' @param save_rds save the Structured Dataset as an rds file, default = TRUE
 #' @param remove_txt should the txt file be removed, default = FALSE
 #'
 #' @importFrom dplyr %>%
@@ -48,8 +48,8 @@ read_msd <-
     if (to_lower == TRUE)
       df <- dplyr::rename_all(df, ~ tolower(.))
 
-    #save as Rds
-    newfile <- stringr::str_replace(file, "txt", "Rds")
+    #save as rds
+    newfile <- stringr::str_replace(file, "txt", "rds")
     if (save_rds == TRUE)
       saveRDS(df, newfile)
 
