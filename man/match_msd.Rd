@@ -11,7 +11,7 @@ match_msd(genie_filepath, to_lower = TRUE, save_rds = TRUE)
 
 \item{to_lower}{do you want to convert all names to lower case, default = TRUE}
 
-\item{save_rds}{save the Structured Dataset as an Rds file, default = TRUE}
+\item{save_rds}{save the Structured Dataset as a rds file, default = TRUE}
 }
 \description{
 Transmute DATIM Genie output to match MER Structured Dataset

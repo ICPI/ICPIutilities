@@ -11,7 +11,7 @@ read_msd(file, to_lower = TRUE, save_rds = TRUE, remove_txt = FALSE)
 
 \item{to_lower}{do you want to convert all names to lower case, default = TRUE}
 
-\item{save_rds}{save the Structured Dataset as an Rds file, default = TRUE}
+\item{save_rds}{save the Structured Dataset as an rds file, default = TRUE}
 
 \item{remove_txt}{should the txt file be removed, default = FALSE}
 }
