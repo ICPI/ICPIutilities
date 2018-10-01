@@ -2,7 +2,7 @@
 #'
 #' @param genie_filepath enter the full file path to the zipped DATIM Genie file
 #' @param to_lower do you want to convert all names to lower case, default = TRUE
-#' @param save_rds save the Structured Dataset as an Rds file, default = TRUE
+#' @param save_rds save the Structured Dataset as a rds file, default = TRUE
 #'
 #' @export
 #'
@@ -55,8 +55,8 @@ match_msd <- function(genie_filepath,
     if (to_lower == TRUE)
       df_genie <- dplyr::rename_all(df_genie, ~ tolower(.))
 
-  #save as Rds
-    newfile <- stringr::str_replace(file, "txt", "Rds")
+  #save as rds
+    newfile <- stringr::str_replace(file, "txt", "rds")
     if (save_rds == TRUE)
       saveRDS(df_genie, filename_new)
 
