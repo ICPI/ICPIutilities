@@ -26,6 +26,11 @@ How to install package?
 install.packages("devtools")
 devtools::install_github("ICPI/ICPIutilities")
 ```
+
+### Updates
+
+All package update (starting with v1.0.21) can be found on the [`NEWS.md`](https://github.com/ICPI/ICPIutilities/blob/master/NEWS.md) page.
+
 To ensure you have the latest version, you can always rerun `devtools::install_github("ICPI/ICPIutilities")`
 
 ### Usage
