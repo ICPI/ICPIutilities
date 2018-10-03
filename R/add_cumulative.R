@@ -81,6 +81,9 @@ add_cumulative <- function(df, priorpd = NULL){
         df <- dplyr::mutate(df, !!varname := ifelse(indicator %in% semi_ann, get(paste0(fy_str, "4")), get(!!varname)))
       }
 
+      #adjust FY17APR value for OVC_SERV - sum of program areas less FY17Q2 Active
+      df <- adj_ovc_apr17(df)
+
       #adjust snapshot indicators to equal current quarter
       snapshot <- c("TX_CURR")
       df <- dplyr::mutate(df, !!varname := ifelse(indicator %in% snapshot, get(paste0(fy_str, qtr)), get(!!varname)))
