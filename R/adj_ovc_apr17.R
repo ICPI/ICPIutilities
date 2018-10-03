@@ -40,6 +40,6 @@ adj_ovc_apr17 <- function(df){
       dplyr::bind_rows(df_ovc)
     rm(df_ovc)
 
-    invisible(df)
   }
+    invisible(df)
 }
