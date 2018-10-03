@@ -96,14 +96,14 @@ add_cumulative <- function(df, priorpd = NULL){
         varname_apr <- paste0("fy", fy, "apr")
         q4 <- paste0("fy", fy, "q4")
 
-        if(!varname_apr %in% names(df)){
+        if(TRUE %in% stringr::str_detect(names(df), "Q")) {
           varname_apr <- toupper(varname_apr)
           q4 <- toupper(q4)
         }
         df <- df %>%
           tibble::add_column(!!varname_apr := as.numeric(NA), .after = q4) %>%
           dplyr::mutate(!!varname_apr := get(varname)) %>%
-          dplyr::select(-varname)
+          dplyr::select(-dplyr::contains("cum"))
       }
 
       return(df)
