@@ -95,7 +95,7 @@ The `identifypd()` function is used within the `add_cumulative()` but can be use
 
 #### combine_netnew()
 
-This function calculates TX_NET_NEW as it is not included in the MER Structured datasets. TX_NET_NEW is calculated by subtracting the current period's TX_CURR from the last period and for targets, it's created off the gap between the target for the current FY and the APR value for the prior year. Note that the current MSD starts in FY17; TX_NET_NEW for Q1 and APR for FY17 will be incorrect/incomplete due to the fact that the function does not have FY16 data to base this off. To solve this issue, you will need to download the FY15-16 Archived MSD file and then specify its location as an argument in the `combine_netnew()` function.
+This function calculates TX_NET_NEW as it is not included in the MER Structured datasets. TX_NET_NEW is calculated by subtracting the current period's TX_CURR from the last period and for targets, it's created off the gap between the target for the current FY and the APR value for the prior year. Note that the current MSD starts in FY17; TX_NET_NEW for Q1 and APR for FY17 will be incorrect/incomplete due to the fact that the function does not have FY16 data to base this off. To solve this issue, you will need to download the FY15-16 Archived MSD file and then specify its location as an argument in the `combine_netnew()` function. **UPDATE: As of the FY18Q3c_v2_2 release (2018-10-08), TX_NET_NEW is now included in the MSD and it is not necessary to create it in R via this process.**
 
 ```
 library(tidyverse)
