@@ -27,6 +27,7 @@ match_msd <- function(genie_filepath,
     headers <- readr::read_tsv(filepath, n_max = 0, col_types = readr::cols(.default = "c")) %>%
       names()
     type <- dplyr::case_when(
+      "SiteName" %in% headers       ~ "SITE_IM",
       !("MechanismID" %in% headers) ~ "PSNU",
       !("PSNU" %in% headers)        ~ "OU_IM",
       TRUE                          ~ "PSNU_IM")
