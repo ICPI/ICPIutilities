@@ -4,7 +4,8 @@
 \alias{split_save}
 \title{Export a single dataset into multiple files by group}
 \usage{
-split_save(df, group_var, folderpath, filename_stub, include_date = FALSE)
+split_save(df, group_var, folderpath, filename_stub,
+  include_date = FALSE)
 }
 \arguments{
 \item{df}{dataframe to split}
