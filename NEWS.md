@@ -1,3 +1,7 @@
+# ICPIutilities 1.0.23
+
+* Allow user to convert site level Genie output to match MSD via the `match_msd()` function
+
 # ICPIutilities 1.0.22
 
 * Adjusted the FY17 APR OVC_SERV values created with `add_cumulative()` to be correct (ie using with Genie) (#36)
