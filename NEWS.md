@@ -1,6 +1,7 @@
 # ICPIutilities 1.0.23
 
 * Allow user to convert site level Genie output to match MSD via the `match_msd()` function
+* Fixes bug for `identifypd()`, where if `pd_type == "year"` and `prior_pd = TRUE` returned current year
 
 # ICPIutilities 1.0.22
 
