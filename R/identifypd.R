@@ -26,7 +26,7 @@ identifypd <- function(df, pd_type = "full", pd_prior = FALSE) {
   #pull current (last column) or prior (2nd to last column)
   pos = dplyr::case_when(pd_prior == FALSE                    ~ -1, #pull last col, curr pd
                          pd_prior == TRUE &&
-                           !pd_type == c("target", "year")    ~ -2, #pull 2nd to last col, last pd
+                           !pd_type %in% c("target", "year")  ~ -2, #pull 2nd to last col, last pd
                          TRUE                                 ~ -5) #pull 5 quarters ago, push year to 1 prior
 
   #figure out column, keeping only variables that are a quarter
