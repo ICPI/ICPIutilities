@@ -1,3 +1,7 @@
+# ICPIutilities 1.0.24
+
+* Remove creation of FY17 APR column in `match_msd()` as it is now included in the Genie (as of Oct 24, 2018)
+
 # ICPIutilities 1.0.23
 
 * Allow user to convert site level Genie output to match MSD via the `match_msd()` function
