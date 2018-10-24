@@ -46,11 +46,7 @@ match_msd <- function(genie_filepath,
       dplyr::group_by_if(is.character) %>%
       #aggregate to create cumulative value
       dplyr::summarise_at(dplyr::vars(dplyr::starts_with("FY")), ~ sum(., na.rm = TRUE)) %>%
-      dplyr::ungroup() %>%
-      #create missing FY17 APR value, need to replace NAs with zero for summing and
-      dplyr::mutate_at(dplyr::vars(dplyr::starts_with("FY")), ~ ifelse(. == 0, NA, .)) %>%
-      #add missing apr value
-      ICPIutilities::add_cumulative("2017")
+      dplyr::ungroup()
 
   #rename to lower for ease of use
     if (to_lower == TRUE)
