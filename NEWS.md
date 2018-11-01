@@ -1,6 +1,7 @@
 # ICPIutilities 1.0.24
 
 * Remove creation of FY17 APR column in `match_msd()` as it is now included in the Genie (as of Oct 24, 2018)
+* Resolve grouping & duplication bug with `add_cumulative()`. Now it aggregates before adding a cumulative value in. 
 
 # ICPIutilities 1.0.23
 
