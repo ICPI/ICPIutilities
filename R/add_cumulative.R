@@ -20,8 +20,16 @@ add_cumulative <- function(df, priorpd = NULL){
     headers_orig <- names(df)
     df <- dplyr::rename_all(df, ~ tolower(.))
 
-  #convert any logical variables to character (if they exist)
-    df <- dplyr::mutate_if(df, is.logical, ~ as.character(.))
+  #convert any logical/factor variables to character (if they exist)
+    df <- df %>%
+      dplyr::mutate_if(is.logical, ~ as.character(.)) %>%
+      dplyr::mutate_if(is.factor,  ~ as.character(.))
+
+  #aggregate so no no double counting (eg mech with 2 lines, one targ, one resuls only)
+    df <- df %>%
+      dplyr::group_by_if(is.character) %>%
+      dplyr::summarize_if(is.numeric, sum, na.rm = TRUE) %>%
+      dplyr::ungroup()
 
   #identify period
     if(!is.null(priorpd)){
