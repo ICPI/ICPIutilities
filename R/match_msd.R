@@ -53,9 +53,9 @@ match_msd <- function(genie_filepath,
       df_genie <- dplyr::rename_all(df_genie, ~ tolower(.))
 
   #save as rds
-    newfile <- stringr::str_replace(file, "txt", "rds")
+    newfile <- stringr::str_replace(filename_new, "txt", "rds")
     if (save_rds == TRUE)
-      saveRDS(df_genie, filename_new)
+      saveRDS(df_genie, newfile)
 
     return(df_genie)
 
