@@ -37,8 +37,8 @@ read_msd <-
 
     #remove N/As now present in the file as of FY18Q2
     df <- df %>%
-      dplyr::mutate_all(~ ifelse(. == "", NA, .)) %>%
-      dplyr::mutate_if(is.logical, ~ as.character(.)) #converts any logicals created in mutate_all back to character
+      dplyr::mutate_if(is.logical, ~ as.character(.)) %>% #converts any logicals created in mutate_all back to character
+      dplyr::mutate_if(is.character, ~ ifelse(. == "", NA, .))
 
     #rename to lower for ease of use
     if (to_lower == TRUE)
