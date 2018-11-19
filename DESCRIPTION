@@ -1,6 +1,6 @@
 Package: ICPIutilities
 Title: Utility functions for working with or creating ICPI products
-Version: 1.0.24
+Version: 1.0.25
 Authors@R: person("Aaron", "Chafetz", email = "achafetz@usaid.gov", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
 Depends: R (>= 3.4.2)
