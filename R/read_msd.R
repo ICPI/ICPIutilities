@@ -31,13 +31,9 @@ read_msd <-
     df <- data.table::fread(file, sep = "\t", colClasses = "character", showProgress = FALSE)
     df <- tibble::as_tibble(df)
 
-    #identify all the value columns (starts with FY)
-    fy_col <- df %>%
-      dplyr::select(dplyr::starts_with("FY")) %>%
-      names()
     #covert any FY to double
     df <- df %>%
-      dplyr::mutate_at(dplyr::vars(fy_col), ~ as.double(.))
+      dplyr::mutate_at(dplyr::vars(dplyr::starts_with("FY")), ~ as.double(.))
 
     #remove N/As now present in the file as of FY18Q2
     df <- df %>%
