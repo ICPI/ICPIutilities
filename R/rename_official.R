@@ -20,6 +20,16 @@ rename_official <- function(df) {
     stop('This dataset does not have mechanisms. Make sure it is OUxIM or PSNUxIM')
   }
 
+  #check internet connection
+  status <- tryCatch(
+    httr::GET("https://www.datim.org/api/sqlViews/fgUtV6e9YIX/data.csv", httr::timeout(60)),
+    error = function(e) e
+  )
+
+  if(inherits(status,  "error") == TRUE) {
+    print("No internet connection. Cannot access offical names & rename.")
+  } else {
+
   #store column names (to work for both lower case and camel case) & then covert to lowercase
     headers_orig <- names(df)
     df <- dplyr::rename_all(df, ~ tolower(.))
@@ -46,6 +56,7 @@ rename_official <- function(df) {
 
   #reapply original variable casing type
     names(df) <- headers_orig
+  }
 
   return(df)
 }

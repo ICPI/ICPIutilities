@@ -1,6 +1,7 @@
 # ICPIutilities 1.0.25
 
 * Fix bug with `read_msd()` where columns with now values would be converted to string. Important update for `match_msd()` where this may occur.
+* When no connection is available, `rename_official()` will print out a warning rather than result in an error, halting the rest of the script execution.
 
 # ICPIutilities 1.0.24
 
