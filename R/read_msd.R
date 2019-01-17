@@ -9,7 +9,6 @@
 #' @param save_rds save the Structured Dataset as an rds file, default = TRUE
 #' @param remove_txt should the txt file be removed, default = FALSE
 #'
-#' @importFrom dplyr %>%
 #' @examples
 #'
 #'\dontrun{#convert Q1 clean PSNU file from txt to Rds
@@ -31,9 +30,10 @@ read_msd <-
     df <- data.table::fread(file, sep = "\t", colClasses = "character", showProgress = FALSE)
     df <- tibble::as_tibble(df)
 
-    #covert any FY to double
-    df <- df %>%
-      dplyr::mutate_at(dplyr::vars(TARGETS, dplyr::starts_with("Qtr"), Cumulative), ~ as.double(.))
+    #covert Target/Qtr/Cumulative to double & year to integer
+    df <- dplyr::mutate_at(df, dplyr::vars(TARGETS, dplyr::starts_with("Qtr"), Cumulative), ~ as.double(.))
+    #convert year to integer
+    df <- dplyr::mutate(df, Fiscal_Year = as.integer(Fiscal_Year))
 
     #rename to lower for ease of use
     if (to_lower == TRUE)
