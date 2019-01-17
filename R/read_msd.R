@@ -33,7 +33,7 @@ read_msd <-
 
     #covert any FY to double
     df <- df %>%
-      dplyr::mutate_at(dplyr::vars(dplyr::starts_with("FY")), ~ as.double(.))
+      dplyr::mutate_at(dplyr::vars(TARGETS, dplyr::starts_with("Qtr"), Cumulative), ~ as.double(.))
 
     #remove N/As now present in the file as of FY18Q2
     df <- df %>%
