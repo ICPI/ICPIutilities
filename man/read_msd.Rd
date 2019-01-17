@@ -16,7 +16,7 @@ read_msd(file, to_lower = TRUE, save_rds = TRUE, remove_txt = FALSE)
 \item{remove_txt}{should the txt file be removed, default = FALSE}
 }
 \description{
-This funciton imports a stored ICPI MER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
+This function imports a stored ICPI MER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
 }
 \examples{
 

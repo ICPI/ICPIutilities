@@ -24,7 +24,7 @@ read_msd <-
            remove_txt = FALSE) {
     #ensure file ends in .txt
     if (stringr::str_detect(file, ".zip") == TRUE)
-      file <- unzip_msd(file)
+      file <- unzip_msd(file, remove_txt)
 
     #import
     df <- data.table::fread(file, sep = "\t", colClasses = "character", showProgress = FALSE)
@@ -55,8 +55,9 @@ read_msd <-
 #' Unzip packaged MSD
 #'
 #' @param msdfilepath_zip full file path of zipped MSD
+#' @param remove_zip after extracting the flat file, do you want the zipped folder removed?
 
-unzip_msd <- function(msdfilepath_zip){
+unzip_msd <- function(msdfilepath_zip, remove_zip = FALSE){
 
   #identify folder zipped file is stored in for extraction
   folder <- dirname(msdfilepath_zip)
@@ -72,7 +73,8 @@ unzip_msd <- function(msdfilepath_zip){
   new_filepath <- file.path(folder, file)
 
   #delete zip file
-  #unlink(msdfilepath_zip)
+  if (remove_zip == TRUE)
+    unlink(msdfilepath_zip)
 
   return(new_filepath)
 }
