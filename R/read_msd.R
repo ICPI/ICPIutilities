@@ -2,7 +2,7 @@
 
 #' Import ICPI MER Structured Datasets .txt into R and covert to .rds
 #'
-#' This funciton imports a stored ICPI MER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
+#' This function imports a stored ICPI MER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
 #' @export
 #' @param file enter the full path to the MSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"
 #' @param to_lower do you want to convert all names to lower case, default = TRUE
@@ -23,8 +23,8 @@ read_msd <-
            save_rds = TRUE,
            remove_txt = FALSE) {
     #ensure file ends in .txt
-    if (stringr::str_detect(file, ".txt") == FALSE)
-      file <- paste0(file, ".txt")
+    if (stringr::str_detect(file, ".zip") == TRUE)
+      file <- unzip_msd(file)
 
     #import
     df <- data.table::fread(file, sep = "\t", colClasses = "character", showProgress = FALSE)
@@ -50,3 +50,29 @@ read_msd <-
 
     return(df)
   }
+
+
+#' Unzip packaged MSD
+#'
+#' @param msdfilepath_zip full file path of zipped MSD
+
+unzip_msd <- function(msdfilepath_zip){
+
+  #identify folder zipped file is stored in for extraction
+  folder <- dirname(msdfilepath_zip)
+
+  #identify txt file name in the zipped folder to use with read_msd()
+  file <- unzip(msdfilepath_zip, list = TRUE)
+  file <- file$Name
+
+  #unzip MSD
+  unzip(msdfilepath_zip, exdir = folder)
+
+  #unziped file folderpath
+  new_filepath <- file.path(folder, file)
+
+  #delete zip file
+  #unlink(msdfilepath_zip)
+
+  return(new_filepath)
+}
