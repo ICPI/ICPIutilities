@@ -7,7 +7,7 @@
 read_msd(file, to_lower = TRUE, save_rds = TRUE, remove_txt = FALSE)
 }
 \arguments{
-\item{file}{enter the full path to the MSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"}
+\item{file}{enter the full path to the MSD/ERSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"}
 
 \item{to_lower}{do you want to convert all names to lower case, default = TRUE}
 
@@ -16,7 +16,7 @@ read_msd(file, to_lower = TRUE, save_rds = TRUE, remove_txt = FALSE)
 \item{remove_txt}{should the txt file be removed, default = FALSE}
 }
 \description{
-This function imports a stored ICPI MER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
+This function imports a stored ICPI MER/ER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
 }
 \examples{
 

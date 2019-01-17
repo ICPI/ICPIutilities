@@ -2,9 +2,9 @@
 
 #' Import ICPI MER Structured Datasets .txt into R and covert to .rds
 #'
-#' This function imports a stored ICPI MER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
+#' This function imports a stored ICPI MER/ER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
 #' @export
-#' @param file enter the full path to the MSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"
+#' @param file enter the full path to the MSD/ERSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"
 #' @param to_lower do you want to convert all names to lower case, default = TRUE
 #' @param save_rds save the Structured Dataset as an rds file, default = TRUE
 #' @param remove_txt should the txt file be removed, default = FALSE
@@ -30,10 +30,24 @@ read_msd <-
     df <- data.table::fread(file, sep = "\t", colClasses = "character", showProgress = FALSE)
     df <- tibble::as_tibble(df)
 
+    #MER
+    if (stringr::str_detect(file, "MER_Structured_Dataset")){
     #covert Target/Qtr/Cumulative to double & year to integer
     df <- dplyr::mutate_at(df, dplyr::vars(TARGETS, dplyr::starts_with("Qtr"), Cumulative), ~ as.double(.))
     #convert year to integer
     df <- dplyr::mutate(df, Fiscal_Year = as.integer(Fiscal_Year))
+    }
+
+    #ER
+    if (stringr::str_detect(file, "^ER_Structured_Dataset")) {
+      df <- dplyr::rename_all(df, ~stringr::str_remove_all(., " |-"))
+      df <- dplyr::mutate(df, FY2018 = as.double(FY2018))
+      #mach MSD
+      df <- dplyr::rename(df, MechanismID = Mechanism,
+                              PrimePartner = PrimePartnerName,
+                              ImplementingMechanismName = MechanismName)
+    }
+
 
     #rename to lower for ease of use
     if (to_lower == TRUE)
