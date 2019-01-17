@@ -31,7 +31,7 @@ read_msd <-
     df <- tibble::as_tibble(df)
 
     #MER
-    if (stringr::str_detect(file, "MER_Structured_Dataset")){
+    if (stringr::str_detect(file, "/MER_Structured_Dataset")){
     #covert Target/Qtr/Cumulative to double & year to integer
     df <- dplyr::mutate_at(df, dplyr::vars(TARGETS, dplyr::starts_with("Qtr"), Cumulative), ~ as.double(.))
     #convert year to integer
@@ -39,7 +39,7 @@ read_msd <-
     }
 
     #ER
-    if (stringr::str_detect(file, "^ER_Structured_Dataset")) {
+    if (stringr::str_detect(file, "/ER_Structured_Dataset")) {
       df <- dplyr::rename_all(df, ~stringr::str_remove_all(., " |-"))
       df <- dplyr::mutate(df, FY2018 = as.double(FY2018))
       #mach MSD
