@@ -1,3 +1,11 @@
+# ICPIutilities 2.0.0
+
+* `read_msd()`
+  - updated to work for semiwide format
+  - `Fiscal_Year` treated as integer
+  - Users can now enter a zipped filepath into `file` and `read_msd()` will extract the flat file and import it
+  - Compatible with the ER dataset
+
 # ICPIutilities 1.0.25
 
 * Fix bug with `read_msd()` where columns with now values would be converted to string. Important update for `match_msd()` where this may occur.
