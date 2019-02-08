@@ -48,6 +48,8 @@ read_msd <-
                               ImplementingMechanismName = MechanismName)
     }
 
+    #convert blanks to NAs
+    df <- dplyr::mutate_if(df, is.character, ~ ifelse(. == "", NA, .))
 
     #rename to lower for ease of use
     if (to_lower == TRUE)
