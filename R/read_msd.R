@@ -45,7 +45,9 @@ read_msd <-
       #mach MSD
       df <- dplyr::rename(df, MechanismID = Mechanism,
                               PrimePartner = PrimePartnerName,
-                              ImplementingMechanismName = MechanismName)
+                              ImplementingMechanismName = MechanismName,
+                              Cumulative = FY2018)
+      df <- tibble::add_column(df, Fiscal_Year = 2018L, .after = "Dataset")
     }
 
     #convert blanks to NAs
