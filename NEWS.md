@@ -5,7 +5,9 @@
   - `Fiscal_Year` treated as integer
   - Users can now enter a zipped filepath into `file` and `read_msd()` will extract the flat file and import it
   - Compatible with the ER dataset
-
+* `add_cumulative()`
+  - Update semi-annual indicator list to reflect MER 2.3 indicator changes
+  
 # ICPIutilities 1.0.25
 
 * Fix bug with `read_msd()` where columns with now values would be converted to string. Important update for `match_msd()` where this may occur.

@@ -81,7 +81,10 @@ add_cumulative <- function(df, priorpd = NULL){
       df <- dplyr::full_join(df, df_cum, by = lst_meta)
 
       #adjust semi annual indicators
-      semi_ann <- c("KP_PREV", "OVC_SERV", "OVC_HIVSTAT", "PP_PREV", "SC_STOCK", "TB_ART", "TB_PREV", "TB_STAT", "TX_TB")
+      semi_ann <- c("AGYW_PREV", "CXCA_SCRN", "CXCA_TX",
+                    "KP_PREV", "OVC_HIVSTAT", "OVC_SERV",
+                    "PP_PREV", "PrEP_CURR", "PrEP_NEW",
+                    "SC_STOCK", "TB_PREV", "TX_ML", "TX_TB")
       if(qtr %in% c(2, 3)) {
         df <- dplyr::mutate(df, !!varname := ifelse(indicator %in% semi_ann, get(paste0(fy_str, "2")), get(!!varname)))
       }
