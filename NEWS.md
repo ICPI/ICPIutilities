@@ -1,5 +1,7 @@
 # ICPIutilities 2.0.0
 
+* `reshape_msd()` function reshapes the current structure to fully long or to match the previous MSD's wider format
+
 * `read_msd()`
   - updated to work for semiwide format
   - `Fiscal_Year` treated as integer
