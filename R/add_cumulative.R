@@ -1,5 +1,7 @@
 #' Add cumulative value for current FY
-#' @description This function is adapted from the achafetz/PartnerProgress repo
+#' @description This function is adapted from the achafetz/PartnerProgress repo.
+#' Given the change to the MSD and inclusion of a cumulative value, this function
+#' is no longer necessary and is deprecated.
 #' @param df data frame to add cumulative column onto
 #' @param priorpd add APR value is missing from a prior year
 #'
@@ -16,6 +18,8 @@
 
 add_cumulative <- function(df, priorpd = NULL){
 
+  .Deprecated(msg = "Given MSD's structural revision, `add_cumulative()` is no longer useful and has been deprecated.")
+
   #store column names (to work for both lower case and camel case) & then covert to lowercase
     headers_orig <- names(df)
     df <- dplyr::rename_all(df, ~ tolower(.))
@@ -28,7 +32,7 @@ add_cumulative <- function(df, priorpd = NULL){
   #aggregate so no no double counting (eg mech with 2 lines, one targ, one resuls only)
     df <- df %>%
       dplyr::group_by_if(is.character) %>%
-      dplyr::summarize_if(is.numeric, sum, na.rm = TRUE) %>%
+      dplyr::summarize_if(is.double, sum, na.rm = TRUE) %>%
       dplyr::ungroup()
 
   #identify period

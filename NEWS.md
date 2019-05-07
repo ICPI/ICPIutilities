@@ -1,7 +1,6 @@
 # ICPIutilities 2.0.0
 
 * `reshape_msd()` function reshapes the current structure to fully long or to match the previous MSD's wider format
-
 * `read_msd()`
   - updated to work for semiwide format
   - `Fiscal_Year` treated as integer
@@ -9,6 +8,7 @@
   - Compatible with the ER dataset
 * `add_cumulative()`
   - Update semi-annual indicator list to reflect MER 2.3 indicator changes
+  - DEPRECATED: MSD's new structure includes cumulative natively
   
 # ICPIutilities 1.0.25
 
