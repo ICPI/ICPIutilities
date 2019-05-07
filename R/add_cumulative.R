@@ -18,7 +18,7 @@
 
 add_cumulative <- function(df, priorpd = NULL){
 
-  .Deprecated(msg = "Given MSD's structural revision, `add_cumulative()` is no longer useful and has been deprecated.")
+  .Deprecated(msg = "Given MSD's structural revision, `add_cumulative()` is deprecated.")
 
   #store column names (to work for both lower case and camel case) & then covert to lowercase
     headers_orig <- names(df)

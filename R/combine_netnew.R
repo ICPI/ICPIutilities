@@ -14,6 +14,8 @@
 #'
 combine_netnew <- function(df, archived_msd_filepath = NULL){
 
+  .Deprecated(msg = "Given the inclusion of TX_NET_NEW in the FY18Q3 MSD, `combine_netnew()` is deprecated.")
+
   #store column names (to work for both lower case and camel case) & then covert to lowercase
     headers_orig <- names(df)
     df <- dplyr::rename_all(df, ~ tolower(.))

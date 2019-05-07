@@ -12,7 +12,9 @@ add_cumulative(df, priorpd = NULL)
 \item{priorpd}{add APR value is missing from a prior year}
 }
 \description{
-This function is adapted from the achafetz/PartnerProgress repo
+This function is adapted from the achafetz/PartnerProgress repo.
+Given the change to the MSD and inclusion of a cumulative value, this function
+is no longer necessary and is deprecated.
 }
 \examples{
 \dontrun{
