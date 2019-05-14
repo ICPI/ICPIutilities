@@ -9,6 +9,8 @@
 
 import_oldtx <- function(df, archived_msd_folderpath, prior_fy = "2016"){
 
+  .Deprecated(msg = "Given the inclusion of TX_NET_NEW in the FY18Q3 MSD, `import_oldtx()` is deprecated.")
+
   #determine MSD type - OU_IM, PSNU, or PSNU_IM
     #a. collect header names
     headers <- df %>%
