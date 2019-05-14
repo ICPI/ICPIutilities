@@ -21,8 +21,27 @@
 #'   }
 #'
 identifypd <- function(df, pd_type = "full", pd_prior = FALSE) {
-  #get list of header
-  headers <- names(df)
+
+  #get header names based on new or old structure
+    if(any(stringr::str_detect(names(df), "(Q|q)tr1"))){
+
+      #figure out whether to make FY upper or lower, depending on the case of Qtr
+      fy_case <- ifelse(any(stringr::str_detect(names(df), "Q")), "FY", "fy")
+
+      headers <- df %>%
+        dplyr::group_by(fiscal_year) %>%
+        dplyr::summarise_at(dplyr::vars(dplyr::matches("[Q|q]")), sum, na.rm = TRUE) %>%
+        dplyr::mutate_all(~dplyr::na_if(., 0)) %>%
+        tidyr::gather(qtr, val, dplyr::matches("[Q|q]"), na.rm = TRUE) %>%
+        tidyr::unite(pd, c("fiscal_year", "qtr"), sep = "") %>%
+        dplyr::mutate(pd = stringr::str_remove(pd, "tr") %>% paste0(fy_case, .)) %>%  #FY or fy
+        dplyr::arrange(pd) %>%
+        dplyr::pull(pd)
+
+    } else {
+      headers <- names(df)
+    }
+
   #pull current (last column) or prior (2nd to last column)
   pos = dplyr::case_when(pd_prior == FALSE                    ~ -1, #pull last col, curr pd
                          pd_prior == TRUE &&
