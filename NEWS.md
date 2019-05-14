@@ -1,5 +1,6 @@
 # ICPIutilities 2.0.0
 
+* `identify_pd()` updated to work with the new dataset structure
 * `reshape_msd()` function reshapes the current structure to fully long or to match the previous MSD's wider format
 * `read_msd()`
   - updated to work for semiwide format
