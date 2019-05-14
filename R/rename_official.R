@@ -21,7 +21,7 @@ rename_official <- function(df) {
   }
 
   #check internet connection
-  if(curl::has_internet()) {
+  if(curl::has_internet() == FALSE) {
     print("No internet connection. Cannot access offical names & rename.")
   } else {
 
