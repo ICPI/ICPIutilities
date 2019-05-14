@@ -21,12 +21,7 @@ rename_official <- function(df) {
   }
 
   #check internet connection
-  status <- tryCatch(
-    httr::GET("https://www.datim.org/api/sqlViews/fgUtV6e9YIX/data.csv", httr::timeout(60)),
-    error = function(e) e
-  )
-
-  if(inherits(status,  "error") == TRUE) {
+  if(curl::has_internet()) {
     print("No internet connection. Cannot access offical names & rename.")
   } else {
 
@@ -35,7 +30,8 @@ rename_official <- function(df) {
     df <- dplyr::rename_all(df, ~ tolower(.))
 
   #access current mechanism list posted publically to DATIM
-    mech_official <- readr::read_csv("https://www.datim.org/api/sqlViews/fgUtV6e9YIX/data.csv",
+    sql_view_url <- "https://www.datim.org/api/sqlViews/fgUtV6e9YIX/data.csv"
+    mech_official <- readr::read_csv(sql_view_url,
                                      col_types = readr::cols(.default = "c"))
 
   #rename variables to match MSD and remove mechid from mech name

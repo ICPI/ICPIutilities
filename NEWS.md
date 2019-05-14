@@ -9,7 +9,9 @@
   - Compatible with the ER dataset
 * `add_cumulative()`
   - Update semi-annual indicator list to reflect MER 2.3 indicator changes
+  - Removed adjustment for FY17 OVC APR
   - DEPRECATED: MSD's new structure includes cumulative natively
+*`rename_official()` cleaned up code, using `curl` to check internet connection
   
 # ICPIutilities 1.0.25
 
