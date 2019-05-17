@@ -11,6 +11,7 @@ Contents
 - [Usage](https://github.com/ICPI/ICPIutilities#usage)
   - [read_msd()](https://github.com/ICPI/ICPIutilities#read_msd)
   - [rename_official()](https://github.com/ICPI/ICPIutilities#rename_official)
+  - [reshape_msd()](https://github.com/ICPI/ICPIutilities#reshape_msd)
   - [add_cumulative()](https://github.com/ICPI/ICPIutilities#add_cumulative)
   - [identifypd()](https://github.com/ICPI/ICPIutilities#identifypd)
   - [combine_netnew()](https://github.com/ICPI/ICPIutilities#combine_netnew)
@@ -42,7 +43,7 @@ library(ICPIutilities)
 ```
 
 #### read_msd()
-The ICPI MER Structured Datasets are posted to [PEPFAR Sharepoint](https://www.pepfar.net/OGAC-HQ/icpi/Products/Forms/AllItems.aspx?RootFolder=%2FOGAC-HQ%2Ficpi%2FProducts%2FICPI%20Data%20Store%2FMER&FolderCTID=0x0120004DAC66286D0B8344836739DA850ACB95&View=%7B58E3102A-C027-4C66-A5C7-84FEBE208B3C%7D) as tab-delimited, text files (the extension is .txt). R has no problem reading in delimited files, but can run into issues due to the fact that that R guesses what columns are based on the first 1,000 rows. Since the MSDs are large, the first 1,000 rows of a column may be blank and R would interepret the column as string. Additional quirks arise from the fact that mechanism ids are read as numbers when they really should be string and the `coarseDisaggregate` variable is read in as a logical variable rather than string. The `read_msd()` function helps by importing all the columns as string and then converting the value columns (all starting with FY) to numeric (doubles).
+The ICPI MER Structured Datasets are posted to [PEPFAR Sharepoint](https://www.pepfar.net/OGAC-HQ/icpi/Products/Forms/AllItems.aspx?RootFolder=%2FOGAC-HQ%2Ficpi%2FProducts%2FICPI%20Data%20Store%2FMER&FolderCTID=0x0120004DAC66286D0B8344836739DA850ACB95&View=%7B58E3102A-C027-4C66-A5C7-84FEBE208B3C%7D) as tab-delimited, text files (the extension is .txt). R has no problem reading in delimited files, but can run into issues due to the fact that that R guesses what columns are based on the first 1,000 rows. Since the MSDs are large, the first 1,000 rows of a column may be blank and R would interepret the column as string. Additional quirks arise from the fact that mechanism ids are read as numbers when they really should be string and the `coarseDisaggregate` variable is read in as a logical variable rather than string. The `read_msd()` function helps by importing all the columns as string, FY to an integer, and then converting the value columns to numeric (doubles).
 
 While there is no correct or incorrect way to name variables, [a best practice](http://r-pkgs.had.co.nz/style.html) is to write them as all lower case (or snake casing with underscores to separate words) as opposed to camel casing (eg `coarseDisaggregate`) as found in the MSD files. The `read_msd()` function has an option to convert the variables to all lower.
 
@@ -68,9 +69,23 @@ Some mechanisms and partners are recorded in FACTSInfo with multiple names as th
   df_ou_im <- rename_official(df_ou_im)
 ```
 
+#### reshape_msd()
+
+With the release of FY19Q2, the MSD structure changed to be in a semi-wide/semi-long format, where the fiscal year is its own column and cumulative, each quarter, and target are their own columns. Working with this structure is not as useful in R; instead its more useful to reshape the data so it is fully long or wide. To reshape the dataset, use the `reshape_msd()` function, specifying the direction. The default is to reshape it wide to resemble the former MSD structure.
+
+```
+#reshape wide to resemble old MSD
+  df_wide <- reshape_msd(df_ou_im)
+
+#reshape long 
+  df_long <- reshape_msd(df_ou_im, "long")
+```
+
 #### add_cumulative()
 
-The MER Structured Datasets contain end of year totals for previous fiscal years, but do not include cumulative/snapshot values prior to Q4. This function identifies the current fiscal year using `identifypd()` and then works to create either a cumulative or snapshot value for each indicator (snapshot indicators include OVC_SERV, TB_PREV,TX_CURR, and TX_TB). The `add_cumulative()` function now takes an argument of prior_pd allowing a user to add in an cumulative/APR value for a prior year (eg DATIM genie output is missing APR values). By specifying the period, an APR value will be created.
+**DEPRECATED: The new MSD has cumulative included naitively**
+
+The MER Structured Datasets contain end of year totals for previous fiscal years, but do not include cumulative/snapshot values prior to Q4. This function identifies the current fiscal year using `identifypd()` and then works to create either a cumulative or snapshot value for each indicator (snapshot indicators include OVC_SERV, TB_PREV,TX_CURR, and TX_TB). The `add_cumulative()` function now takes an argument of prior_pd allowing a user to add in an cumulative/APR value for a prior year (eg DATIM genie output is missing APR values). By specifying the period, an APR value will be created. 
 
 ```
 #add cumulative column to dataset
@@ -81,7 +96,7 @@ The MER Structured Datasets contain end of year totals for previous fiscal years
 ```
 #### identifypd()
 
-The `identifypd()` function is used within the `add_cumulative()` but can be used outside of it as well. It identifies the current period by pulling the last quarter's column. It has a few options to allow you pull the FY or quarter only, or full variable name. You need to specify the `pd_type` to be returned. Updated to now identifies the prior period as well as the current/prior target.
+The `identifypd()` function is used within the `add_cumulative()` but can be used outside of it as well. It identifies the current period by pulling the last period. It has a few options to allow you pull the FY or quarter only, or full variable name. You need to specify the `pd_type` to be returned. Updated to now identifies the prior period as well as the current/prior target.
 
 ```
 #find current quarter & fy
@@ -94,6 +109,8 @@ The `identifypd()` function is used within the `add_cumulative()` but can be use
 ```
 
 #### combine_netnew()
+
+**DEPRECATED: TX_NET_NEW included naitively in the MSD**
 
 This function calculates TX_NET_NEW as it is not included in the MER Structured datasets. TX_NET_NEW is calculated by subtracting the current period's TX_CURR from the last period and for targets, it's created off the gap between the target for the current FY and the APR value for the prior year. Note that the current MSD starts in FY17; TX_NET_NEW for Q1 and APR for FY17 will be incorrect/incomplete due to the fact that the function does not have FY16 data to base this off. To solve this issue, you will need to download the FY15-16 Archived MSD file and then specify its location as an argument in the `combine_netnew()` function. **UPDATE: As of the FY18Q3c_v2_2 release (2018-10-08), TX_NET_NEW is now included in the MSD and it is not necessary to create it in R via this process.**
 
