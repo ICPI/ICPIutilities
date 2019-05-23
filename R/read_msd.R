@@ -30,15 +30,7 @@ read_msd <-
     df <- data.table::fread(file, sep = "\t", colClasses = "character", showProgress = FALSE)
     df <- tibble::as_tibble(df)
 
-    #MER
-    if (stringr::str_detect(file, "/MER_Structured_Dataset")){
-    #covert Target/Qtr/Cumulative to double & year to integer
-    df <- dplyr::mutate_at(df, dplyr::vars(TARGETS, dplyr::starts_with("Qtr"), Cumulative), ~ as.double(.))
-    #convert year to integer
-    df <- dplyr::mutate(df, Fiscal_Year = as.integer(Fiscal_Year))
-    }
-
-    #ER
+    #ER vs MER (MSD or Genie)
     if (stringr::str_detect(file, "/ER_Structured_Dataset")) {
       df <- dplyr::rename_all(df, ~stringr::str_remove_all(., " |-"))
       df <- dplyr::mutate(df, FY2018 = as.double(FY2018))
@@ -48,6 +40,11 @@ read_msd <-
                               ImplementingMechanismName = MechanismName,
                               Cumulative = FY2018)
       df <- tibble::add_column(df, Fiscal_Year = 2018L, .after = "Dataset")
+    } else {
+      #covert Target/Qtr/Cumulative to double & year to integer
+      df <- dplyr::mutate_at(df, dplyr::vars(TARGETS, dplyr::starts_with("Qtr"), Cumulative), ~ as.double(.))
+      #convert year to integer
+      df <- dplyr::mutate(df, Fiscal_Year = as.integer(Fiscal_Year))
     }
 
     #convert blanks to NAs
