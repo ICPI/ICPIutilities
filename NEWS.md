@@ -1,8 +1,7 @@
 # ICPIutilities 2.0.2
+* fixed bug in `read_msd()` that didn't recognize Genie files which didn't convert the targets, quarters or cumulative to numeric columns.
 
 # ICPIutilities 2.0.1
-
-# ICPIutilities 2.0.0
 
 * `identify_pd()` updated to work with the new dataset structure
 * `reshape_msd()` function reshapes the current structure to fully long or to match the previous MSD's wider format
