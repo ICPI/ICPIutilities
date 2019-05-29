@@ -31,9 +31,9 @@ reshape_msd <- function(df, direction = c("wide", "long")){
   #reshape wide (default)
     if("wide" %in% direction){
       df <- df %>%
-        dplyr::mutate(period = stringr::str_replace(period, "(C|c)um", "z.\\1um")) %>% #add z to reorder correctly
+        dplyr::mutate(period = stringr::str_replace(period, "(C|c)um", "zzz.\\1um")) %>% #add z to reorder correctly
         tidyr::spread(period, val) %>%
-        dplyr::rename_all( ~ stringr::str_remove(.,"z.")) #remove z
+        dplyr::rename_all( ~ stringr::str_remove(.,"zzz.")) #remove zzz
     }
 
   return(df)
