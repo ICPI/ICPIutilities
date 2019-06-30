@@ -21,7 +21,9 @@ reshape_msd <- function(df, direction = c("wide", "long")){
 
   #reshape long (wide need to be reshaped long first as well)
     df <- df %>%
-      tidyr::gather(period, val, targets:cumulative, na.rm = TRUE) %>%
+      tidyr::gather(period, val,
+                    dplyr::matches("TARGETS|targets|(Q|q)tr|(C|c)umulative"),
+                    na.rm = TRUE) %>%
       dplyr::filter(val != 0) %>%
       dplyr::mutate(period = stringr::str_remove(period, "tr"), #remove "tr" from "Qtr" to match old
                     period = stringr::str_replace(period, "(TARGETS|targets)", "_\\1"), #add _ to match old
