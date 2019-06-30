@@ -1,3 +1,5 @@
+# ICPIutilities 2.0.3
+
 # ICPIutilities 2.0.2
 * fixed bug in `read_msd()` that didn't recognize Genie files which didn't convert the targets, quarters or cumulative to numeric columns.
 
