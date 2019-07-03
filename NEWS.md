@@ -1,6 +1,8 @@
-# ICPIutilities 3.0.0
+# ICPIutilities 2.1.0
+* add new function, `calc_genpop()`, which create a new disaggregate to breakout general population from key populations
 
 # ICPIutilities 2.0.3
+* adjust `reshape_msd()` to allow to work with naitive camel case variable names in MSD
 
 # ICPIutilities 2.0.2
 * fixed bug in `read_msd()` that didn't recognize Genie files which didn't convert the targets, quarters or cumulative to numeric columns.
