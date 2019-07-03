@@ -70,7 +70,6 @@ calc_genpop <- function(df) {
     dplyr::group_by_at(dplyr::vars(-value,-standardizedDisaggregate,-disaggregate,-categoryOptionComboName,
                                    -ImplementingMechanismName,-otherDisaggregate, -kpgroup)) %>%
     dplyr::summarise(value=sum(value,na.rm=T)) %>%
-
     tidyr::spread(keypopgenpop, value) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(genpop = sum(`Total Numerator`, -KeyPop,na.rm=TRUE)) %>%
@@ -80,13 +79,14 @@ calc_genpop <- function(df) {
     dplyr::mutate(genpop = ifelse(
       (genpop<0 & !grepl("Dedup",PrimePartner,ignore.case=T)), 0,
       genpop)) %>%
-    ungroup()
+    dplyr::ungroup()
+
 
   # print a summary of KP and genpop calculations into the console
   genpop.df %>%
-    group_by(fiscalperiod,indicator) %>%
-    summarise_at(vars(genpop,KeyPop,`Total Numerator`),list(sum),na.rm=T) %>%
-    arrange(desc(fiscalperiod)) %>%
+    dplyr::group_by(fiscalperiod,indicator) %>%
+    dplyr::summarise_at(dplyr::vars(genpop,KeyPop,`Total Numerator`),list(sum),na.rm=T) %>%
+    dplyr::arrange(desc(fiscalperiod)) %>%
     print()
 
   genpop.subset.df <- genpop.df %>%
