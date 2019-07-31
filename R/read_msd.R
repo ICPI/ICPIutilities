@@ -48,7 +48,7 @@ read_msd <-
     }
 
     #convert blanks to NAs
-    df <- dplyr::mutate_if(df, is.character, ~ ifelse(. == "", as.character(NA), .))
+    df <- dplyr::mutate_if(df, is.character, ~ dplyr::na_if(., ""))
 
     #rename to lower for ease of use
     if (to_lower == TRUE)
