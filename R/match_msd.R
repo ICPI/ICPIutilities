@@ -28,7 +28,7 @@ match_msd <- function(genie_filepath,
       names()
     type <- dplyr::case_when(
       "SiteName" %in% headers       ~ "SITE_IM",
-      !("MechanismID" %in% headers) ~ "PSNU",
+      !("mech_code" %in% headers)   ~ "PSNU",
       !("PSNU" %in% headers)        ~ "OU_IM",
       TRUE                          ~ "PSNU_IM")
     filename_new <- file.path(extract_path,
@@ -43,14 +43,16 @@ match_msd <- function(genie_filepath,
       #remove elements missing from MSD
       dplyr::select(-c(dataElementUID, categoryOptionComboUID, ApprovalLevel, ApprovalLevelDescription)) %>%
       #group by meta data
+      dplyr::mutate(Fiscal_Year = as.character(Fiscal_Year)) %>%
       dplyr::group_by_if(is.character) %>%
       #aggregate to create cumulative value
-      dplyr::summarise_at(dplyr::vars(dplyr::starts_with("FY")), ~ sum(., na.rm = TRUE)) %>%
-      dplyr::ungroup()
+      dplyr::summarise_if(is.double, sum, na.rm = TRUE) %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(Fiscal_Year = as.integer(Fiscal_Year))
 
   #rename to lower for ease of use
     if (to_lower == TRUE)
-      df_genie <- dplyr::rename_all(df_genie, ~ tolower(.))
+      df_genie <- dplyr::rename_all(df_genie, tolower)
 
   #save as rds
     newfile <- stringr::str_replace(filename_new, "txt", "rds")
