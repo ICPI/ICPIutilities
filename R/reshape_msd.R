@@ -18,6 +18,7 @@ reshape_msd <- function(df, direction = c("wide", "long")){
 
   #check if upper case (for FY or fy names)
     is_upper <- stringr::str_detect(names(df)[1], "[[:upper:]]")
+    fy_var <- ifelse(is_upper, dplyr::sym("Fiscal_Year"), dplyr::sym("fiscal_year"))
 
   #reshape long (wide need to be reshaped long first as well)
     df <- df %>%
@@ -27,8 +28,8 @@ reshape_msd <- function(df, direction = c("wide", "long")){
       dplyr::filter(val != 0) %>%
       dplyr::mutate(period = stringr::str_remove(period, "tr"), #remove "tr" from "Qtr" to match old
                     period = stringr::str_replace(period, "(TARGETS|targets)", "_\\1"), #add _ to match old
-                    fiscal_year = paste0(ifelse(is_upper, "FY", "fy"), fiscal_year)) %>%  #add FY to match old
-      tidyr::unite(period, c(fiscal_year, period), sep = "") #combine fy and pd together
+                    !!fy_var := paste0(ifelse(is_upper, "FY", "fy"), !!fy_var)) %>%  #add FY to match old
+      tidyr::unite(period, c(!!fy_var, period), sep = "") #combine fy and pd together
 
   #reshape wide (default)
     if("wide" %in% direction){
