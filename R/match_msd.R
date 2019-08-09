@@ -32,7 +32,7 @@ match_msd <- function(genie_filepath,
       !("PSNU" %in% headers)        ~ "OU_IM",
       TRUE                          ~ "PSNU_IM")
     filename_new <- file.path(extract_path,
-                              paste0("MER_Structured_Dataset_", type,"_FY17-18_GENIE_", stringr::str_remove_all(Sys.Date(), "-"),".txt"))
+                              paste0("MER_Structured_Dataset_", type,"_FY18-19_GENIE_", stringr::str_remove_all(Sys.Date(), "-"),".txt"))
     file.rename(filepath, filename_new)
 
   #import and save as RDS
