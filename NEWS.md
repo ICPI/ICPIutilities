@@ -1,4 +1,5 @@
 # ICPIutilities 2.1.1
+* with the FY19Q3i release, adjusted all functions to work with the new columns and adjusted column names
 
 # ICPIutilities 2.1.0
 * add new function, `calc_genpop()`, which create a new disaggregate to breakout general population from key populations
