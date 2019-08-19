@@ -45,6 +45,13 @@ rename_official <- function(df) {
     df <- dplyr::left_join(df, mech_official, by="mech_name")
 
   #replace prime partner and mech names with official names and then remove
+    if(!"mech_name" %in% names(df)){
+      df <- dplyr::mutate(df, mech_name = as.character(NA))
+    }
+    if(!"primepartner" %in% names(df)){
+      df <- dplyr::mutate(df, primepartner = as.character(NA))
+    }
+
     df <- df %>%
       dplyr::mutate(mech_name = mech_name_d,
                     primepartner = primepartner_d) %>%
