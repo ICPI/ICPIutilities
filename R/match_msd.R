@@ -27,12 +27,14 @@ match_msd <- function(genie_filepath,
     headers <- readr::read_tsv(filepath, n_max = 0, col_types = readr::cols(.default = "c")) %>%
       names()
     type <- dplyr::case_when(
-      "SiteName" %in% headers       ~ "SITE_IM",
-      !("mech_code" %in% headers)   ~ "PSNU",
-      !("PSNU" %in% headers)        ~ "OU_IM",
-      TRUE                          ~ "PSNU_IM")
+      any(str_detect(names(df_nat), "FY[:digit:]{4}"))  ~ "NAT_SUBNAT",
+      "SiteName" %in% headers                           ~ "SITE_IM",
+      !("mech_code" %in% headers)                       ~ "PSNU",
+      !("PSNU" %in% headers)                            ~ "OU_IM",
+      TRUE                                              ~ "PSNU_IM")
     filename_new <- file.path(extract_path,
-                              paste0("MER_Structured_Dataset_", type,"_FY18-19_GENIE_", stringr::str_remove_all(Sys.Date(), "-"),".txt"))
+                              paste0("MER_Structured_Dataset_", type,
+                                     ifelse(type == "NAT_SUBNAT", "_FY15-20", "_GENIE_FY18-20"), stringr::str_remove_all(Sys.Date(), "-"),".txt"))
     file.rename(filepath, filename_new)
 
   #import and save as RDS

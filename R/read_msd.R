@@ -40,6 +40,14 @@ read_msd <-
                               ImplementingMechanismName = MechanismName,
                               Cumulative = FY2018)
       df <- tibble::add_column(df, Fiscal_Year = 2018L, .after = "Dataset")
+    } else if (any(stringr::str_detect(names(df), "FY[:digit:]{4}"))) {
+      df <- df %>%
+        dplyr::rename(AgeAsEntered = age_as_entered,
+                      TrendsCoarse  = coarse_age) %>%
+        tidyr::gather(Fiscal_Year, Cumulative, dplyr::starts_with("FY")) %>%
+        dplyr::mutate(Fiscal_Year = stringr::str_remove(Fiscal_Year, "FY"),
+                      Cumulative = as.double(Cumulative),
+                      Fiscal_Year = as.integer(Fiscal_Year))
     } else {
       #covert Target/Qtr/Cumulative to double & year to integer
       df <- dplyr::mutate_at(df, dplyr::vars(TARGETS, dplyr::starts_with("Qtr"), Cumulative), ~ as.double(.))
