@@ -1,3 +1,6 @@
+# ICPIutilities 2.1.2
+* allow `read_msd()`/`match_msd()` to import the NAT_SUBNAT dataset
+
 # ICPIutilities 2.1.1
 * with the FY19Q3i release, adjusted all functions to work with the new columns and adjusted column names
 
