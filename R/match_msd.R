@@ -27,7 +27,6 @@ match_msd <- function(genie_filepath,
     headers <- readr::read_tsv(filepath, n_max = 0, col_types = readr::cols(.default = "c")) %>%
       names()
     type <- dplyr::case_when(
-      any(str_detect(names(headers), "FY[:digit:]{4}"))  ~ "NAT_SUBNAT",
       "SiteName" %in% headers                           ~ "SITE_IM",
       !("mech_code" %in% headers)                       ~ "PSNU",
       !("PSNU" %in% headers)                            ~ "OU_IM",
