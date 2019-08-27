@@ -42,7 +42,7 @@ rename_official <- function(df) {
       dplyr::mutate(mech_name_d = stringr::str_remove(mech_name_d, "0000[0|1] |[:digit:]+ - "))
 
   #merge official names into df
-    df <- dplyr::left_join(df, mech_official, by="mech_name")
+    df <- dplyr::left_join(df, mech_official, by="mech_code")
 
   #replace prime partner and mech names with official names and then remove
     if(!"mech_name" %in% names(df)){
