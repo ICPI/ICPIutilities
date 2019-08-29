@@ -47,9 +47,11 @@ rename_official <- function(df) {
   #replace prime partner and mech names with official names and then remove
     if(!"mech_name" %in% names(df)){
       df <- dplyr::mutate(df, mech_name = as.character(NA))
+      headers_orig <- c(headers_orig, "mech_name")
     }
     if(!"primepartner" %in% names(df)){
       df <- dplyr::mutate(df, primepartner = as.character(NA))
+      headers_orig <- c(headers_orig, "primepartner")
     }
 
     df <- df %>%
