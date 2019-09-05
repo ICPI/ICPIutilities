@@ -30,7 +30,7 @@ identifypd <- function(df, pd_type = "full", pd_prior = FALSE) {
 
       headers <- df %>%
         dplyr::group_by(fiscal_year) %>%
-        dplyr::summarise_at(dplyr::vars(dplyr::matches("[Q|q]")), sum, na.rm = TRUE) %>%
+        dplyr::summarise_at(dplyr::vars(dplyr::matches("(Q|q)tr")), sum, na.rm = TRUE) %>%
         dplyr::mutate_all(~dplyr::na_if(., 0)) %>%
         tidyr::gather(qtr, val, dplyr::matches("[Q|q]"), na.rm = TRUE) %>%
         tidyr::unite(pd, c("fiscal_year", "qtr"), sep = "") %>%
