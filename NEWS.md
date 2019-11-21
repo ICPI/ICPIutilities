@@ -1,4 +1,7 @@
 # ICPIutilities 2.1.3
+* faster imports by using `vroom`
+* update `read_msd()` to handle only lower case variable in the MSD/Genie starting in FY19Q4i
+* DEPRECATED: `match_msd()` since it is covered by `read_msd()`
 
 # ICPIutilities 2.1.2
 * allow `read_msd()` to import the NAT_SUBNAT dataset
