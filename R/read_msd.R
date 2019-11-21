@@ -1,13 +1,10 @@
-
-
 #' Import ICPI MER Structured Datasets .txt into R and covert to .rds
 #'
 #' This function imports a stored ICPI MER/ER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
 #' @export
 #' @param file enter the full path to the MSD/ERSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"
-#' @param to_lower do you want to convert all names to lower case, default = TRUE
 #' @param save_rds save the Structured Dataset as an rds file, default = TRUE
-#' @param remove_txt should the txt file be removed, default = FALSE
+#' @param remove_txt should the txt file be removed, default = TRUE
 #'
 #' @examples
 #'
@@ -23,76 +20,58 @@ read_msd <-
            remove_txt = TRUE) {
 
     #import
-    df <- vroom::vroom(file, delim = "\t", col_types = c(.default = "c"))
+      df <- vroom::vroom(file, delim = "\t", col_types = c(.default = "c"))
 
-    #ER vs MER (MSD or Genie)
-    if (stringr::str_detect(file, "/ER_Structured_Dataset")) {
-      df <- dplyr::rename_all(df, ~stringr::str_remove_all(., " |-"))
-      df <- dplyr::mutate(df, FY2018 = as.double(FY2018))
-      #mach MSD
-      df <- dplyr::rename(df, MechanismID = Mechanism,
-                              PrimePartner = PrimePartnerName,
-                              ImplementingMechanismName = MechanismName,
-                              Cumulative = FY2018)
-      df <- tibble::add_column(df, Fiscal_Year = 2018L, .after = "Dataset")
-    } else if (any(stringr::str_detect(names(df), "FY[:digit:]{4}"))) {
-      df <- df %>%
-        dplyr::rename(AgeAsEntered = age_as_entered,
-                      TrendsCoarse  = coarse_age) %>%
-        tidyr::gather(Fiscal_Year, Cumulative, dplyr::starts_with("FY")) %>%
-        dplyr::mutate(Fiscal_Year = stringr::str_remove(Fiscal_Year, "FY"),
-                      Cumulative = as.double(Cumulative),
-                      Fiscal_Year = as.integer(Fiscal_Year))
-    } else {
-      #covert Target/Qtr/Cumulative to double & year to integer
-      df <- dplyr::mutate_at(df, dplyr::vars(TARGETS, dplyr::starts_with("Qtr"), Cumulative), ~ as.double(.))
-      #convert year to integer
-      df <- dplyr::mutate(df, Fiscal_Year = as.integer(Fiscal_Year))
-    }
+    #drop Genie variables
+      vars_genie <- c("dataelementuid", "categoryoptioncombouid",
+                      "approvallevel", "approvalleveldescription")
+      vars_keep <- setdiff(names(df), vars_genie)
+      df <- dplyr::select(df, vars_keep)
+
+    #covert target/qtr/cumulative to double & year to integer
+      df <- dplyr::mutate_at(df, dplyr::vars(targets, dplyr::starts_with("qtr"), cumulative), ~ as.double(.))
+
+    #convert year to integer
+      df <- dplyr::mutate(df, fiscal_year = as.integer(fiscal_year))
 
     #convert blanks to NAs
-    df <- dplyr::mutate_if(df, is.character, ~ dplyr::na_if(., ""))
-
-    #rename to lower for ease of use
-    if (to_lower == TRUE)
-      df <- dplyr::rename_all(df, ~ tolower(.))
+     df <- dplyr::mutate_if(df, is.character, ~ dplyr::na_if(., ""))
 
     #save as rds
-    newfile <- stringr::str_replace(file, "txt", "rds")
-    if (save_rds == TRUE)
-      saveRDS(df, newfile)
+      newfile <- rename_msd(file)
+      if (save_rds == TRUE)
+        saveRDS(df, newfile)
 
     #remove txt file
-    if (remove_txt == TRUE)
-      file.remove(file)
+      if (remove_txt == TRUE)
+        file.remove(file)
 
     return(df)
   }
 
 
-#' Unzip packaged MSD
+#' Rename MSD file when importing
 #'
-#' @param msdfilepath_zip full file path of zipped MSD
-#' @param remove_zip after extracting the flat file, do you want the zipped folder removed?
+#' @param file enter the full path to the MSD/ERSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"
 
-unzip_msd <- function(msdfilepath_zip, remove_zip = FALSE){
+rename_msd <- function(file){
 
-  #identify folder zipped file is stored in for extraction
-  folder <- dirname(msdfilepath_zip)
+  if(stringr::str_detect(file, "Genie")){
+    #classify file type
+    headers <- vroom::vroom(file, n_max = 0, col_types = readr::cols(.default = "c")) %>%
+      names()
+    type <- dplyr::case_when(
+      "sitename" %in% headers                           ~ "SITE_IM",
+      !("mech_code" %in% headers)                       ~ "PSNU",
+      !("psnu" %in% headers)                            ~ "OU_IM",
+      TRUE                                              ~ "PSNU_IM")
+    file <- file.path(dirname(file),
+                      paste0("MER_Structured_Dataset_GENIE", type,
+                             ifelse(type == "NAT_SUBNAT", "_FY15-20", "_FY18-20"), stringr::str_remove_all(Sys.Date(), "-"),".txt"))
+  }
 
-  #identify txt file name in the zipped folder to use with read_msd()
-  file <- unzip(msdfilepath_zip, list = TRUE)
-  file <- file$Name
+  file <- stringr::str_replace(file, "(zip|txt)", "rds")
 
-  #unzip MSD
-  unzip(msdfilepath_zip, exdir = folder)
+  return(file)
 
-  #unziped file folderpath
-  new_filepath <- file.path(folder, file)
-
-  #delete zip file
-  if (remove_zip == TRUE)
-    unlink(msdfilepath_zip)
-
-  return(new_filepath)
 }

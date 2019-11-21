@@ -4,16 +4,14 @@
 \alias{read_msd}
 \title{Import ICPI MER Structured Datasets .txt into R and covert to .rds}
 \usage{
-read_msd(file, to_lower = TRUE, save_rds = TRUE, remove_txt = FALSE)
+read_msd(file, save_rds = TRUE, remove_txt = TRUE)
 }
 \arguments{
 \item{file}{enter the full path to the MSD/ERSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"}
 
-\item{to_lower}{do you want to convert all names to lower case, default = TRUE}
-
 \item{save_rds}{save the Structured Dataset as an rds file, default = TRUE}
 
-\item{remove_txt}{should the txt file be removed, default = FALSE}
+\item{remove_txt}{should the txt file be removed, default = TRUE}
 }
 \description{
 This function imports a stored ICPI MER/ER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
