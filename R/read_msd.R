@@ -19,16 +19,11 @@
 #'
 read_msd <-
   function(file,
-           to_lower = TRUE,
            save_rds = TRUE,
-           remove_txt = FALSE) {
-    #ensure file ends in .txt
-    if (stringr::str_detect(file, ".zip") == TRUE)
-      file <- unzip_msd(file, remove_txt)
+           remove_txt = TRUE) {
 
     #import
-    df <- data.table::fread(file, sep = "\t", colClasses = "character", showProgress = FALSE)
-    df <- tibble::as_tibble(df)
+    df <- vroom::vroom(file, delim = "\t", col_types = c(.default = "c"))
 
     #ER vs MER (MSD or Genie)
     if (stringr::str_detect(file, "/ER_Structured_Dataset")) {
