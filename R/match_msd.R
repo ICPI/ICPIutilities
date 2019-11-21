@@ -15,6 +15,9 @@ match_msd <- function(genie_filepath,
                       to_lower = TRUE,
                       save_rds = TRUE){
 
+  .Deprecated("`read_msd()`",
+              msg = "Given the similarity of the Genie output to the MSD, `read_msd()` fully handles Genie files.")
+
   #rename Genie name to be similar to the MSD file name
     #determine filename in zipped folder to create filepath once extracted
     file <- unzip(genie_filepath, list = TRUE) %>% .$Name
@@ -27,9 +30,9 @@ match_msd <- function(genie_filepath,
     headers <- readr::read_tsv(filepath, n_max = 0, col_types = readr::cols(.default = "c")) %>%
       names()
     type <- dplyr::case_when(
-      "SiteName" %in% headers                           ~ "SITE_IM",
+      "sitename" %in% headers                           ~ "SITE_IM",
       !("mech_code" %in% headers)                       ~ "PSNU",
-      !("PSNU" %in% headers)                            ~ "OU_IM",
+      !("psnu" %in% headers)                            ~ "OU_IM",
       TRUE                                              ~ "PSNU_IM")
     filename_new <- file.path(extract_path,
                               paste0("MER_Structured_Dataset_", type,
