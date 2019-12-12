@@ -1,4 +1,5 @@
 # ICPIutilities 2.1.4
+* update `read_msd()` to not try to delete file if providing a URL
 
 # ICPIutilities 2.1.3
 * faster imports by using `vroom`
