@@ -1,3 +1,5 @@
+# ICPIutilities 2.1.4
+
 # ICPIutilities 2.1.3
 * faster imports by using `vroom`
 * update `read_msd()` to handle only lower case variable in the MSD/Genie starting in FY19Q4i
