@@ -43,7 +43,7 @@ read_msd <-
         saveRDS(df, newfile)
 
     #remove txt file
-      if (remove_txt == TRUE)
+      if (remove_txt == TRUE && !grepl(".com", file))
         file.remove(file)
 
     return(df)
