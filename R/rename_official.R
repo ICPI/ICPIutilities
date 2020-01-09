@@ -40,6 +40,10 @@ rename_official <- function(df) {
                     primepartner_d = partner,
                     mech_name_d = mechanism) %>%
       dplyr::mutate(mech_name_d = stringr::str_remove(mech_name_d, "0000[0|1] |[:digit:]+ - "))
+  #remove award information from mech_name
+    mech_official <- mech_official %>%
+      dplyr::mutate(mech_name_d = stringr::str_remove(mech_name_d,
+            "^(720|AID|GH(AG|0)|U[:digit:]|NUGGH|UGH|U91|CK0|HT0|N[:digit:]|SGY||NU2|[:digit:]NU2|1U2).* - "))
 
   #merge official names into df
     df <- dplyr::left_join(df, mech_official, by="mech_code")
