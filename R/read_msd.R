@@ -29,7 +29,7 @@ read_msd <-
       df <- dplyr::select(df, vars_keep)
 
     #covert target/qtr/cumulative to double & year to integer
-      df <- dplyr::mutate_at(df, dplyr::vars(targets, dplyr::starts_with("qtr"), cumulative), ~ as.double(.))
+      df <- dplyr::mutate_at(df, dplyr::vars(dplyr::matches("target"), dplyr::starts_with("qtr"), dplyr::matches("cumulative")), ~ as.double(.))
 
     #convert year to integer
       df <- dplyr::mutate(df, fiscal_year = as.integer(fiscal_year))

@@ -1,6 +1,7 @@
 # ICPIutilities 2.1.4
 * update `read_msd()` to not try to delete file if providing a URL
 * removed award information from `mech_name` in `rename_official()`
+* adjust `read_msd()` to handle variant of NAT_SUBNAT MSD structure for importing
 
 # ICPIutilities 2.1.3
 * faster imports by using `vroom`
