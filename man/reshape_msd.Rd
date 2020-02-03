@@ -4,12 +4,12 @@
 \alias{reshape_msd}
 \title{Reshape Semi-Wide MSD}
 \usage{
-reshape_msd(df, direction = c("wide", "long"))
+reshape_msd(df, direction = c("long", "wide"))
 }
 \arguments{
 \item{df}{MSD dataset in the semi-wide format}
 
-\item{direction}{direction of reshape, wide (default) or long}
+\item{direction}{direction of reshape, long (default) or wide (original MSD structure)}
 }
 \description{
 Reshape Semi-Wide MSD
