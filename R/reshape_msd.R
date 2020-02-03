@@ -44,10 +44,12 @@ reshape_msd <- function(df, direction = c("long", "wide"), clean = FALSE){
 
   #clean
     if("long" %in% direction && clean == TRUE){
-      df <-   dplyr::mutate(period_type = stringr::str_extract(period, "TARGETS|targets|(C|c)umulative") %>% tolower,
-                            period_type = ifelse(is.na(period_type), "results", period_type),
-                            period = stringr::str_remove(period, "20") %>% toupper,
-                            period = stringr::str_remove(period, "CUMULATIVE|_TARGETS"))
+      df <- df %>%
+        dplyr::mutate(period_type = stringr::str_extract(period, "TARGETS|targets|(C|c)umulative") %>% tolower,
+                      period_type = ifelse(is.na(period_type), "results", period_type),
+                      period = stringr::str_remove(period, "20") %>% toupper,
+                      period = stringr::str_remove(period, "CUMULATIVE|_TARGETS")) %>%
+        dplyr::select(-val, dplyr::everything())
     }
 
   return(df)
