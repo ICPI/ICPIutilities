@@ -70,7 +70,7 @@ rename_msd <- function(file){
                              ifelse(type == "NAT_SUBNAT", "_FY15-20", "_FY18-20"), stringr::str_remove_all(Sys.Date(), "-"),".txt"))
   }
 
-  file <- stringr::str_replace(file, "(zip|txt)", "rds")
+  file <- stringr::str_replace(file, "(zip|txt)$", "rds")
 
   return(file)
 
