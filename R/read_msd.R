@@ -28,6 +28,9 @@ read_msd <-
       vars_keep <- setdiff(names(df), vars_genie)
       df <- dplyr::select(df, vars_keep)
 
+    #convert old format (pre-FY19Q1) to match new if applicable
+      df <- convert_oldformat(df)
+
     #covert target/qtr/cumulative to double & year to integer
       df <- dplyr::mutate_at(df, dplyr::vars(dplyr::matches("target"), dplyr::starts_with("qtr"), dplyr::matches("cumulative")), ~ as.double(.))
 
@@ -73,5 +76,44 @@ rename_msd <- function(file){
   file <- stringr::str_replace(file, "(zip|txt)$", "rds")
 
   return(file)
+
+}
+
+
+#' Convert any old MSDs to new format
+#'
+#' @param df data frame from read_msd()
+
+convert_oldformat <- function(df){
+
+  if(any(stringr::str_detect(names(df), "FY"))){
+
+    #rename all vars to lower & to match new names
+      df <- df %>%
+        dplyr::rename_all(tolower) %>%
+        dplyr::rename(mech_code = mechanismid,
+                      mech_name = implementingmechanismname,
+                      trendsfine =  agefine,
+                      trendssemifine = agesemifine,
+                      trendscoarse = agecoarse,
+                      statushiv = resultstatus)
+
+    #remove mechanism UID no longer used
+      df <- dplyr::select(df, -mechanismuid)
+
+    #reshape full long to convert pd from var to columne
+      df <- tidyr::gather(df, period, value, dplyr::starts_with("fy"))
+
+    #separate fy from period and reshape wide to match new format
+      df <- df %>%
+        dplyr::mutate(period = stringr::str_remove_all(period, "fy|_"),
+                      period = stringr::str_replace(period, "q", "qtr")) %>%
+        tidyr::separate(period, c("fiscal_year", "period"), sep = 4) %>%
+        tidyr::spread(period, value) %>%
+        dplyr::rename(cumulative = apr) %>%
+        dplyr::select(-cumulative, -qtr1:-qtr4, -targets, dplyr::everything())
+  }
+
+  return(df)
 
 }
