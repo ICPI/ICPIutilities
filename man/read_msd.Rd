@@ -4,14 +4,14 @@
 \alias{read_msd}
 \title{Import ICPI MER Structured Datasets .txt into R and covert to .rds}
 \usage{
-read_msd(file, save_rds = TRUE, remove_txt = TRUE)
+read_msd(file, save_rds = FALSE, remove_txt = FALSE)
 }
 \arguments{
 \item{file}{enter the full path to the MSD/ERSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"}
 
-\item{save_rds}{save the Structured Dataset as an rds file, default = TRUE}
+\item{save_rds}{save the Structured Dataset as an rds file, default = FALSE}
 
-\item{remove_txt}{should the txt file be removed, default = TRUE}
+\item{remove_txt}{should the txt file be removed, default = FALSE}
 }
 \description{
 This function imports a stored ICPI MER/ER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
@@ -19,8 +19,8 @@ This function imports a stored ICPI MER/ER Structured Datasets and coverts it fr
 \examples{
 
 \dontrun{#convert Q1 clean PSNU file from txt to Rds
-#read in file for use (without saving as an RDS)
-   df_psnu <- read_msd("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt", save_rds = FALSE)
+#read in file for use (saving as an RDS)
+   df_psnu <- read_msd("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt", save_rds = TRUE)
 #convert to RDS and delete the original txt file
  read_msd("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt", remove_txt = TRUE)}
 
