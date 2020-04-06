@@ -3,21 +3,21 @@
 #' This function imports a stored ICPI MER/ER Structured Datasets and coverts it from a .txt to an .Rds to significantly limit file size
 #' @export
 #' @param file enter the full path to the MSD/ERSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"
-#' @param save_rds save the Structured Dataset as an rds file, default = TRUE
-#' @param remove_txt should the txt file be removed, default = TRUE
+#' @param save_rds save the Structured Dataset as an rds file, default = FALSE
+#' @param remove_txt should the txt file be removed, default = FALSE
 #'
 #' @examples
 #'
 #'\dontrun{#convert Q1 clean PSNU file from txt to Rds
-#'#read in file for use (without saving as an RDS)
-#'    df_psnu <- read_msd("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt", save_rds = FALSE)
+#'#read in file for use (saving as an RDS)
+#'    df_psnu <- read_msd("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt", save_rds = TRUE)
 #'#convert to RDS and delete the original txt file
 #'  read_msd("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt", remove_txt = TRUE)}
 #'
 read_msd <-
   function(file,
-           save_rds = TRUE,
-           remove_txt = TRUE) {
+           save_rds = FALSE,
+           remove_txt = FALSE) {
 
     #import
       df <- vroom::vroom(file, delim = "\t", col_types = c(.default = "c"))
