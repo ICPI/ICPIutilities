@@ -1,3 +1,5 @@
+# ICPIutilities 2.1.6
+
 # ICPIutilities 2.1.5
 * change default in `reshape_msd()` to be long and added a parameter to have a cleaner period output, `clean = TRUE`
 
