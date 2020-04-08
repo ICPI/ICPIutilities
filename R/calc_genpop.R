@@ -18,13 +18,13 @@ calc_genpop <- function(df) {
   if(!is.data.frame(df))
     stop("Not a data frame")
 
-  # 2. code is written to take MSD columns as named in native dataset.  read_msd(df,to_lower=F) only
+  # 2. code is written to take FY2020Q1 MSD columns in lowercase, otherwise convert
     if(any(grepl("[[:upper:]]",names(df))))
     {names(df) <- tolower(names(df))}
 
   kp.group.df <- df %>%
-    ## subset indicators and disaggs related to KP ##
-    dplyr::filter(indicator %in% c("HTS_TST","HTS_TST_POS","TX_NEW","TX_CURR","TX_PVLS",
+    ## subset indicators and disaggs related to KP - new with MER 2.4##
+    dplyr::filter(indicator %in% c("HTS_TST","HTS_TST_POS","TX_NEW","TX_CURR","TX_PVLS","TX_RTT",
                                    "KP_PREV","KP_MAT","HTS_SELF","HTS_RECENT","PrEP_NEW","PrEP_CURR")) %>%
     dplyr::filter(grepl("KeyPop",disaggregate,ignore.case=T) |
                    standardizeddisaggregate %in% c("Total Numerator","Total Denominator")) %>%
