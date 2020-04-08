@@ -22,6 +22,7 @@ calc_genpop <- function(df) {
     if(any(grepl("[[:upper:]]",names(df))))
     {names(df) <- tolower(names(df))}
 
+
   kp.group.df <- df %>%
     ## subset indicators and disaggs related to KP - new with MER 2.4##
     dplyr::filter(indicator %in% c("HTS_TST","HTS_TST_POS","TX_NEW","TX_CURR","TX_PVLS","TX_RTT",
@@ -73,6 +74,7 @@ calc_genpop <- function(df) {
     dplyr::group_by_at(dplyr::vars(-value,-standardizeddisaggregate,-disaggregate,-categoryoptioncomboname,
                                    -mech_name,-otherdisaggregate, -kpgroup, -population)) %>%
     dplyr::summarise(value=sum(value,na.rm=T)) %>%
+
     tidyr::spread(keypopgenpop, value) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(genpop = sum(Total, -KeyPop,na.rm=TRUE)) %>%
@@ -83,7 +85,6 @@ calc_genpop <- function(df) {
       (genpop<0 & !grepl("Dedup",primepartner,ignore.case=T)), 0,
       genpop)) %>%
     dplyr::ungroup()
-
 
   # print a summary of KP and genpop calculations into the console
   genpop.df %>%

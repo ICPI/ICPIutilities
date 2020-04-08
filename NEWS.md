@@ -1,3 +1,33 @@
+# ICPIutilities 2.1.6
+* change defaults in `read_msd()` to not save as an rds and not delete original txt file
+* fix potential bug with `read_msd()` rds output filename
+* added backwards comptability to handle old/wide format of MSD prior to FY19Q1
+
+# ICPIutilities 2.1.5
+* change default in `reshape_msd()` to be long and added a parameter to have a cleaner period output, `clean = TRUE`
+
+# ICPIutilities 2.1.4
+* update `read_msd()` to not try to delete file if providing a URL
+* removed award information from `mech_name` in `rename_official()`
+* adjust `read_msd()` to handle variant of NAT_SUBNAT MSD structure for importing
+
+# ICPIutilities 2.1.3
+* faster imports by using `vroom`
+* update `read_msd()` to handle only lower case variable in the MSD/Genie starting in FY19Q4i
+* DEPRECATED: `match_msd()` since it is covered by `read_msd()`
+
+# ICPIutilities 2.1.2
+* allow `read_msd()` to import the NAT_SUBNAT dataset
+
+# ICPIutilities 2.1.1
+* with the FY19Q3i release, adjusted all functions to work with the new columns and adjusted column names
+
+# ICPIutilities 2.1.0
+* add new function, `calc_genpop()`, which create a new disaggregate to breakout general population from key populations
+
+# ICPIutilities 2.0.3
+* adjust `reshape_msd()` to allow to work with naitive camel case variable names in MSD
+
 # ICPIutilities 2.0.2
 * fixed bug in `read_msd()` that didn't recognize Genie files which didn't convert the targets, quarters or cumulative to numeric columns.
 

@@ -30,7 +30,7 @@ identifypd <- function(df, pd_type = "full", pd_prior = FALSE) {
 
       headers <- df %>%
         dplyr::group_by(fiscal_year) %>%
-        dplyr::summarise_at(dplyr::vars(dplyr::matches("[Q|q]")), sum, na.rm = TRUE) %>%
+        dplyr::summarise_at(dplyr::vars(dplyr::matches("(Q|q)tr")), sum, na.rm = TRUE) %>%
         dplyr::mutate_all(~dplyr::na_if(., 0)) %>%
         tidyr::gather(qtr, val, dplyr::matches("[Q|q]"), na.rm = TRUE) %>%
         tidyr::unite(pd, c("fiscal_year", "qtr"), sep = "") %>%
@@ -55,21 +55,20 @@ identifypd <- function(df, pd_type = "full", pd_prior = FALSE) {
   if(pd_type == "year") {
     start_pt <- 3
     end_pt <- -3
+    pd <- stringr::str_sub(pd, start_pt, end_pt) %>%
+      as.integer(.)
   } else if(pd_type == "quarter") {
     start_pt <- -1
     end_pt <- -1
+    pd <- stringr::str_sub(pd, start_pt, end_pt) %>%
+      as.integer(.)
   } else if(pd_type == "target") {
     pd <- stringr::str_replace(pd, "q[:digit:]", "_targets") #if lower case
     pd <- stringr::str_replace(pd, "Q[:digit:]", "_TARGETS") #if camel case (MSD standard)
-    return(pd)
-    break
   } else {
-    return(pd)
-    break
+    pd
   }
-  #for year/quarter, extract portion asked for and return as integer
-  pd <- stringr::str_sub(pd, start_pt, end_pt) %>%
-    as.integer(.)
+
   return(pd)
 }
 

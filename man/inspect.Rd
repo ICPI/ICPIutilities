@@ -4,9 +4,18 @@
 \alias{inspect}
 \title{Investigate MER disaggs}
 \usage{
-inspect(df, ind, group_var = c("standardizeddisaggregate"),
-  disagg = NULL, pd = fy2017apr, ou = NULL, agency = NULL,
-  nd = NULL, order_on = NULL, clean = TRUE)
+inspect(
+  df,
+  ind,
+  group_var = c("standardizeddisaggregate"),
+  disagg = NULL,
+  pd = fy2017apr,
+  ou = NULL,
+  agency = NULL,
+  nd = NULL,
+  order_on = NULL,
+  clean = TRUE
+)
 }
 \arguments{
 \item{df}{data frame to inspect}

@@ -16,7 +16,7 @@
 rename_official <- function(df) {
 
   #check that mechanism exists in MSD before starting (OUxIM or PSNUxIM, not PSNU)
-  if(("mechanismid" %in% names(df) == FALSE && "MechanismID" %in% names(df) == FALSE)) {
+  if(("mech_code" %in% names(df) == FALSE)) {
     stop('This dataset does not have mechanisms. Make sure it is OUxIM or PSNUxIM')
   }
 
@@ -27,7 +27,7 @@ rename_official <- function(df) {
 
   #store column names (to work for both lower case and camel case) & then covert to lowercase
     headers_orig <- names(df)
-    df <- dplyr::rename_all(df, ~ tolower(.))
+    df <- dplyr::rename_all(df, tolower)
 
   #access current mechanism list posted publically to DATIM
     sql_view_url <- "https://www.datim.org/api/sqlViews/fgUtV6e9YIX/data.csv"
@@ -36,17 +36,30 @@ rename_official <- function(df) {
 
   #rename variables to match MSD and remove mechid from mech name
     mech_official <- mech_official %>%
-      dplyr::select(mechanismid = code,
+      dplyr::select(mech_code = code,
                     primepartner_d = partner,
-                    implementingmechanismname_d = mechanism) %>%
-      dplyr::mutate(implementingmechanismname_d = stringr::str_remove(implementingmechanismname_d, "0000[0|1] |[:digit:]+ - "))
+                    mech_name_d = mechanism) %>%
+      dplyr::mutate(mech_name_d = stringr::str_remove(mech_name_d, "0000[0|1] |[:digit:]+ - "))
+  #remove award information from mech_name
+    mech_official <- mech_official %>%
+      dplyr::mutate(mech_name_d = stringr::str_remove(mech_name_d,
+            "^(720|AID|GH(AG|0)|U[:digit:]|NUGGH|UGH|U91|CK0|HT0|N[:digit:]|SGY||NU2|[:digit:]NU2|1U2).* - "))
 
   #merge official names into df
-    df <- dplyr::left_join(df, mech_official, by="mechanismid")
+    df <- dplyr::left_join(df, mech_official, by="mech_code")
 
   #replace prime partner and mech names with official names and then remove
+    if(!"mech_name" %in% names(df)){
+      df <- dplyr::mutate(df, mech_name = as.character(NA))
+      headers_orig <- c(headers_orig, "mech_name")
+    }
+    if(!"primepartner" %in% names(df)){
+      df <- dplyr::mutate(df, primepartner = as.character(NA))
+      headers_orig <- c(headers_orig, "primepartner")
+    }
+
     df <- df %>%
-      dplyr::mutate(implementingmechanismname = implementingmechanismname_d,
+      dplyr::mutate(mech_name = mech_name_d,
                     primepartner = primepartner_d) %>%
       dplyr::select(-dplyr::ends_with("_d"))
 

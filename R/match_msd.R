@@ -15,6 +15,9 @@ match_msd <- function(genie_filepath,
                       to_lower = TRUE,
                       save_rds = TRUE){
 
+  .Deprecated("`read_msd()`",
+              msg = "Given the similarity of the Genie output to the MSD, `read_msd()` fully handles Genie files.")
+
   #rename Genie name to be similar to the MSD file name
     #determine filename in zipped folder to create filepath once extracted
     file <- unzip(genie_filepath, list = TRUE) %>% .$Name
@@ -27,12 +30,13 @@ match_msd <- function(genie_filepath,
     headers <- readr::read_tsv(filepath, n_max = 0, col_types = readr::cols(.default = "c")) %>%
       names()
     type <- dplyr::case_when(
-      "SiteName" %in% headers       ~ "SITE_IM",
-      !("MechanismID" %in% headers) ~ "PSNU",
-      !("PSNU" %in% headers)        ~ "OU_IM",
-      TRUE                          ~ "PSNU_IM")
+      "sitename" %in% headers                           ~ "SITE_IM",
+      !("mech_code" %in% headers)                       ~ "PSNU",
+      !("psnu" %in% headers)                            ~ "OU_IM",
+      TRUE                                              ~ "PSNU_IM")
     filename_new <- file.path(extract_path,
-                              paste0("MER_Structured_Dataset_", type,"_FY17-18_GENIE_", stringr::str_remove_all(Sys.Date(), "-"),".txt"))
+                              paste0("MER_Structured_Dataset_", type,
+                                     ifelse(type == "NAT_SUBNAT", "_FY15-20", "_GENIE_FY18-20"), stringr::str_remove_all(Sys.Date(), "-"),".txt"))
     file.rename(filepath, filename_new)
 
   #import and save as RDS
@@ -43,14 +47,16 @@ match_msd <- function(genie_filepath,
       #remove elements missing from MSD
       dplyr::select(-c(dataElementUID, categoryOptionComboUID, ApprovalLevel, ApprovalLevelDescription)) %>%
       #group by meta data
+      dplyr::mutate(Fiscal_Year = as.character(Fiscal_Year)) %>%
       dplyr::group_by_if(is.character) %>%
       #aggregate to create cumulative value
-      dplyr::summarise_at(dplyr::vars(dplyr::starts_with("FY")), ~ sum(., na.rm = TRUE)) %>%
-      dplyr::ungroup()
+      dplyr::summarise_if(is.double, sum, na.rm = TRUE) %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(Fiscal_Year = as.integer(Fiscal_Year))
 
   #rename to lower for ease of use
     if (to_lower == TRUE)
-      df_genie <- dplyr::rename_all(df_genie, ~ tolower(.))
+      df_genie <- dplyr::rename_all(df_genie, tolower)
 
   #save as rds
     newfile <- stringr::str_replace(filename_new, "txt", "rds")
