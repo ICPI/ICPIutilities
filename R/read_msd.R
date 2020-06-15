@@ -38,7 +38,7 @@ read_msd <-
       df <- dplyr::mutate(df, fiscal_year = as.integer(fiscal_year))
 
     #convert blanks to NAs
-     df <- dplyr::mutate_if(df, is.character, ~ dplyr::na_if(., ""))
+     # df <- dplyr::mutate_if(df, is.character, ~ dplyr::na_if(., ""))
 
     #save as rds
       newfile <- rename_msd(file)
