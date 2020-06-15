@@ -26,7 +26,7 @@ read_msd <-
       vars_genie <- c("dataelementuid", "categoryoptioncombouid",
                       "approvallevel", "approvalleveldescription")
       vars_keep <- setdiff(names(df), vars_genie)
-      df <- dplyr::select(df, vars_keep)
+      df <- dplyr::select(df, all_of(vars_keep))
 
     #convert old format (pre-FY19Q1) to match new if applicable
       df <- convert_oldformat(df)
