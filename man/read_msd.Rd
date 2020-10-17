@@ -7,7 +7,7 @@
 read_msd(file, save_rds = FALSE, remove_txt = FALSE)
 }
 \arguments{
-\item{file}{enter the full path to the MSD/ERSD file, eg "~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"}
+\item{file}{enter the full path to the MSD/FSD file}
 
 \item{save_rds}{save the Structured Dataset as an rds file, default = FALSE}
 
@@ -19,9 +19,10 @@ This function imports a stored ICPI MER/ER Structured Datasets and coverts it fr
 \examples{
 
 \dontrun{#convert Q1 clean PSNU file from txt to Rds
-#read in file for use (saving as an RDS)
-   df_psnu <- read_msd("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt", save_rds = TRUE)
+#read in file for use
+ path <- "~/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt"
+ df_psnu <- read_msd(path)
 #convert to RDS and delete the original txt file
- read_msd("~/ICPI/Data/ICPI_MER_Structured_Dataset_PSNU_20180323_v2_1.txt", remove_txt = TRUE)}
+ read_msd(path, save_rds = TRUE, remove_txt = TRUE)}
 
 }

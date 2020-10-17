@@ -32,8 +32,15 @@ read_msd <-
     #convert old format (pre-FY19Q1) to match new if applicable
       df <- convert_oldformat(df)
 
-    #covert target/qtr/cumulative to double & year to integer
-      df <- dplyr::mutate_at(df, dplyr::vars(dplyr::matches("target"), dplyr::starts_with("qtr"), dplyr::matches("cumulative")), ~ as.double(.))
+    #align FSD primepartner naming with MSD
+      df <- dplyr::rename_with(df, ~stringr::str_replace(., "prime_partner", "primepartner"))
+
+    #covert target/results/budgets to double
+      df <- df %>%
+        dplyr::mutate(dplyr::across(c(dplyr::matches("target"), dplyr::starts_with("qtr"),
+                                      dplyr::matches("cumulative"), dplyr::matches("cop_budget"),
+                                      dplyr::matches("_amt")),
+                                    as.double))
 
     #convert year to integer
       df <- dplyr::mutate(df, fiscal_year = as.integer(fiscal_year))
@@ -71,7 +78,7 @@ rename_msd <- function(file){
       TRUE                                              ~ "PSNU_IM")
     file <- file.path(dirname(file),
                       paste0("MER_Structured_Dataset_GENIE", type,
-                             ifelse(type == "NAT_SUBNAT", "_FY15-20", "_FY18-20"), stringr::str_remove_all(Sys.Date(), "-"),".txt"))
+                             ifelse(type == "NAT_SUBNAT", "_FY15-21", "_FY18-21"), stringr::str_remove_all(Sys.Date(), "-"),".txt"))
   }
 
   file <- stringr::str_replace(file, "(zip|txt)$", "rds")
