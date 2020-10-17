@@ -1,7 +1,7 @@
 #' Add NET_NEW to dataset (orginally in achafetz/PartnerProgress)
 #'
 #' @param df dataframe to create net new based off of and append onto
-#' @param archived_msd_folderpath if importing FY16Q4 data, identify the folder path where archived file with FY15-16 data sits
+#' @param archived_msd_filepath if importing FY16Q4 data, identify the folder path where archived file with FY15-16 data sits
 #'
 #' @export
 #'

@@ -9,7 +9,7 @@ combine_netnew(df, archived_msd_filepath = NULL)
 \arguments{
 \item{df}{dataframe to create net new based off of and append onto}
 
-\item{archived_msd_folderpath}{if importing FY16Q4 data, identify the folder path where archived file with FY15-16 data sits}
+\item{archived_msd_filepath}{if importing FY16Q4 data, identify the folder path where archived file with FY15-16 data sits}
 }
 \description{
 Add NET_NEW to dataset (orginally in achafetz/PartnerProgress)
