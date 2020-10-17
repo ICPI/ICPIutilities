@@ -7,6 +7,7 @@
 #' @export
 #'
 #' @importFrom dplyr %>%
+#' @importFrom utils unzip
 #' @examples
 #' \dontrun{
 #' df_genie <- match_msd("~/Downloads/PEPFAR-Data-Genie-PSNUByIMs-2018-08-15.zip") }
