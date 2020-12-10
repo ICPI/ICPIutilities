@@ -21,7 +21,7 @@ read_msd <-
            remove_txt = FALSE) {
 
     #read in rds if it already exists
-    if(tools::file_ext(file == "rds")){
+    if(tools::file_ext(file = "rds")){
       df <- readr::read_rds(file)
     } else {
 
