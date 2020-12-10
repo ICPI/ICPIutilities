@@ -15,6 +15,7 @@ Imports:
     rlang,
     stringr,
     tidyr,
+    tools,
     vroom
 Suggests: testthat
 Encoding: UTF-8

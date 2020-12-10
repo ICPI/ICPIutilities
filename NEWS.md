@@ -1,6 +1,7 @@
 # ICPIutilities 2.1.6
 * change defaults in `read_msd()` to not save as an rds and not delete original txt file
 * fix potential bug with `read_msd()` rds output filename
+* allow `read_msd()` to read in rds if its already created
 * added backwards comptability to handle old/wide format of MSD prior to FY19Q1
 
 # ICPIutilities 2.1.5

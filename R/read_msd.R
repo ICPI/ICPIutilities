@@ -20,6 +20,11 @@ read_msd <-
            save_rds = FALSE,
            remove_txt = FALSE) {
 
+    #read in rds if it already exists
+    if(tools::file_ext(file == "rds")){
+      df <- readr::read_rds(file)
+    } else {
+
     #import
       df <- vroom::vroom(file, delim = "\t", col_types = c(.default = "c"))
 
@@ -56,8 +61,10 @@ read_msd <-
     #remove txt file
       if (remove_txt == TRUE && !grepl(".com", file))
         file.remove(file)
+    }
 
     return(df)
+
   }
 
 
