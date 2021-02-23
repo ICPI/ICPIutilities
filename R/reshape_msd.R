@@ -23,12 +23,15 @@ reshape_msd <- function(df, direction = c("long", "wide"), clean = TRUE){
     is_upper <- stringr::str_detect(names(df)[1], "[[:upper:]]")
     fy_var <- ifelse(is_upper, dplyr::sym("Fiscal_Year"), dplyr::sym("fiscal_year"))
 
+    if((fy_var %in% names(df) == FALSE)) {
+      stop('This dataframe is missing the fiscal_year indicator needed to create perid.')
+    }
   #reshape long (wide need to be reshaped long first as well)
     df <- df %>%
-      tidyr::gather(period, val,
+      tidyr::gather(period, value,
                     dplyr::matches("TARGETS|targets|(Q|q)tr|(C|c)umulative"),
                     na.rm = TRUE) %>%
-      dplyr::filter(val != 0) %>%
+      dplyr::filter(value != 0) %>%
       dplyr::mutate(period = stringr::str_remove(period, "tr"), #remove "tr" from "Qtr" to match old
                     period = stringr::str_replace(period, "(TARGETS|targets)", "_\\1"), #add _ to match old
                     !!fy_var := paste0(ifelse(is_upper, "FY", "fy"), !!fy_var)) %>%  #add FY to match old
@@ -38,7 +41,7 @@ reshape_msd <- function(df, direction = c("long", "wide"), clean = TRUE){
     if(!"long" %in% direction){
       df <- df %>%
         dplyr::mutate(period = stringr::str_replace(period, "(C|c)um", "zzz.\\1um")) %>% #add z to reorder correctly
-        tidyr::spread(period, val) %>%
+        tidyr::spread(period, value) %>%
         dplyr::rename_all( ~ stringr::str_remove(.,"zzz.")) #remove zzz
     }
 
@@ -49,7 +52,7 @@ reshape_msd <- function(df, direction = c("long", "wide"), clean = TRUE){
                       period_type = ifelse(is.na(period_type), "results", period_type),
                       period = stringr::str_remove(period, "20") %>% toupper,
                       period = stringr::str_remove(period, "CUMULATIVE|_TARGETS")) %>%
-        dplyr::select(-val, dplyr::everything())
+        dplyr::select(-value, dplyr::everything())
     }
 
   return(df)

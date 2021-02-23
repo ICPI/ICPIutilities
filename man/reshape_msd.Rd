@@ -4,7 +4,7 @@
 \alias{reshape_msd}
 \title{Reshape Semi-Wide MSD}
 \usage{
-reshape_msd(df, direction = c("long", "wide"), clean = FALSE)
+reshape_msd(df, direction = c("long", "wide"), clean = TRUE)
 }
 \arguments{
 \item{df}{MSD dataset in the semi-wide format}
