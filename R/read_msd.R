@@ -37,8 +37,11 @@ read_msd <-
     #convert old format (pre-FY19Q1) to match new if applicable
       df <- convert_oldformat(df)
 
-    #align FSD primepartner naming with MSD
-      df <- dplyr::rename_with(df, ~stringr::str_replace(., "prime_partner", "primepartner"))
+    #align FSD naming with MSD
+      df <- df %>%
+        dplyr::rename_with(~stringr::str_replace(., "primepartner_name", "primepartner")) %>%
+        dplyr::rename_with(~stringr::str_replace(., "implementation_year", "fiscal_year")) %>%
+        dplyr::rename_with(~stringr::str_replace(., "country", "countryname"))
 
     #covert target/results/budgets to double
       df <- df %>%
