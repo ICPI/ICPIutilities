@@ -1,6 +1,6 @@
 ## ICPI Utilities
 
-[![Build Status](https://travis-ci.org/ICPI/ICPIutilities.svg?branch=master)](https://travis-ci.org/ICPI/ICPIutilities)
+[![R-CMD-check](https://github.com/ICPI/ICPIutilities/workflows/R-CMD-check/badge.svg)](https://github.com/ICPI/ICPIutilities/actions)
 
 ![icpiutilities](https://user-images.githubusercontent.com/8933069/45518039-36ec0580-b77e-11e8-8acf-f67f893c7ae8.png)
 
