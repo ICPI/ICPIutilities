@@ -23,8 +23,8 @@ reshape_msd <- function(df, direction = c("long", "wide"), clean = TRUE){
     is_upper <- stringr::str_detect(names(df)[1], "[[:upper:]]")
     fy_var <- ifelse(is_upper, dplyr::sym("Fiscal_Year"), dplyr::sym("fiscal_year"))
 
-    if((fy_var %in% names(df) == FALSE)) {
-      stop('This dataframe is missing the fiscal_year indicator needed to create perid.')
+    if(("fiscal_year" %in% names(df) == FALSE)) {
+      stop('This dataframe is missing the fiscal_year indicator needed to create period.')
     }
   #reshape long (wide need to be reshaped long first as well)
     df <- df %>%
