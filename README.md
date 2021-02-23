@@ -1,4 +1,6 @@
-## ICPI Utilities
+## ICPIutilities
+
+<img src='man/figures/logo.png' align="right" height="138" />
 
 [![R-CMD-check](https://github.com/ICPI/ICPIutilities/workflows/R-CMD-check/badge.svg)](https://github.com/ICPI/ICPIutilities/actions)
 
