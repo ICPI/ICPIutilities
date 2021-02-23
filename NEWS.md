@@ -1,4 +1,5 @@
 # ICPIutilities 2.1.8
+* require `dplyr v1.0.0` or later to handle some of the code improvements
 * update `read_msd()` to handle changes to the variable naming with FSW and align with MSD
 * change the `reshape_msd()` `val` column to be called `value`
 * change the default parameter in `reshape_msd()` from `clean = TRUE` 

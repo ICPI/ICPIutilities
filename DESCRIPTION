@@ -7,7 +7,7 @@ Depends: R (>= 3.4.2)
 License: MIT + file LICENSE
 Imports: 
     curl,
-    dplyr,
+    dplyr (>= 1.0.0),
     knitr,
     magrittr,
     readr,
@@ -16,7 +16,8 @@ Imports:
     stringr,
     tidyr,
     tools,
-    vroom
+    vroom,
+    usethis
 Suggests: testthat
 Encoding: UTF-8
 LazyData: true
