@@ -1,6 +1,6 @@
 Package: ICPIutilities
 Title: Utility functions for working with or creating ICPI products
-Version: 2.1.7
+Version: 2.1.8
 Authors@R: person("Aaron", "Chafetz", email = "achafetz@usaid.gov", role = c("aut", "cre"))
 Description: This packages contains a number of functions for working with the PEPFAR MSD.
 Depends: R (>= 3.4.2)
