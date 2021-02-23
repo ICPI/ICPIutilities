@@ -1,4 +1,6 @@
 # ICPIutilities 2.1.8
+* update `read-msd()` to handle changes to the variable naming with FSW and align with MSD
+* change the default parameter in `reshape_msd()` from `clean = TRUE` 
 
 # ICPIutilities 2.1.6
 * change defaults in `read_msd()` to not save as an rds and not delete original txt file

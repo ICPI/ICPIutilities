@@ -17,7 +17,7 @@
 #'  #or reshape wide
 #'   df_genie_wide <- reshape_msd(df_genie, direction = "wide") }
 
-reshape_msd <- function(df, direction = c("long", "wide"), clean = FALSE){
+reshape_msd <- function(df, direction = c("long", "wide"), clean = TRUE){
 
   #check if upper case (for FY or fy names)
     is_upper <- stringr::str_detect(names(df)[1], "[[:upper:]]")
