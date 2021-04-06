@@ -29,10 +29,14 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide"), clean = 
     if(("fiscal_year" %in% names(df) == FALSE)) {
       stop('This dataframe is missing the fiscal_year indicator needed to create period.')
     }
+
+  #adjust group
+    var_match <- ifelse(direction == "quarters", "(Q|q)tr", "TARGETS|targets|(Q|q)tr|(C|c)umulative")
+
   #reshape long (wide need to be reshaped long first as well)
     df <- df %>%
       tidyr::gather(period, value,
-                    dplyr::matches("TARGETS|targets|(Q|q)tr|(C|c)umulative"),
+                    dplyr::matches(var_match),
                     na.rm = TRUE) %>%
       dplyr::filter(value != 0) %>%
       dplyr::mutate(period = stringr::str_remove(period, "tr"), #remove "tr" from "Qtr" to match old
