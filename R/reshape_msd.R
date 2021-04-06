@@ -17,7 +17,7 @@
 #'  #or reshape wide
 #'   df_genie_wide <- reshape_msd(df_genie, direction = "wide") }
 
-reshape_msd <- function(df, direction = c("long", "wide", "semi-wide"), clean = TRUE){
+reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters"), clean = TRUE){
 
   #limit direction to 1 if not specified
     direction <- direction[1]
@@ -53,7 +53,7 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide"), clean = 
     }
 
   #clean
-    if(direction == "long" && clean == TRUE){
+    if((direction == "long" && clean == TRUE) || direction %in% c("semi-wide", "quarters")){
       df <- df %>%
         dplyr::mutate(period_type = stringr::str_extract(period, "TARGETS|targets|(C|c)umulative") %>% tolower,
                       period_type = ifelse(is.na(period_type), "results", period_type),
@@ -61,6 +61,38 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide"), clean = 
                       period = stringr::str_remove(period, "CUMULATIVE|_TARGETS")) %>%
         dplyr::select(-value, dplyr::everything())
     }
+
+  #semi-wide
+    if(direction == "semi-wide"){
+      df <- df %>%
+        tidyr::pivot_wider(names_from = period_type)
+    }
+
+  #quarters
+    if(direction == "quarters"){
+      #remove cumulative
+      df <- df %>%
+        dplyr::select(-dplyr::matches("(C|c)umulative"))
+
+      #create a fiscal yyear
+      df <- df %>%
+        dplyr::mutate(fiscal_year = stringr::str_sub(period, end = 4), .before = period)
+
+      #identify grouping variables
+      var_char <- df %>%
+        dplyr::select(where(is.character)) %>%
+        dplyr::select(-period) %>%
+        names()
+
+      #arrange with in group and create cumulative
+      df <- df %>%
+        dplyr::group_by(dplyr::across(var_char)) %>%
+        dplyr::arrange(period, .by_group = TRUE) %>%
+        dplyr::mutate(value_cumulative = cumsum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::select(-period_type)
+    }
+
 
     usethis::ui_info("The new output for {usethis::ui_value('reshape_msd()')} is {usethis::ui_field('value')} instead of {usethis::ui_field('val')} in versions prior to v2.1.8.")
 
