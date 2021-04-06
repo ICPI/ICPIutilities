@@ -4,12 +4,17 @@
 \alias{reshape_msd}
 \title{Reshape Semi-Wide MSD}
 \usage{
-reshape_msd(df, direction = c("long", "wide"), clean = TRUE)
+reshape_msd(
+  df,
+  direction = c("long", "wide", "semi-wide", "quarters"),
+  clean = TRUE
+)
 }
 \arguments{
 \item{df}{MSD dataset in the semi-wide format}
 
-\item{direction}{direction of reshape, long (default) or wide (original MSD structure)}
+\item{direction}{direction of reshape, "long" (default), "wide" (original MSD structure),
+"semi-wide" (one column for targets, cumulative, results) or "quarters" (quarters pivoted, but not targets - useful for quarterly achievement))}
 
 \item{clean}{clean period for graphing, eg(fy2019qtr2 -> FY19Q2) and create a period type (targets, results, cumulative)}
 }
@@ -21,9 +26,12 @@ Reshape Semi-Wide MSD
  #read in data
   df_genie <- match_msd("~/Downloads/PEPFAR-Data-Genie-PSNUByIMs-2018-08-15.zip")
  #reshape long
-  df_genie_long <- reshape_msd(df_genie, direction = "long")
- #reshape long + clean
-  df_genie_long <- reshape_msd(df_genie, direction = "long", clean = TRUE)
- #or reshape wide
-  df_genie_wide <- reshape_msd(df_genie, direction = "wide") }
+  df_genie_long <- reshape_msd(df_genie)
+ #reshape wide (to look like old format)
+  df_genie_long <- reshape_msd(df_genie, direction = "wide")
+ #reshape semi-wide (one column for targets, cumulative, results)
+  df_genie_wide <- reshape_msd(df_genie, direction = "semi-wide")
+ #reshape quarters (quarters pivoted, but not targets - useful for quarterly achievement)
+  df_genie_wide <- reshape_msd(df_genie, direction = "semi-wide")
+  }
 }
