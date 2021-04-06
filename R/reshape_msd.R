@@ -17,7 +17,10 @@
 #'  #or reshape wide
 #'   df_genie_wide <- reshape_msd(df_genie, direction = "wide") }
 
-reshape_msd <- function(df, direction = c("long", "wide"), clean = TRUE){
+reshape_msd <- function(df, direction = c("long", "wide", "semi-wide"), clean = TRUE){
+
+  #limit direction to 1 if not specified
+    direction <- direction[1]
 
   #check if upper case (for FY or fy names)
     is_upper <- stringr::str_detect(names(df)[1], "[[:upper:]]")
@@ -38,7 +41,7 @@ reshape_msd <- function(df, direction = c("long", "wide"), clean = TRUE){
       tidyr::unite(period, c(!!fy_var, period), sep = "") #combine fy and pd together
 
   #reshape wide
-    if(!"long" %in% direction){
+    if(direction == "wide"){
       df <- df %>%
         dplyr::mutate(period = stringr::str_replace(period, "(C|c)um", "zzz.\\1um")) %>% #add z to reorder correctly
         tidyr::spread(period, value) %>%
@@ -46,7 +49,7 @@ reshape_msd <- function(df, direction = c("long", "wide"), clean = TRUE){
     }
 
   #clean
-    if("long" %in% direction && clean == TRUE){
+    if(direction == "long" && clean == TRUE){
       df <- df %>%
         dplyr::mutate(period_type = stringr::str_extract(period, "TARGETS|targets|(C|c)umulative") %>% tolower,
                       period_type = ifelse(is.na(period_type), "results", period_type),
