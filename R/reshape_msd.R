@@ -56,7 +56,7 @@ reshape_msd <- function(df, direction = c("long", "wide"), clean = TRUE){
     }
 
     usethis::ui_info("The new output for {usethis::ui_value('reshape_msd()')} is {usethis::ui_field('value')} instead of {usethis::ui_field('val')} in versions prior to v2.1.8.")
-    usethis::ui_warn("This update may affect your old code, which requires updating any use of 'val' to 'value'")
+
 
   return(df)
 }
