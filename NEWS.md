@@ -1,3 +1,6 @@
+# ICPIutilities 2.2.0
+* updates to `read_msd()` to handle two additional reshapes - semi-wide and quarters (for quarterly target achievement)
+
 # ICPIutilities 2.1.8
 * require `dplyr v1.0.0` or later to handle some of the code improvements
 * update `read_msd()` to handle changes to the variable naming with FSD and align with MSD
