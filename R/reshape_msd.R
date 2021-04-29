@@ -78,7 +78,7 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters
       df <- df %>%
         dplyr::select(-dplyr::matches("(C|c)umulative"))
 
-      #create a fiscal yyear
+      #create a fiscal year
       df <- df %>%
         dplyr::mutate(fiscal_year = stringr::str_sub(period, end = 4), .before = period)
 
@@ -92,7 +92,8 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters
       df <- df %>%
         dplyr::group_by(dplyr::across(var_char)) %>%
         dplyr::arrange(period, .by_group = TRUE) %>%
-        dplyr::mutate(value_cumulative = cumsum(value)) %>%
+        dplyr::mutate(value_cumulative = cumsum(value),
+                      value_cumulative = ifelse(indicator %in% snapshot_ind, value, value_cumulative)) %>%
         dplyr::ungroup() %>%
         dplyr::select(-period_type)
     }
