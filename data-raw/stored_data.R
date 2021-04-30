@@ -9,7 +9,7 @@ snapshot_ind <- c("AGYW_PREV",
                   "TX_ML",
                   "TX_TB_D", #only TX_TB denom, not num
                   "TX_PVLS",
-                  "TX_PVLS",
+                  "TX_PVLS_D",
                   "SC_CURR")
 
 usethis::use_data(snapshot_ind, overwrite = TRUE)

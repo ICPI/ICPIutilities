@@ -84,7 +84,7 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters
 
       #identify grouping variables
       var_char <- df %>%
-        dplyr::select(where(is.character)) %>%
+        dplyr::select(!where(is.numeric)) %>%
         dplyr::select(-period) %>%
         names()
 
