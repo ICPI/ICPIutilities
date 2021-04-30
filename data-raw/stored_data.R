@@ -7,7 +7,6 @@ snapshot_ind <- c("AGYW_PREV",
                   "OVC_HIVSTAT",
                   "TX_CURR",
                   "TX_ML",
-                  "TX_TB",
                   "TX_TB_D", #only TX_TB denom, not num
                   "TX_PVLS",
                   "TX_PVLS",
