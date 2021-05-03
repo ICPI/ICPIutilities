@@ -39,9 +39,9 @@ read_msd <-
 
     #align FSD naming with MSD
       df <- df %>%
-        dplyr::rename_with(~stringr::str_replace(., "primepartner_name", "primepartner")) %>%
-        dplyr::rename_with(~stringr::str_replace(., "implementation_year", "fiscal_year")) %>%
-        dplyr::rename_with(~stringr::str_replace(., "country", "countryname"))
+        dplyr::rename_with(~stringr::str_replace(., "primepartner_name$", "primepartner")) %>%
+        dplyr::rename_with(~stringr::str_replace(., "implementation_year$", "fiscal_year")) %>%
+        dplyr::rename_with(~stringr::str_replace(., "country$", "countryname"))
 
     #covert target/results/budgets to double
       df <- df %>%
