@@ -4,6 +4,7 @@
 #' @param direction direction of reshape, "long" (default), "wide" (original MSD structure),
 #' "semi-wide" (one column for targets, cumulative, results) or "quarters" (quarters pivoted, but not targets - useful for quarterly achievement))
 #' @param clean clean period for graphing, eg(fy2019qtr2 -> FY19Q2) and create a period type (targets, results, cumulative)
+#' @param qtrs_keep_cumulative whether to keep the cumulative column when using quaters for direction, default = FALSE
 #'
 #' @export
 #'
@@ -21,7 +22,8 @@
 #'   df_genie_wide <- reshape_msd(df_genie, direction = "semi-wide")
 #'   }
 
-reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters"), clean = TRUE){
+reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters"),
+                        clean = TRUE, qtrs_keep_cumulative = FALSE){
 
   #limit direction to 1 if not specified
     direction <- direction[1]
@@ -74,9 +76,10 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters
 
   #quarters
     if(direction == "quarters"){
+
       #remove cumulative
-      df <- df %>%
-        dplyr::select(-dplyr::matches("(C|c)umulative"))
+      if(qtrs_keep_cumulative == FALSE)
+        df <- dplyr::select(df, -dplyr::matches("(C|c)umulative"))
 
       #create a fiscal year
       df <- df %>%
