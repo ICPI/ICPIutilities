@@ -1,3 +1,5 @@
+# ICPIutilities 2.2.1
+
 # ICPIutilities 2.2.0
 * updates to `read_msd()` to handle two additional reshapes - semi-wide and quarters (for quarterly target achievement)
 * clean up bug from converting country in FSD to countryname in `read_msd()`, which was causing the variable to be renamed countrynamename 
