@@ -85,6 +85,9 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters
       df <- df %>%
         dplyr::mutate(fiscal_year = stringr::str_sub(period, end = 4), .before = period)
 
+      #rename value to results since only one value type
+      df <- dplyr::rename(df, results = value)
+
       #identify grouping variables
       var_char <- df %>%
         dplyr::select(!where(is.numeric)) %>%
@@ -95,10 +98,13 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters
       df <- df %>%
         dplyr::group_by(dplyr::across(var_char)) %>%
         dplyr::arrange(period, .by_group = TRUE) %>%
-        dplyr::mutate(value_cumulative = cumsum(value),
-                      value_cumulative = ifelse(indicator %in% snapshot_ind, value, value_cumulative)) %>%
+        dplyr::mutate(results_cumulative = cumsum(results),
+                      results_cumulative = ifelse(indicator %in% snapshot_ind, results, results_cumulative)) %>%
         dplyr::ungroup() %>%
         dplyr::select(-period_type)
+
+      #convert fiscal year to integer
+      df <- dplyr::mutate(df, fiscal_year = stringr::str_sub(fiscal_year, 3, 4) %>% as.integer() + 2000 %>% as.integer())
     }
 
 
