@@ -60,7 +60,7 @@ identifypd <- function(df, pd_type = "full", pd_prior = FALSE) {
     dplyr::nth(pos)
   #extract different portions of the the last column based on pd_type
   if(pd_type == "year") {
-    pd <- stringr::str_sub(pd, start = 4, end = 4) %>%
+    pd <- stringr::str_sub(pd, start = 3, end = 4) %>%
       paste0("20", .) %>%
       as.integer(.)
   } else if(pd_type == "quarter") {
