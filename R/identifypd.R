@@ -32,14 +32,23 @@ identifypd <- function(df, pd_type = "full", pd_prior = FALSE) {
         dplyr::group_by(fiscal_year) %>%
         dplyr::summarise_at(dplyr::vars(dplyr::matches("(Q|q)tr")), sum, na.rm = TRUE) %>%
         dplyr::mutate_all(~dplyr::na_if(., 0)) %>%
-        tidyr::gather(qtr, val, dplyr::matches("[Q|q]"), na.rm = TRUE) %>%
-        tidyr::unite(pd, c("fiscal_year", "qtr"), sep = "") %>%
-        dplyr::mutate(pd = stringr::str_remove(pd, "tr") %>% paste0(fy_case, .)) %>%
+        tidyr::pivot_longer(dplyr::matches("[Q|q]"),
+                            names_to = "qtr",
+                            names_prefix = "qtr",
+                            values_drop_na = TRUE) %>%
+        tidyr::unite(pd, c("fiscal_year", "qtr"), sep = "Q") %>%
+        dplyr::mutate(pd = stringr::str_replace(pd, "20", "FY")) %>%
         dplyr::arrange(pd) %>%
         dplyr::pull(pd)
 
+    } else if("period" %in% names(df)) {
+      headers <- df %>%
+        dplyr::distinct(period) %>%
+        dplyr::filter(stringr::str_detect(period, "Q")) %>%
+        dplyr::arrange(period) %>%
+        dplyr::pull()
     } else {
-      headers <- names(df)
+      stop("Unable to process structure.")
     }
 
   #pull current (last column) or prior (2nd to last column)
@@ -53,14 +62,11 @@ identifypd <- function(df, pd_type = "full", pd_prior = FALSE) {
     dplyr::nth(pos)
   #extract different portions of the the last column based on pd_type
   if(pd_type == "year") {
-    start_pt <- 3
-    end_pt <- -3
-    pd <- stringr::str_sub(pd, start_pt, end_pt) %>%
+    pd <- stringr::str_sub(pd, start = 4, end = 4) %>%
+      paste0("20", .) %>%
       as.integer(.)
   } else if(pd_type == "quarter") {
-    start_pt <- -1
-    end_pt <- -1
-    pd <- stringr::str_sub(pd, start_pt, end_pt) %>%
+    pd <- stringr::str_sub(pd, start = -1) %>%
       as.integer(.)
   } else if(pd_type == "target") {
     pd <- stringr::str_replace(pd, "q[:digit:]", "_targets") #if lower case
