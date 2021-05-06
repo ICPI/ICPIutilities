@@ -1,4 +1,5 @@
 # ICPIutilities 2.2.1
+* add a new function, `calc_achievement` for cumulative and quarterly target achievement calculations
 
 # ICPIutilities 2.2.0
 * updates to `read_msd()` to handle two additional reshapes - semi-wide and quarters (for quarterly target achievement)
