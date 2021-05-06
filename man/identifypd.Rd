@@ -9,7 +9,7 @@ identifypd(df, pd_type = "full", pd_prior = FALSE)
 \arguments{
 \item{df}{dataset to use to find latest period}
 
-\item{pd_type}{what is returned? (a) full, eg fy2018q1; (b)year, eg 2018; (c) quarter, eg 1; (d) target, eg fy2018_targets}
+\item{pd_type}{what is returned? (a) full, eg fy2018q1; (b)year, eg 2018; (c) quarter, eg 1}
 
 \item{pd_prior}{do you want the last period returned (instead of the current); default = FALSE}
 }
@@ -22,8 +22,6 @@ This function is pulled from the achafetz/PartnerProgress repo
 identifypd(df_mer)
 #return the current quarter, eg 3
 identifypd(df_mer, "quarter")
-#return the current target, eg fy2018_targets
-identifypd(df_mer, "target")
 #return the prior quarter, eg "fy2018q2"
 identifypd(df_mer, pd_prior = TRUE)
   }

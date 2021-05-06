@@ -1,6 +1,7 @@
 # ICPIutilities 2.2.0
 * updates to `read_msd()` to handle two additional reshapes - semi-wide and quarters (for quarterly target achievement)
 * clean up bug from converting country in FSD to countryname in `read_msd()`, which was causing the variable to be renamed countrynamename 
+* update `identify_pd()` to provide periods in the same format as `reshape_msd()` and decomission the use of targets as a parameter
 
 # ICPIutilities 2.1.8
 * require `dplyr v1.0.0` or later to handle some of the code improvements
