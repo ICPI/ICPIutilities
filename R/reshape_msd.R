@@ -108,8 +108,5 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters
     }
 
 
-    usethis::ui_info("The new output for {usethis::ui_value('reshape_msd()')} is {usethis::ui_field('value')} instead of {usethis::ui_field('val')} in versions prior to v2.1.8.")
-
-
   return(df)
 }
