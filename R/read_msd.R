@@ -39,12 +39,13 @@ read_msd <-
 
     #align FSD naming with MSD
       df <- df %>%
-        dplyr::rename_with(~stringr::str_replace(., "primepartner_name$", "primepartner")) %>%
+        dplyr::rename_with(~stringr::str_replace(., "prime_partner_name$", "primepartner")) %>%
         dplyr::rename_with(~stringr::str_replace(., "implementation_year$", "fiscal_year")) %>%
         dplyr::rename_with(~stringr::str_replace(., "country$", "countryname"))
 
     #covert target/results/budgets to double
       df <- df %>%
+        dplyr::mutate(cop_budget_pipeline = dplyr::na_if(cop_budget_pipeline, '\t\"')) %>%
         dplyr::mutate(dplyr::across(c(dplyr::matches("target"), dplyr::starts_with("qtr"),
                                       dplyr::matches("cumulative"), dplyr::matches("cop_budget"),
                                       dplyr::matches("_amt")),
