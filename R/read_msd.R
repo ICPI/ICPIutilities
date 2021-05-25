@@ -43,9 +43,12 @@ read_msd <-
         dplyr::rename_with(~stringr::str_replace(., "implementation_year$", "fiscal_year")) %>%
         dplyr::rename_with(~stringr::str_replace(., "country$", "countryname"))
 
+    #adjust pipeline issue with tab and space in two rows
+      if("cop_budget_pipeline" %in% names(df))
+        df <- dplyr::mutate(df, cop_budget_pipeline = dplyr::na_if(cop_budget_pipeline, '\t\"'))
+
     #covert target/results/budgets to double
       df <- df %>%
-        dplyr::mutate(cop_budget_pipeline = dplyr::na_if(cop_budget_pipeline, '\t\"')) %>%
         dplyr::mutate(dplyr::across(c(dplyr::matches("target"), dplyr::starts_with("qtr"),
                                       dplyr::matches("cumulative"), dplyr::matches("cop_budget"),
                                       dplyr::matches("_amt")),
