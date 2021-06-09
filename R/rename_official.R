@@ -37,12 +37,12 @@ rename_official <- function(df) {
   #rename variables to match MSD and remove mechid from mech name
     mech_official <- mech_official %>%
       dplyr::select(mech_code = code,
-                    primepartner_d = partner,
-                    mech_name_d = mechanism) %>%
-      dplyr::mutate(mech_name_d = stringr::str_remove(mech_name_d, "0000[0|1] |[:digit:]+ - "))
+                    primepartner_zXz = partner,
+                    mech_name_zXz = mechanism) %>%
+      dplyr::mutate(mech_name_zXz = stringr::str_remove(mech_name_zXz, "0000[0|1] |[:digit:]+ - "))
   #remove award information from mech_name
     mech_official <- mech_official %>%
-      dplyr::mutate(mech_name_d = stringr::str_remove(mech_name_d,
+      dplyr::mutate(mech_name_zXz = stringr::str_remove(mech_name_zXz,
             "^(720|AID|GH(AG|0)|U[:digit:]|NUGGH|UGH|U91|CK0|HT0|N[:digit:]|SGY||NU2|[:digit:]NU2|1U2).* - "))
 
   #merge official names into df
@@ -59,9 +59,9 @@ rename_official <- function(df) {
     }
 
     df <- df %>%
-      dplyr::mutate(mech_name = mech_name_d,
-                    primepartner = primepartner_d) %>%
-      dplyr::select(-dplyr::ends_with("_d"))
+      dplyr::mutate(mech_name = mech_name_zXz,
+                    primepartner = primepartner_zXz) %>%
+      dplyr::select(-dplyr::ends_with("_zXz"))
 
   #reapply original variable casing type
     names(df) <- headers_orig
