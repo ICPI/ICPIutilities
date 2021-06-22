@@ -39,6 +39,10 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters
   #adjust group
     var_match <- ifelse(direction == "quarters", "(Q|q)tr", "TARGETS|targets|(Q|q)tr|(C|c)umulative")
 
+  #identify current period for filtering out future periods later
+    curr_year <- identifypd(df, "year")
+    curr_qtr <- identifypd(df, "quarter")
+
   #reshape long (wide need to be reshaped long first as well)
     df <- df %>%
       tidyr::pivot_longer(dplyr::matches(var_match),
@@ -46,10 +50,6 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters
                           names_prefix = "qtr",
                           names_transform = list(period = as.integer),
                           values_drop_na = TRUE)
-
-  #identify current period
-    curr_year <- identifypd(df, "year")
-    curr_qtr <- identifypd(df, "quarter")
 
   #filter future periods
     df <- df %>%
@@ -88,7 +88,7 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters
   #quarters
     if(direction == "quarters"){
 
-      #remove cumulative
+      # #remove cumulative
       if(qtrs_keep_cumulative == FALSE)
         df <- dplyr::select(df, -dplyr::matches("(C|c)umulative"))
 
@@ -107,11 +107,14 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters
 
       #arrange with in group and create cumulative
       df <- df %>%
+        dplyr::mutate(results = ifelse(stringr::str_detect(period, "Q3") & results == 0, NA, results)) %>%
         dplyr::group_by(dplyr::across(var_char)) %>%
         dplyr::arrange(period, .by_group = TRUE) %>%
         dplyr::mutate(results_cumulative = cumsum(results),
                       results_cumulative = ifelse(indicator %in% snapshot_ind, results, results_cumulative)) %>%
+        tidyr::fill(results_cumulative) %>%
         dplyr::ungroup() %>%
+        dplyr::mutate(results = ifelse(is.na(results), 0, results)) %>%
         dplyr::select(-period_type)
 
       #convert fiscal year to integer
