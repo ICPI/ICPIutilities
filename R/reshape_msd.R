@@ -41,14 +41,25 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters
 
   #reshape long (wide need to be reshaped long first as well)
     df <- df %>%
-      tidyr::gather(period, value,
-                    dplyr::matches(var_match),
-                    na.rm = TRUE) %>%
-      dplyr::filter(value != 0) %>%
-      dplyr::mutate(period = stringr::str_remove(period, "tr"), #remove "tr" from "Qtr" to match old
-                    period = stringr::str_replace(period, "(TARGETS|targets)", "_\\1"), #add _ to match old
+      tidyr::pivot_longer(dplyr::matches(var_match),
+                          names_to = "period",
+                          names_prefix = "qtr",
+                          names_transform = list(period = as.integer),
+                          values_drop_na = TRUE)
+
+  #identify current period
+    curr_year <- identifypd(df, "year")
+    curr_qtr <- identifypd(df, "quarter")
+
+  #filter future periods
+    df <- df %>%
+      dplyr::filter(!(fiscal_year == curr_year & period > curr_qtr))
+
+  #clean up period
+    df <- df %>%
+      dplyr::mutate(period = stringr::str_replace(period, "(TARGETS|targets)", "_\\1"), #add _ to match old
                     !!fy_var := paste0(ifelse(is_upper, "FY", "fy"), !!fy_var)) %>%  #add FY to match old
-      tidyr::unite(period, c(!!fy_var, period), sep = "") #combine fy and pd together
+      tidyr::unite(period, c(!!fy_var, period), sep = "q") #combine fy and pd together
 
   #reshape wide
     if(direction == "wide"){
