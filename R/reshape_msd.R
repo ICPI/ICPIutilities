@@ -48,18 +48,24 @@ reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters
       tidyr::pivot_longer(dplyr::matches(var_match),
                           names_to = "period",
                           names_prefix = "qtr",
-                          names_transform = list(period = as.integer),
                           values_drop_na = TRUE)
+
+  #identify future quarters to exlclude from long df
+    future_qtrs <- data.frame(x = c(1:4)) %>%
+      dplyr::filter(x > curr_qtr) %>%
+      dplyr::mutate(x = as.character(x)) %>%
+      dplyr::pull()
 
   #filter future periods
     df <- df %>%
-      dplyr::filter(!(fiscal_year == curr_year & period > curr_qtr))
+      dplyr::filter(!(fiscal_year == curr_year & period %in% future_qtrs))
 
   #clean up period
     df <- df %>%
       dplyr::mutate(period = stringr::str_replace(period, "(TARGETS|targets)", "_\\1"), #add _ to match old
                     !!fy_var := paste0(ifelse(is_upper, "FY", "fy"), !!fy_var)) %>%  #add FY to match old
-      tidyr::unite(period, c(!!fy_var, period), sep = "q") #combine fy and pd together
+      tidyr::unite(period, c(!!fy_var, period), sep = "q") %>% #combine fy and pd together
+      dplyr::mutate(period = stringr::str_replace(period, "q(_t|c)", "\\1"))
 
   #reshape wide
     if(direction == "wide"){
