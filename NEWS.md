@@ -1,4 +1,5 @@
 # ICPIutilities 2.2.2
+* resolve bug with `reshape_msd()` causing issues with period naming and dropping of periods
 
 # ICPIutilities 2.2.1
 * add a new function, `calc_achievement` for cumulative and quarterly target achievement calculations
