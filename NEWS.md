@@ -1,3 +1,5 @@
+# ICPIutilities 2.2.2
+
 # ICPIutilities 2.2.1
 * add a new function, `calc_achievement` for cumulative and quarterly target achievement calculations
 * update naming of `primepartner` from FSD and remove a tab quote from `cop_budget_pipeline` amount that was throwing a warning after convering to a double
