@@ -24,7 +24,7 @@ df_msd_agg <- df_msd \%>\%
         fundingagency != "Dedup",
         standardizeddisaggregate == "Total Numerator") \%>\%
  group_by(operatingunit, fundingagency, fiscal_year, indicator) \%>\%
- summarise(dplyr::across(where(is.double), sum, na.rm = TRUE)) \%>\%
+ summarise(across(where(is.double), sum, na.rm = TRUE)) \%>\%
  ungroup()
 
 calc_achievement(df_msd_agg)

@@ -3,6 +3,7 @@
 export("%>%")
 export(add_color)
 export(add_cumulative)
+export(adorn_achievement)
 export(calc_achievement)
 export(calc_genpop)
 export(combine_netnew)
