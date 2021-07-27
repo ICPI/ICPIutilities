@@ -32,13 +32,13 @@ devtools::install_github("ICPI/ICPIutilities")
 
 ### Updates
 
-All package update (starting with v1.0.21) can be found on the [`NEWS.md`](https://github.com/ICPI/ICPIutilities/blob/master/NEWS.md) page.
+All package updates (starting with v1.0.21) can be found on the [`NEWS.md`](https://github.com/ICPI/ICPIutilities/blob/master/NEWS.md) page.
 
 To ensure you have the latest version, you can always rerun `devtools::install_github("ICPI/ICPIutilities")`
 
 ### Usage
 
-The `ICPIutilities` package has a few function that analysts may find useful for their work.
+The `ICPIutilities` package has a few functions that analysts may find useful for their work.
 
 ```
 library(ICPIutilities)
@@ -46,8 +46,6 @@ library(ICPIutilities)
 
 #### read_msd()
 The ICPI MER Structured Datasets are posted to [PEPFAR Sharepoint](https://www.pepfar.net/OGAC-HQ/icpi/Products/Forms/AllItems.aspx?RootFolder=%2FOGAC-HQ%2Ficpi%2FProducts%2FICPI%20Data%20Store%2FMER&FolderCTID=0x0120004DAC66286D0B8344836739DA850ACB95&View=%7B58E3102A-C027-4C66-A5C7-84FEBE208B3C%7D) as tab-delimited, text files (the extension is .txt). R has no problem reading in delimited files, but can run into issues due to the fact that that R guesses what columns are based on the first 1,000 rows. Since the MSDs are large, the first 1,000 rows of a column may be blank and R would interepret the column as string. Additional quirks arise from the fact that mechanism ids are read as numbers when they really should be string and the `coarseDisaggregate` variable is read in as a logical variable rather than string. The `read_msd()` function helps by importing all the columns as string, FY to an integer, and then converting the value columns to numeric (doubles).
-
-While there is no correct or incorrect way to name variables, [a best practice](http://r-pkgs.had.co.nz/style.html) is to write them as all lower case (or snake casing with underscores to separate words) as opposed to camel casing (eg `coarseDisaggregate`) as found in the MSD files. The `read_msd()` function has an option to convert the variables to all lower.
 
 An additional feature is the `read_msd()` function allows the user to save the .txt file as a .rds file. This formatting compresses the file, allowing the MSD to take up one-tenth of the space as the normal .txt file. To reopen an .rds, you can use the base R function `readRDS()`.
 
@@ -73,7 +71,7 @@ Some mechanisms and partners are recorded in FACTSInfo with multiple names as th
 
 #### reshape_msd()
 
-With the release of FY19Q2, the MSD structure changed to be in a semi-wide/semi-long format, where the fiscal year is its own column and cumulative, each quarter, and target are their own columns. Working with this structure is not as useful in R; instead its more useful to reshape the data so it is fully long or wide. To reshape the dataset, use the `reshape_msd()` function, specifying the direction. The default is to reshape it wide to resemble the former MSD structure.
+With the release of FY19Q2, the MSD structure changed to be in a semi-wide/semi-long format, where the fiscal year is its own column and cumulative, each quarter, and target are their own columns. Working with this structure is not as useful in R; instead it's more useful to reshape the data so it is fully long or wide. To reshape the dataset, use the `reshape_msd()` function, specifying the direction. The default is to reshape it wide to resemble the former MSD structure.
 
 ```
 #reshape wide to resemble old MSD
@@ -85,7 +83,7 @@ With the release of FY19Q2, the MSD structure changed to be in a semi-wide/semi-
 
 #### add_cumulative()
 
-**DEPRECATED: The new MSD has cumulative included naitively**
+**DEPRECATED: The new MSD has cumulative included natively**
 
 The MER Structured Datasets contain end of year totals for previous fiscal years, but do not include cumulative/snapshot values prior to Q4. This function identifies the current fiscal year using `identifypd()` and then works to create either a cumulative or snapshot value for each indicator (snapshot indicators include OVC_SERV, TB_PREV,TX_CURR, and TX_TB). The `add_cumulative()` function now takes an argument of prior_pd allowing a user to add in an cumulative/APR value for a prior year (eg DATIM genie output is missing APR values). By specifying the period, an APR value will be created. 
 
@@ -98,7 +96,7 @@ The MER Structured Datasets contain end of year totals for previous fiscal years
 ```
 #### identifypd()
 
-The `identifypd()` function is used within the `add_cumulative()` but can be used outside of it as well. It identifies the current period by pulling the last period. It has a few options to allow you pull the FY or quarter only, or full variable name. You need to specify the `pd_type` to be returned. Updated to now identifies the prior period as well as the current/prior target.
+The `identifypd()` function is used within the `add_cumulative()` but can be used outside of it as well. It identifies the current period by pulling the last period. It has a few options to allow you to pull the FY or quarter only, or full variable name. You need to specify the `pd_type` to be returned. Updated to now identify the prior period as well as the current/prior target.
 
 ```
 #find current quarter & fy
@@ -150,7 +148,7 @@ The default output is to change the columns to lower case, similar to `read_msd(
 
 #### split_save()
 
-It's often useful to export a dataset into smaller pieces particularly when you need the data to populate tools. The `split_save()` function allows you to define how to break up your dataset and then it exports each grouped dataframe as a csv. You can choose how to group your output (eg by `operatingunit`, `fundingagency`, etc.). You will need to specify the filenaming convention (eg "FY18Q3_CascadeInds") and the folder you want to save these in (eg "~/Data/FY18Q3"). Lastly, you can also include todays date at the end of the filename by specifying `include_date = TRUE`
+It's often useful to export a dataset into smaller pieces, particularly when you need the data to populate tools. The `split_save()` function allows you to define how to break up your dataset and then it exports each grouped dataframe as a csv. You can choose how to group your output (eg by `operatingunit`, `fundingagency`, etc.). You will need to specify the filenaming convention (eg "FY18Q3_CascadeInds") and the folder you want to save these in (eg "~/Data/FY18Q3"). Lastly, you can also include todays date at the end of the filename by specifying `include_date = TRUE`
 
 ```
 #export one csv for each OU for TX_NEW
