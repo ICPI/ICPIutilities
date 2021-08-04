@@ -143,7 +143,7 @@ color_achievement <- function(df, curr_qtr = NULL){
                                                 achv_value <= qtr_goal+.1 ~ glue::glue("{100*(qtr_goal-.1)}-{100*(qtr_goal+.1)}%") %>% as.character,
                                                 TRUE ~ glue::glue("+{100*(qtr_goal+.1)}%") %>% as.character),
                   achv_color = dplyr::case_when(is.na(achv_value) ~ NA_character_,
-                                                achv_value <= qtr_goal-.25 ~ "#c43d4d", #old_rose_light
+                                                achv_value <= qtr_goal-.25 ~ "#ff939a", #old_rose_light
                                                 achv_value <= qtr_goal-.1 ~ "#ffcaa2", #burnt_sienna_light
                                                 achv_value <= qtr_goal+.1 ~ "#5BB5D5", #scooter_medium
                                                 TRUE ~ "#e6e6e6"))  %>% #trolley_grey_light
