@@ -1,4 +1,5 @@
 # ICPIutilities 3.0.0
+* all functions transferred to [`USAID-OHA-SI/gophr`](https://usaid-oha-si.github.io/gophr/) and have been depricated in `ICPIutilities` as the package will no longer be maintain.
 
 # ICPIutilities 2.2.2
 * resolve bug with `reshape_msd()` causing issues with period naming and dropping of periods
