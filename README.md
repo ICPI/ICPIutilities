@@ -8,9 +8,10 @@
 
 ## ICPIutilities
 
-![icpiutilities](https://user-images.githubusercontent.com/8933069/45518039-36ec0580-b77e-11e8-8acf-f67f893c7ae8.png)
+As of FY21Q3, **`ICPIutilities` has stopped being maintained**. All functions were transferred to [`USAID-OHA-SI/gophr`](https://usaid-oha-si.github.io/gophr/) and are now soft depricated in `ICPIutilities`. To continue using these function, it is recommended you install gophr using `remotes::install_github("USAID-OHA-SI/gophr")`.
 
-**As of FY21Q3, `ICPIutilities` has stopped being maintained. All functions were transferred to [`USAID-OHA-SI/gophr`](https://usaid-oha-si.github.io/gophr/) and are now soft depricated in `ICPIutilities`. To continue using these function, it is recommended you install gophr using `remotes::install_github("USAID-OHA-SI/gophr")`.**
+
+![icpiutilities](https://user-images.githubusercontent.com/8933069/45518039-36ec0580-b77e-11e8-8acf-f67f893c7ae8.png)
 
 This package contains a number of useful functions for creating and/or working with ICPI datasets and products.
 
