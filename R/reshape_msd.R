@@ -25,6 +25,8 @@
 reshape_msd <- function(df, direction = c("long", "wide", "semi-wide", "quarters"),
                         clean = TRUE, qtrs_keep_cumulative = FALSE){
 
+  .Deprecated(msg = "Functions in ICPIutilities are no longer being maintained\n and have been transfered to gophr. Install gophr via\n remotes::install_github('USAID-OHA-SI/gophr')")
+
   #limit direction to 1 if not specified
     direction <- direction[1]
 

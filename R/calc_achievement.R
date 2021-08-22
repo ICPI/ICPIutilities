@@ -34,6 +34,8 @@
 #'  adorn_achievement() }
 adorn_achievement <- function(df, qtr = NULL){
 
+  .Deprecated(msg = "Functions in ICPIutilities are no longer being maintained\n and have been transfered to gophr. Install gophr via\n remotes::install_github('USAID-OHA-SI/gophr')")
+
   #make sure key variables exist
   if(var_missing(df, c("period", "fiscal_year")))
     stop("The data frame provided is missing period or fiscal year, one of which is required.")
@@ -75,6 +77,9 @@ adorn_achievement <- function(df, qtr = NULL){
 #'  reshape_msd("quarters") %>%
 #'  calc_achievement() }
 calc_achievement <- function(df){
+
+  .Deprecated(msg = "Functions in ICPIutilities are no longer being maintained\n and have been transfered to gophr. Install gophr via\n remotes::install_github('USAID-OHA-SI/gophr')")
+
   if(!"targets" %in% names(df))
     usethis::ui_stop("No {usethis::ui_field('targets')} in the dataframe provided")
 

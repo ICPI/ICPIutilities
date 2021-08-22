@@ -15,6 +15,8 @@
 
 rename_official <- function(df) {
 
+  .Deprecated(msg = "Functions in ICPIutilities are no longer being maintained\n and have been transfered to gophr. Install gophr via\n remotes::install_github('USAID-OHA-SI/gophr')")
+
   #check that mechanism exists in MSD before starting (OUxIM or PSNUxIM, not PSNU)
   if(("mech_code" %in% names(df) == FALSE)) {
     stop('This dataset does not have mechanisms. Make sure it is OUxIM or PSNUxIM')

@@ -20,6 +20,8 @@
 #'
 identifypd <- function(df, pd_type = "full", pd_prior = FALSE) {
 
+  .Deprecated(msg = "Functions in ICPIutilities are no longer being maintained\n and have been transfered to gophr. Install gophr via\n remotes::install_github('USAID-OHA-SI/gophr')")
+
   #get header names based on new or old structure
     if(any(stringr::str_detect(names(df), "(Q|q)tr1"))){
 

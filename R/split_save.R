@@ -21,6 +21,8 @@
 
 split_save <- function(df, group_var, folderpath, filename_stub, include_date = FALSE){
 
+  .Deprecated(msg = "Functions in ICPIutilities are no longer being maintained\n and have been transfered to gophr. Install gophr via\n remotes::install_github('USAID-OHA-SI/gophr')")
+
   #enquote group var due to NSE
     group_var <- dplyr::enquo(group_var)
 

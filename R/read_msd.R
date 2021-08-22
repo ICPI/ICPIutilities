@@ -20,6 +20,8 @@ read_msd <-
            save_rds = FALSE,
            remove_txt = FALSE) {
 
+    .Deprecated(msg = "Functions in ICPIutilities are no longer being maintained\n and have been transfered to gophr. Install gophr via\n remotes::install_github('USAID-OHA-SI/gophr')")
+
     #read in rds if it already exists
     if(tools::file_ext(file) == "rds"){
       df <- readr::read_rds(file)
