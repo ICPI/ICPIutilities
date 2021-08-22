@@ -1,3 +1,5 @@
+# ICPIutilities 3.0.0
+
 # ICPIutilities 2.2.2
 * resolve bug with `reshape_msd()` causing issues with period naming and dropping of periods
 * add `adorn_achievement()` to apply achieviement labeling and color; works with normal MSD structure and if reshaping using `reshape_msd()`
